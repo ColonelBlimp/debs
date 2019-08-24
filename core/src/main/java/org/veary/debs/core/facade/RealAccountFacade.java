@@ -235,9 +235,7 @@ public final class RealAccountFacade implements AccountFacade {
             }
 
             Optional<TreeNode<Account>> result = balance.findNode(
-                elementData -> {
-                    return elementData.getId().equals(account.getParentId());
-                });
+                elementData -> elementData.getId().equals(account.getParentId()));
 
             if (result.isPresent()) {
                 result.get().addChild(account);
