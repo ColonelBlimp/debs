@@ -34,8 +34,14 @@ public class RegistryTest {
     private RealRegistry registry;
 
     @Test(expectedExceptions = DebsException.class)
-    public void instantationException() {
+    public void instantationUnknownException() {
         new RealRegistry("unknown.xml");
+    }
+
+    @Test
+    public void instantationBlankException() {
+        String[] vars = {};
+        new RealRegistry(vars);
     }
 
     @Test
