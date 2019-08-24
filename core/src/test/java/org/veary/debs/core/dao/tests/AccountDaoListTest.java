@@ -49,7 +49,7 @@ public class AccountDaoListTest extends JndiTestBase {
 		final List<Account> list = this.accountDao.getAllAccounts(false);
 		Assert.assertNotNull(list);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 8);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -57,21 +57,23 @@ public class AccountDaoListTest extends JndiTestBase {
 		final List<Account> list = this.accountDao.getAllAccounts(true);
 		Assert.assertNotNull(list);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 8);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
 	public void getActualAcccountsMethod() {
 		final List<Account> list = this.accountDao.getActualAccounts(false);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
 	public void getActualAccountsIncludeDeletedMethod() {
 		final List<Account> list = this.accountDao.getActualAccounts(true);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -79,7 +81,7 @@ public class AccountDaoListTest extends JndiTestBase {
 		final List<Account> list = this.accountDao.getGroupAccounts(false);
 		Assert.assertNotNull(list);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 7);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -87,7 +89,7 @@ public class AccountDaoListTest extends JndiTestBase {
 		final List<Account> list = this.accountDao.getGroupAccounts(true);
 		Assert.assertNotNull(list);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 7);
 	}
 
 	private static final String DESC = "In-build";
@@ -99,9 +101,9 @@ public class AccountDaoListTest extends JndiTestBase {
 		object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);
 		Long netWorthId = this.accountDao.createAccount(object);
 
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 3);
+		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 9);
 		object = this.accountDao.getAccountById(netWorthId);
 		this.accountDao.deleteAccount(object);
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 2);
+		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 8);
 	}
 }

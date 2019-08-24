@@ -23,14 +23,14 @@ public final class AccountFacadeListTest extends JndiTestBase {
 
 		List<Account> list = this.accountFacade.getAllAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 4);
+		Assert.assertTrue(list.size() == 11);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
 	public void getAllAccountsIncludeMethod() {
 		List<Account> list = this.accountFacade.getAllAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 4);
+		Assert.assertTrue(list.size() == 11);
 
 		Optional<Account> result = this.accountFacade.getByName("Group A-B");
 		Assert.assertFalse(result.isEmpty());
@@ -38,11 +38,11 @@ public final class AccountFacadeListTest extends JndiTestBase {
 
 		list = this.accountFacade.getAllAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 3);
+		Assert.assertTrue(list.size() == 10);
 
 		list = this.accountFacade.getAllAccounts(true);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 4);
+		Assert.assertTrue(list.size() == 11);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsIncludeMethod" })
@@ -51,36 +51,36 @@ public final class AccountFacadeListTest extends JndiTestBase {
 				.create(Account.newInstance("Cash", "Cash Account", this.groupAA, Account.Types.ASSET));
 		List<Account> list = this.accountFacade.getAllAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 4);
+		Assert.assertTrue(list.size() == 11);
 
 		list = this.accountFacade.getActualAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 2);
 
 		Optional<Account> result = this.accountFacade.getById(id);
 		Assert.assertFalse(result.isEmpty());
 		this.accountFacade.delete(result.get());
 
 		list = this.accountFacade.getActualAccounts(false);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
 
 		list = this.accountFacade.getActualAccounts(true);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertTrue(list.size() == 2);
 	}
 
 	@Test(dependsOnMethods = { "getActualAccountsMethod" })
 	public void getGroupAccountsMethod() {
 		List<Account> list = this.accountFacade.getGroupAccounts(false);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 3);
+		Assert.assertTrue(list.size() == 9);
 
 		list = this.accountFacade.getGroupAccounts(true);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 4);
+		Assert.assertTrue(list.size() == 10);
 
 		list = this.accountFacade.getAllAccounts(true);
 		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 5);
+		Assert.assertTrue(list.size() == 12);
 	}
 }

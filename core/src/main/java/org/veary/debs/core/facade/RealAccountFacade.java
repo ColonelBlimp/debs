@@ -147,8 +147,7 @@ public final class RealAccountFacade implements AccountFacade {
 	@Override
 	public void delete(Account object) {
 		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-		this.dao.deleteAccount(object);
+		this.dao.deleteAccount(validateInput(object));
 	}
 
 	/**
