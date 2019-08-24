@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.facade;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -101,17 +102,6 @@ public final class RealAccountFacade implements AccountFacade {
 		this.dao.updateAccount(original, updated);
 	}
 
-	private Account validateInput(Account object) {
-		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-
-		if (object.getParentId().longValue() <= PersistentObject.DEFAULT_ID.longValue()) {
-			throw new IllegalStateException(Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
-		}
-
-		return object;
-	}
-
 	@Override
 	public Optional<Account> getById(Long id) {
 		LOG.trace(LOG_CALLED);
@@ -134,5 +124,34 @@ public final class RealAccountFacade implements AccountFacade {
 		} catch (NoResultException e) {
 			return Optional.empty();
 		}
+	}
+
+	@Override
+	public List<Account> getAllAccounts(boolean includeDeleted) {
+		LOG.trace(LOG_CALLED);
+		return this.dao.getAllAccounts(includeDeleted);
+	}
+
+	@Override
+	public List<Account> getActualAccounts(boolean includeDeleted) {
+		LOG.trace(LOG_CALLED);
+		return this.dao.getActualAccounts(includeDeleted);
+	}
+
+	@Override
+	public List<Account> getGroupAccounts(boolean includeDeleted) {
+		LOG.trace(LOG_CALLED);
+		return this.dao.getGroupAccounts(includeDeleted);
+	}
+
+	private Account validateInput(Account object) {
+		LOG.trace(LOG_CALLED);
+		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+		if (object.getParentId().longValue() <= PersistentObject.DEFAULT_ID.longValue()) {
+			throw new IllegalStateException(Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
+		}
+
+		return object;
 	}
 }

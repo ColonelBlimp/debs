@@ -24,6 +24,7 @@
 
 package org.veary.debs.facade;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.veary.debs.model.Account;
@@ -81,4 +82,31 @@ public interface AccountFacade {
 	 * @return {@code Optional<Account>}
 	 */
 	Optional<Account> getByName(String name);
+
+	/**
+	 * Returns a {@code List<Account>} of all the accounts.
+	 *
+	 * @param includeDeleted {@code true} if accounts marked as <i>deleted</i>
+	 *                       should be included
+	 * @return {@code List<Account>}
+	 */
+	List<Account> getAllAccounts(boolean includeDeleted);
+
+	/**
+	 * Returns a {@code List<Account>} of all Actual accounts.
+	 *
+	 * @param includeDeleted {@code true} if accounts marked as <i>deleted</i>
+	 *                       should be included
+	 * @return {@code List<Account>}
+	 */
+	List<Account> getActualAccounts(boolean includeDeleted);
+
+	/**
+	 * Returns a {@code List<Account>} of all Group accounts.
+	 *
+	 * @param includeDeleted {@code true} if accounts marked as <i>deleted</i>
+	 *                       should be included
+	 * @return {@code List<Account>}
+	 */
+	List<Account> getGroupAccounts(boolean includeDeleted);
 }

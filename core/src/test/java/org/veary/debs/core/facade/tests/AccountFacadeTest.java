@@ -24,24 +24,15 @@
 
 package org.veary.debs.core.facade.tests;
 
-import java.io.File;
 import java.util.Optional;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.veary.debs.core.facade.RealAccountFacade;
-import org.veary.debs.dao.AccountDao;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
-import org.veary.debs.tests.GuicePersistTestModule;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-import hthurow.tomcatjndi.TomcatJNDI;
+import org.veary.debs.tests.JndiTestBase;
 
 /**
  * <b>Purpose:</b> ?
@@ -52,54 +43,51 @@ import hthurow.tomcatjndi.TomcatJNDI;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class AccountFacadeTest {
+public class AccountFacadeTest extends JndiTestBase {
 
 	private static final String NAME = "Fuel";
 	private static final String DESC = "Desc";
 	private static final Long PARENT_ID = Long.valueOf(2);
 
-	private TomcatJNDI tomcatJndi;
-	private Injector injector;
-	private AccountDao dao;
-
-	@BeforeClass
-	public void setUp() {
-		final File contextXml = new File("src/test/resources/context.xml");
-		this.tomcatJndi = new TomcatJNDI();
-		this.tomcatJndi.processContextXml(contextXml);
-		this.tomcatJndi.start();
-		this.injector = Guice.createInjector(new GuicePersistTestModule());
-		this.dao = this.injector.getInstance(AccountDao.class);
-	}
-
-	@AfterClass
-	public void teardown() {
-		this.tomcatJndi.tearDown();
-	}
-
 	@Test
 	public void instantiation() {
-		Assert.assertNotNull(new RealAccountFacade(this.dao));
+		Assert.assertNotNull(new RealAccountFacade(this.accountDao));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class, expectedExceptionsMessageRegExp = "The Account object does not have a parent set!")
 	public void createMethodNoParentId() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
-
 		Account object = Account.newInstance(NAME, DESC, Long.valueOf(0), Types.EXPENSE);
 		facade.create(object);
 	}
 
 	@Test
 	public void createMethod() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
-
 		Account object = Account.newInstance(NAME, DESC, PARENT_ID, Types.EXPENSE);
-
 		Long id = facade.create(object);
 		Assert.assertNotNull(id);
+
+		Optional<Account> result = facade.getById(id);
+		Assert.assertFalse(result.isEmpty());
+	}
+
+	@Test
+	public void getByIdMethod() {
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
+		Assert.assertNotNull(facade);
+		Optional<Account> result = facade.getById(Long.valueOf(200000));
+		Assert.assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void getByNameMethod() {
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
+		Assert.assertNotNull(facade);
+		Optional<Account> result = facade.getByName("Unknown Name");
+		Assert.assertTrue(result.isEmpty());
 	}
 
 	private static final String NEW_NAME = "Car Fuel";
@@ -108,7 +96,7 @@ public class AccountFacadeTest {
 
 	@Test(dependsOnMethods = { "createMethod" })
 	public void updateMethod_Name() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
 
 		Optional<Account> result = facade.getByName(NAME);
@@ -128,7 +116,7 @@ public class AccountFacadeTest {
 
 	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
 	public void updateMethod_Desc() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
 
 		Optional<Account> result = facade.getByName(NEW_NAME);
@@ -148,7 +136,7 @@ public class AccountFacadeTest {
 
 	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
 	public void updateMethod_Parent() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
 
 		Optional<Account> result = facade.getByName(NEW_NAME);
@@ -168,7 +156,7 @@ public class AccountFacadeTest {
 
 	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
 	public void updateMethod_Type() {
-		AccountFacade facade = new RealAccountFacade(this.dao);
+		AccountFacade facade = new RealAccountFacade(this.accountDao);
 		Assert.assertNotNull(facade);
 
 		Optional<Account> result = facade.getByName(NEW_NAME);
