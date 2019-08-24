@@ -46,7 +46,7 @@ public class AccountDaoTest extends JndiTestBase {
 
 	private static final String NAME = "Fuel";
 	private static final String DESC = "Desc";
-	private static final Long PARENT_ID = Long.valueOf(2);
+	private static final Long PARENT_ID = Long.valueOf(0);
 
 	private static final String UPDATED_NAME = "Updated Fuel";
 	private static final String UPDATED_DESC = "Updated Desc";

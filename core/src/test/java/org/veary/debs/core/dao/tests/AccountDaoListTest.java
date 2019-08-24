@@ -48,14 +48,16 @@ public class AccountDaoListTest extends JndiTestBase {
 	public void getAllAccountsMethod() {
 		final List<Account> list = this.accountDao.getAllAccounts(false);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
 	public void getAllAccountsIncludeDeleteMethod() {
 		final List<Account> list = this.accountDao.getAllAccounts(true);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -76,14 +78,16 @@ public class AccountDaoListTest extends JndiTestBase {
 	public void getGroupAccountsMethod() {
 		final List<Account> list = this.accountDao.getGroupAccounts(false);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	@Test(dependsOnMethods = { "getAllAccountsMethod" })
 	public void getGroupAccountsIncludeDeletedMethod() {
 		final List<Account> list = this.accountDao.getGroupAccounts(true);
 		Assert.assertNotNull(list);
-		Assert.assertTrue(list.isEmpty());
+		Assert.assertFalse(list.isEmpty());
+		Assert.assertTrue(list.size() == 1);
 	}
 
 	private static final String DESC = "In-build";
@@ -95,9 +99,9 @@ public class AccountDaoListTest extends JndiTestBase {
 		object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);
 		Long netWorthId = this.accountDao.createAccount(object);
 
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 2);
+		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 3);
 		object = this.accountDao.getAccountById(netWorthId);
 		this.accountDao.deleteAccount(object);
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 1);
+		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 2);
 	}
 }

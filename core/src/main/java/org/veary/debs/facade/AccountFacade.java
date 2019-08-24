@@ -68,6 +68,13 @@ public interface AccountFacade {
 	void update(Account original, String name, String description, Long parentId, Account.Types type);
 
 	/**
+	 * Deletes the referenced {@code Account}.
+	 *
+	 * @param object the {@code Account} to be deleted
+	 */
+	void delete(Account object);
+
+	/**
 	 * Fetch an {@code Account} from persistent storage.
 	 *
 	 * @param id the unique identifier of the account to be retrieved

@@ -144,6 +144,21 @@ public final class RealAccountFacade implements AccountFacade {
 		return this.dao.getGroupAccounts(includeDeleted);
 	}
 
+	@Override
+	public void delete(Account object) {
+		LOG.trace(LOG_CALLED);
+		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+		this.dao.deleteAccount(object);
+	}
+
+	/**
+	 * The {@code AccountDao} allows the {@code parentId} parameter to be zero.
+	 * However, the facade does <b>not</b> allow this as a value of zero is the
+	 * 'Balance' Group Account.
+	 *
+	 * @param object the {@code Account} object to be validated
+	 * @return {@code Account}
+	 */
 	private Account validateInput(Account object) {
 		LOG.trace(LOG_CALLED);
 		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
