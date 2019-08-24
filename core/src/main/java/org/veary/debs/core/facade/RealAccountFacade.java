@@ -34,6 +34,7 @@ import javax.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.Money;
 import org.veary.debs.core.model.AccountEntity;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.dao.AccountDao;
@@ -41,6 +42,7 @@ import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
 import org.veary.persist.exceptions.NoResultException;
+import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> Concrete implementation of the {@code AccountFacade} interface.
@@ -132,6 +134,19 @@ public final class RealAccountFacade implements AccountFacade {
     }
 
     @Override
+    public void updateBalance(Account object, Money balance) {
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+        Objects.requireNonNull(balance, Messages.getParameterIsNull("balance")); //$NON-NLS-1$
+        this.dao.updateAccountBalance(object, balance);
+    }
+
+    @Override
+    public void delete(Account object) {
+        LOG.trace(LOG_CALLED);
+        this.dao.deleteAccount(validateInput(object));
+    }
+
+    @Override
     public Optional<Account> getById(Long id) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
@@ -174,9 +189,9 @@ public final class RealAccountFacade implements AccountFacade {
     }
 
     @Override
-    public void delete(Account object) {
+    public TreeNode<Account> getChartOfAccounts() {
         LOG.trace(LOG_CALLED);
-        this.dao.deleteAccount(validateInput(object));
+        return buildChartOfAccounts(getRootNode());
     }
 
     /**
@@ -196,5 +211,57 @@ public final class RealAccountFacade implements AccountFacade {
         }
 
         return object;
+    }
+
+    private TreeNode<Account> getRootNode() {
+        LOG.trace(LOG_CALLED);
+        try {
+            Account root = this.dao.getAccountByName(BuiltInAccounts.BALANCE.toString());
+            return new TreeNode<>(root);
+        } catch (NoResultException e) {
+            throw new AssertionError(
+                Messages.getString("RealAccountFacade.chart.assert.norootnode", //$NON-NLS-1$
+                    BuiltInAccounts.BALANCE.toString()));
+        }
+    }
+
+    private TreeNode<Account> buildChartOfAccounts(TreeNode<Account> balance) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(balance, Messages.getParameterIsNull("balance")); //$NON-NLS-1$
+
+        for (Account account : this.dao.getAllAccounts(false)) {
+            if (account.getName().equals(BuiltInAccounts.BALANCE.toString())) {
+                continue;
+            }
+
+            Optional<TreeNode<Account>> result = balance.findNode(
+                elementData -> {
+                    if (elementData.getId().equals(account.getParentId())) {
+                        return true;
+                    }
+                    return false;
+                });
+
+            if (result.isPresent()) {
+                result.get().addChild(account);
+            } else {
+                throw new AssertionError(Messages.getString(
+                    "RealAccountFacade.chart.assert.unknownparent", account.getName())); //$NON-NLS-1$
+            }
+        }
+
+        if (LOG.isTraceEnabled()) {
+            for (TreeNode<Account> node : balance) {
+                int level = node.getLevel();
+                if (level > 0) {
+                    LOG.trace("{}{}", String.format("%" + node.getLevel() + "s", " "), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        node.getData().getName());
+                } else {
+                    LOG.trace("{}", node.getData().getName());
+                }
+            }
+        }
+
+        return balance;
     }
 }

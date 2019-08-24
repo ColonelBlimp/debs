@@ -24,10 +24,12 @@
 
 package org.veary.debs.core.facade.tests;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.veary.debs.core.Money;
 import org.veary.debs.core.facade.RealAccountFacade;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
@@ -37,140 +39,158 @@ import org.veary.debs.tests.JndiTestBase;
 /**
  * <b>Purpose:</b> ?
  *
- * <p>
- * <b>Responsibility:</b>
+ * <p> <b>Responsibility:</b>
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public class AccountFacadeTest extends JndiTestBase {
 
-	private static final String NAME = "Fuel";
-	private static final String DESC = "Desc";
-	private static final Long PARENT_ID = Long.valueOf(2);
+    private static final String NAME = "Fuel";
+    private static final String DESC = "Desc";
+    private static final Long PARENT_ID = Long.valueOf(2);
 
-	@Test
-	public void instantiation() {
-		Assert.assertNotNull(new RealAccountFacade(this.accountDao));
-	}
+    @Test
+    public void instantiation() {
+        Assert.assertNotNull(new RealAccountFacade(this.accountDao));
+    }
 
-	@Test(expectedExceptions = IllegalStateException.class, expectedExceptionsMessageRegExp = "The Account object does not have a parent set!")
-	public void createMethodNoParentId() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
-		Account object = Account.newInstance(NAME, DESC, Long.valueOf(0), Types.EXPENSE);
-		facade.create(object);
-	}
+    @Test(expectedExceptions = IllegalStateException.class,
+        expectedExceptionsMessageRegExp = "The Account object does not have a parent set!")
+    public void createMethodNoParentId() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+        Account object = Account.newInstance(NAME, DESC, Long.valueOf(0), Types.EXPENSE);
+        facade.create(object);
+    }
 
-	@Test
-	public void createMethod() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
-		Account object = Account.newInstance(NAME, DESC, PARENT_ID, Types.EXPENSE);
-		Long id = facade.create(object);
-		Assert.assertNotNull(id);
+    @Test
+    public void createMethod() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+        Account object = Account.newInstance(NAME, DESC, PARENT_ID, Types.EXPENSE);
+        Long id = facade.create(object);
+        Assert.assertNotNull(id);
 
-		Optional<Account> result = facade.getById(id);
-		Assert.assertFalse(result.isEmpty());
-	}
+        Optional<Account> result = facade.getById(id);
+        Assert.assertFalse(result.isEmpty());
+    }
 
-	@Test
-	public void getByIdMethod() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
-		Optional<Account> result = facade.getById(Long.valueOf(200000));
-		Assert.assertTrue(result.isEmpty());
-	}
+    @Test
+    public void getByIdMethod() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+        Optional<Account> result = facade.getById(Long.valueOf(200000));
+        Assert.assertTrue(result.isEmpty());
+    }
 
-	@Test
-	public void getByNameMethod() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
-		Optional<Account> result = facade.getByName("Unknown Name");
-		Assert.assertTrue(result.isEmpty());
-	}
+    @Test
+    public void getByNameMethod() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+        Optional<Account> result = facade.getByName("Unknown Name");
+        Assert.assertTrue(result.isEmpty());
+    }
 
-	private static final String NEW_NAME = "Car Fuel";
-	private static final String NEW_DESC = "Fuel for a car";
-	private static final Long NEW_PARENT_ID = Long.valueOf(8);
+    private static final String NEW_NAME = "Car Fuel";
+    private static final String NEW_DESC = "Fuel for a car";
+    private static final Long NEW_PARENT_ID = Long.valueOf(8);
 
-	@Test(dependsOnMethods = { "createMethod" })
-	public void updateMethod_Name() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
+    @Test(dependsOnMethods = { "createMethod" })
+    public void updateMethod_Name() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
 
-		Optional<Account> result = facade.getByName(NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account original = result.get();
+        Optional<Account> result = facade.getByName(NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account original = result.get();
 
-		facade.update(original, NEW_NAME, null, null, null);
+        facade.update(original, NEW_NAME, null, null, null);
 
-		result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account updated = result.get();
-		Assert.assertEquals(updated.getName(), NEW_NAME);
-		Assert.assertEquals(updated.getDescription(), DESC);
-		Assert.assertTrue(updated.getParentId().equals(PARENT_ID));
-		Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
-	}
+        result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account updated = result.get();
+        Assert.assertEquals(updated.getName(), NEW_NAME);
+        Assert.assertEquals(updated.getDescription(), DESC);
+        Assert.assertTrue(updated.getParentId().equals(PARENT_ID));
+        Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
+    }
 
-	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
-	public void updateMethod_Desc() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
+    @Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
+    public void updateMethod_Desc() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
 
-		Optional<Account> result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account original = result.get();
+        Optional<Account> result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account original = result.get();
 
-		facade.update(original, null, NEW_DESC, null, null);
+        facade.update(original, null, NEW_DESC, null, null);
 
-		result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account updated = result.get();
-		Assert.assertEquals(updated.getName(), NEW_NAME);
-		Assert.assertEquals(updated.getDescription(), NEW_DESC);
-		Assert.assertTrue(updated.getParentId().equals(PARENT_ID));
-		Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
-	}
+        result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account updated = result.get();
+        Assert.assertEquals(updated.getName(), NEW_NAME);
+        Assert.assertEquals(updated.getDescription(), NEW_DESC);
+        Assert.assertTrue(updated.getParentId().equals(PARENT_ID));
+        Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
+    }
 
-	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
-	public void updateMethod_Parent() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
+    @Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
+    public void updateMethod_Parent() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
 
-		Optional<Account> result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account original = result.get();
+        Optional<Account> result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account original = result.get();
 
-		facade.update(original, null, null, NEW_PARENT_ID, null);
+        facade.update(original, null, null, NEW_PARENT_ID, null);
 
-		result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account updated = result.get();
-		Assert.assertEquals(updated.getName(), NEW_NAME);
-		Assert.assertEquals(updated.getDescription(), NEW_DESC);
-		Assert.assertTrue(updated.getParentId().equals(NEW_PARENT_ID));
-		Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
-	}
+        result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account updated = result.get();
+        Assert.assertEquals(updated.getName(), NEW_NAME);
+        Assert.assertEquals(updated.getDescription(), NEW_DESC);
+        Assert.assertTrue(updated.getParentId().equals(NEW_PARENT_ID));
+        Assert.assertTrue(updated.getType().equals(Types.EXPENSE));
+    }
 
-	@Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
-	public void updateMethod_Type() {
-		AccountFacade facade = new RealAccountFacade(this.accountDao);
-		Assert.assertNotNull(facade);
+    @Test(dependsOnMethods = { "createMethod", "updateMethod_Name" })
+    public void updateMethod_Type() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
 
-		Optional<Account> result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account original = result.get();
+        Optional<Account> result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account original = result.get();
 
-		facade.update(original, null, null, null, Types.GROUP);
+        facade.update(original, null, null, null, Types.GROUP);
 
-		result = facade.getByName(NEW_NAME);
-		Assert.assertFalse(result.isEmpty());
-		Account updated = result.get();
-		Assert.assertEquals(updated.getName(), NEW_NAME);
-		Assert.assertEquals(updated.getDescription(), NEW_DESC);
-		Assert.assertTrue(updated.getParentId().equals(NEW_PARENT_ID));
-		Assert.assertTrue(updated.getType().equals(Types.GROUP));
-	}
+        result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Account updated = result.get();
+        Assert.assertEquals(updated.getName(), NEW_NAME);
+        Assert.assertEquals(updated.getDescription(), NEW_DESC);
+        Assert.assertTrue(updated.getParentId().equals(NEW_PARENT_ID));
+        Assert.assertTrue(updated.getType().equals(Types.GROUP));
+    }
+
+    private static final Money MONEY = new Money(BigDecimal.valueOf(100000));
+
+    @Test(dependsOnMethods = { "updateMethod_Type" })
+    public void updateBalanceMethod() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+
+        Optional<Account> result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Assert.assertTrue(result.get().getBalance().eq(new Money(BigDecimal.valueOf(0.00))));
+
+        facade.updateBalance(result.get(), MONEY);
+
+        result = facade.getByName(NEW_NAME);
+        Assert.assertFalse(result.isEmpty());
+        Assert.assertTrue(result.get().getBalance().eq(MONEY));
+    }
 }

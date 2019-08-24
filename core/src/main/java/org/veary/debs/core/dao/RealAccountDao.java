@@ -68,8 +68,8 @@ public final class RealAccountDao implements AccountDao {
     /**
      * Constructor.
      *
-     * @param registry
-     * @param factory
+     * @param registry {@link Registry}
+     * @param factory {@link PersistenceManagerFactory}
      */
     @Inject
     public RealAccountDao(Registry registry, PersistenceManagerFactory factory) {
