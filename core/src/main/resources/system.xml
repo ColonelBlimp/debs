@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE system [
+<!ELEMENT system (method+)>
+<!ELEMENT method (#PCDATA)>
+<!ATTLIST method name CDATA "">
+]>
+<system>
+	<method name="createAccount"><![CDATA[
+INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES(?,?,?,?)
+	]]></method>
+	<method name="updateAccount"><![CDATA[
+UPDATE DEBS.ACCOUNT SET NAME=?,DESCRIPTION=?,PARENT_ID=?,ACCOUNT_TYPE=? WHERE ID=?
+	]]></method>
+	<method name="updateAccountBalance"><![CDATA[
+UPDATE DEBS.ACCOUNT SET BALANCE=? WHERE ID=?
+	]]></method>
+	<method name="deleteAccount"><![CDATA[
+UPDATE DEBS.ACCOUNT SET DELETED=TRUE WHERE ID=?
+	]]></method>
+	<method name="getAccountById"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE ID=?
+	]]></method>
+	<method name="getAccountByName"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE NAME=?
+	]]></method>
+	<method name="getAllAccountsIncludeDeleted"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT
+	]]></method>
+	<method name="getAllAccounts"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE DELETED=FALSE
+	]]></method>
+	<method name="getGroupAccountsIncludeDeleted"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE=8
+	]]></method>
+	<method name="getGroupAccounts"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE=8 AND DELETED=FALSE
+	]]></method>
+	<method name="getActualAccountsIncludeDeleted"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE!=8
+	]]></method>
+	<method name="getActualAccounts"><![CDATA[
+SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE!=8 AND DELETED=FALSE
+	]]></method>
+</system>

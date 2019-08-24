@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource name="jdbc/debs" 
+            auth="Container" 
+            type="javax.sql.DataSource" 
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:mem:;INIT=CREATE SCHEMA IF NOT EXISTS DEBS\;runscript from './database/SCHEMA.sql'"
+            factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory">
+  </Resource>
+</Context>

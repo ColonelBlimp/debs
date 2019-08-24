@@ -1,0 +1,62 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 ColonelBlimp
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package org.veary.debs.model;
+
+import java.time.LocalDateTime;
+
+/**
+ * <b>Purpose:</b> Defines the contract which are common to all persistent objects (entities).
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
+public interface PersistentObject {
+
+    /**
+     * The default value for unique identifier fields.
+     */
+    public static final Long DEFAULT_ID = Long.valueOf(0);
+
+    /**
+     * The persisted object's unique identifier.
+     *
+     * @return {@code Long}
+     */
+    Long getId();
+
+    /**
+     * Has this object been marked as <i>deleted</i>?
+     *
+     * @return {@code true} if marked as deleted, otherwise {@code false}
+     */
+    boolean isDeleted();
+
+    /**
+     * The persisted object's creation timestamp.
+     *
+     * @return {@link LocalDateTime}
+     */
+    LocalDateTime getCreationTimestamp();
+}
