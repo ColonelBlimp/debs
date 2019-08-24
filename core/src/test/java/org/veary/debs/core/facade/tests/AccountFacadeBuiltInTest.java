@@ -24,13 +24,28 @@
 
 package org.veary.debs.core.facade.tests;
 
+import java.util.Optional;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.veary.debs.model.Account;
 import org.veary.debs.tests.JndiTestBase;
 
 public class AccountFacadeBuiltInTest extends JndiTestBase {
 
-    @Test
-    public void deleteBuild_Balance() {
+    @Test(expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "The 'Balance' is a build-in account and cannot be modified!")
+    public void deleteBuildIn_Balance() {
+        Optional<Account> result = this.accountFacade.getByName("Balance");
+        Assert.assertFalse(result.isEmpty());
+        this.accountFacade.update(result.get(), "Balance", null, null, null);
+    }
 
+    @Test(expectedExceptions = { IllegalArgumentException.class },
+        expectedExceptionsMessageRegExp = "The 'Opening Balance' is a build-in account and cannot be modified!")
+    public void deleteBuildIn_OpeningBalance() {
+        Optional<Account> result = this.accountFacade.getByName("Opening Balance");
+        Assert.assertFalse(result.isEmpty());
+        this.accountFacade.update(result.get(), "Opening Balance", null, null, null);
     }
 }

@@ -35,11 +35,6 @@ import java.time.LocalDateTime;
 public interface PersistentObject {
 
     /**
-     * The default value for unique identifier fields.
-     */
-    public static final Long DEFAULT_ID = Long.valueOf(0);
-
-    /**
      * The persisted object's unique identifier.
      *
      * @return {@code Long}

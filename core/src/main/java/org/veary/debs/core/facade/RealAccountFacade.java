@@ -40,7 +40,6 @@ import org.veary.debs.dao.AccountDao;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
-import org.veary.debs.model.PersistentObject;
 import org.veary.persist.exceptions.NoResultException;
 
 /**
@@ -108,7 +107,8 @@ public final class RealAccountFacade implements AccountFacade {
 
         for (String builtIn : Validator.getEnumValuesAsStringArray(BuiltInAccounts.class)) {
             if (builtIn.equals(name)) {
-                throw new IllegalArgumentException("A built-in Account cannot be edited.");
+                throw new IllegalArgumentException(
+                    Messages.getString("RealAccountFacade.update.error.builtin", name));
             }
         }
 
@@ -189,7 +189,7 @@ public final class RealAccountFacade implements AccountFacade {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
 
-        if (object.getParentId().longValue() <= PersistentObject.DEFAULT_ID.longValue()) {
+        if (object.getParentId().longValue() <= AccountEntity.DEFAULT_ID.longValue()) {
             throw new IllegalStateException(
                 Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
         }

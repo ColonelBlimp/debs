@@ -36,7 +36,6 @@ import org.veary.debs.core.Money;
 import org.veary.debs.core.model.AccountEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
-import org.veary.debs.model.PersistentObject;
 
 /**
  *
@@ -72,7 +71,7 @@ public class AccountTest {
         Assert.assertEquals(object.getName(), REAL_NAME);
         Assert.assertEquals(object.getDescription(), REAL_DESC);
         Assert.assertEquals(object.getType(), Account.Types.ASSET);
-        Assert.assertEquals(object.getId(), PersistentObject.DEFAULT_ID);
+        Assert.assertEquals(object.getId(), AccountEntity.DEFAULT_ID);
         Assert.assertFalse(object.isDeleted());
         Assert.assertNotNull(object.getCreationTimestamp());
         Assert.assertTrue(object.getBalance().getValue().equals(DEFAULT_BALANCE.setScale(2)));
@@ -83,7 +82,7 @@ public class AccountTest {
         Assert.assertEquals(entity.getName(), REAL_NAME);
         Assert.assertEquals(entity.getDescription(), REAL_DESC);
         Assert.assertEquals(entity.getType(), Account.Types.ASSET);
-        Assert.assertEquals(entity.getId(), PersistentObject.DEFAULT_ID);
+        Assert.assertEquals(entity.getId(), AccountEntity.DEFAULT_ID);
         Assert.assertFalse(entity.isDeleted());
         Assert.assertEquals(entity.getCreationTimestamp(), object.getCreationTimestamp());
         Assert.assertTrue(LocalDateTime.class.isInstance(entity.getCreationTimestamp()));

@@ -28,82 +28,82 @@ import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.veary.debs.core.model.AccountEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
-import org.veary.debs.model.PersistentObject;
 import org.veary.debs.tests.JndiTestBase;
 
 /**
  * <b>Purpose:</b> ?
  *
- * <p>
- * <b>Responsibility:</b>
+ * <p> <b>Responsibility:</b>
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public class AccountDaoListTest extends JndiTestBase {
 
-	@Test
-	public void getAllAccountsMethod() {
-		final List<Account> list = this.accountDao.getAllAccounts(false);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 8);
-	}
+    @Test
+    public void getAllAccountsMethod() {
+        final List<Account> list = this.accountDao.getAllAccounts(false);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 8);
+    }
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod" })
-	public void getAllAccountsIncludeDeleteMethod() {
-		final List<Account> list = this.accountDao.getAllAccounts(true);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 8);
-	}
+    @Test(dependsOnMethods = { "getAllAccountsMethod" })
+    public void getAllAccountsIncludeDeleteMethod() {
+        final List<Account> list = this.accountDao.getAllAccounts(true);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 8);
+    }
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod" })
-	public void getActualAcccountsMethod() {
-		final List<Account> list = this.accountDao.getActualAccounts(false);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
-	}
+    @Test(dependsOnMethods = { "getAllAccountsMethod" })
+    public void getActualAcccountsMethod() {
+        final List<Account> list = this.accountDao.getActualAccounts(false);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 1);
+    }
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod" })
-	public void getActualAccountsIncludeDeletedMethod() {
-		final List<Account> list = this.accountDao.getActualAccounts(true);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 1);
-	}
+    @Test(dependsOnMethods = { "getAllAccountsMethod" })
+    public void getActualAccountsIncludeDeletedMethod() {
+        final List<Account> list = this.accountDao.getActualAccounts(true);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 1);
+    }
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod" })
-	public void getGroupAccountsMethod() {
-		final List<Account> list = this.accountDao.getGroupAccounts(false);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 7);
-	}
+    @Test(dependsOnMethods = { "getAllAccountsMethod" })
+    public void getGroupAccountsMethod() {
+        final List<Account> list = this.accountDao.getGroupAccounts(false);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 7);
+    }
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod" })
-	public void getGroupAccountsIncludeDeletedMethod() {
-		final List<Account> list = this.accountDao.getGroupAccounts(true);
-		Assert.assertNotNull(list);
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertTrue(list.size() == 7);
-	}
+    @Test(dependsOnMethods = { "getAllAccountsMethod" })
+    public void getGroupAccountsIncludeDeletedMethod() {
+        final List<Account> list = this.accountDao.getGroupAccounts(true);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        Assert.assertTrue(list.size() == 7);
+    }
 
-	private static final String DESC = "In-build";
+    private static final String DESC = "In-build";
 
-	@Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
-	public void listResults() {
-		Account object = Account.newInstance("BALANCE", DESC, PersistentObject.DEFAULT_ID, Types.GROUP);
-		Long balanceId = this.accountDao.createAccount(object);
-		object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);
-		Long netWorthId = this.accountDao.createAccount(object);
+    @Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
+    public void listResults() {
+        Account object = Account.newInstance("BALANCE", DESC, AccountEntity.DEFAULT_ID,
+            Types.GROUP);
+        Long balanceId = this.accountDao.createAccount(object);
+        object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);
+        Long netWorthId = this.accountDao.createAccount(object);
 
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 9);
-		object = this.accountDao.getAccountById(netWorthId);
-		this.accountDao.deleteAccount(object);
-		Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 8);
-	}
+        Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 9);
+        object = this.accountDao.getAccountById(netWorthId);
+        this.accountDao.deleteAccount(object);
+        Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 8);
+    }
 }
