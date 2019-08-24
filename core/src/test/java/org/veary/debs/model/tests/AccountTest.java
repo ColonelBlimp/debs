@@ -49,6 +49,7 @@ import org.veary.debs.model.Account.Types;
  */
 public class AccountTest {
 
+    private static final Long DEFAULT_ID = Long.valueOf(0);
     private static final Long REAL_ID = Long.valueOf(2);
     private static final Timestamp REAL_CREATION = new Timestamp(System.currentTimeMillis());
     private static final BigDecimal REAL_AMOUNT = BigDecimal.valueOf(100000);
@@ -71,7 +72,7 @@ public class AccountTest {
         Assert.assertEquals(object.getName(), REAL_NAME);
         Assert.assertEquals(object.getDescription(), REAL_DESC);
         Assert.assertEquals(object.getType(), Account.Types.ASSET);
-        Assert.assertEquals(object.getId(), AccountEntity.DEFAULT_ID);
+        Assert.assertEquals(object.getId(), DEFAULT_ID);
         Assert.assertFalse(object.isDeleted());
         Assert.assertNotNull(object.getCreationTimestamp());
         Assert.assertTrue(object.getBalance().getValue().equals(DEFAULT_BALANCE.setScale(2)));
@@ -82,7 +83,7 @@ public class AccountTest {
         Assert.assertEquals(entity.getName(), REAL_NAME);
         Assert.assertEquals(entity.getDescription(), REAL_DESC);
         Assert.assertEquals(entity.getType(), Account.Types.ASSET);
-        Assert.assertEquals(entity.getId(), AccountEntity.DEFAULT_ID);
+        Assert.assertEquals(entity.getId(), DEFAULT_ID);
         Assert.assertFalse(entity.isDeleted());
         Assert.assertEquals(entity.getCreationTimestamp(), object.getCreationTimestamp());
         Assert.assertTrue(LocalDateTime.class.isInstance(entity.getCreationTimestamp()));

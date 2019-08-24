@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.veary.debs.core.model.AccountEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
 import org.veary.debs.tests.JndiTestBase;
@@ -42,6 +41,8 @@ import org.veary.debs.tests.JndiTestBase;
  * @since 1.0
  */
 public class AccountDaoListTest extends JndiTestBase {
+
+    private static final Long DEFAULT_ID = Long.valueOf(0);
 
     @Test
     public void getAllAccountsMethod() {
@@ -95,7 +96,7 @@ public class AccountDaoListTest extends JndiTestBase {
 
     @Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
     public void listResults() {
-        Account object = Account.newInstance("BALANCE", DESC, AccountEntity.DEFAULT_ID,
+        Account object = Account.newInstance("BALANCE", DESC, DEFAULT_ID,
             Types.GROUP);
         Long balanceId = this.accountDao.createAccount(object);
         object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);

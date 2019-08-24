@@ -57,6 +57,7 @@ public final class RealAccountFacade implements AccountFacade {
 
     private static final Logger LOG = LogManager.getLogger(RealAccountFacade.class);
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+    private static final Long DEFAULT_ID = Long.valueOf(0);
 
     private final AccountDao dao;
 
@@ -189,7 +190,7 @@ public final class RealAccountFacade implements AccountFacade {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
 
-        if (object.getParentId().longValue() <= AccountEntity.DEFAULT_ID.longValue()) {
+        if (object.getParentId().longValue() <= DEFAULT_ID.longValue()) {
             throw new IllegalStateException(
                 Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
         }
