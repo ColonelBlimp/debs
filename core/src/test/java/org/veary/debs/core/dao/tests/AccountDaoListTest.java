@@ -92,14 +92,14 @@ public class AccountDaoListTest extends JndiTestBase {
         Assert.assertTrue(list.size() == 7);
     }
 
-    private static final String DESC = "In-build";
+    private static final String DESC = "In-build"; //$NON-NLS-1$
 
     @Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
     public void listResults() {
-        Account object = Account.newInstance("BALANCE", DESC, DEFAULT_ID,
+        Account object = Account.newInstance("BALANCE", DESC, DEFAULT_ID, //$NON-NLS-1$
             Types.GROUP);
         Long balanceId = this.accountDao.createAccount(object);
-        object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP);
+        object = Account.newInstance("NET WORTH", DESC, balanceId, Types.GROUP); //$NON-NLS-1$
         Long netWorthId = this.accountDao.createAccount(object);
 
         Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 9);

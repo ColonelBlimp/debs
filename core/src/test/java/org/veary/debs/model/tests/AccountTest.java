@@ -56,12 +56,12 @@ public class AccountTest {
     private static final Long REAL_PARENT_ID = Long.valueOf(1);
 
     private static final Long UPDATED_ID = Long.valueOf(20);
-    private static final String UPDATED_NAME = "Cash Book";
-    private static final String UPDATED_DESCRIPTION = "Updated Description";
+    private static final String UPDATED_NAME = "Cash Book"; //$NON-NLS-1$
+    private static final String UPDATED_DESCRIPTION = "Updated Description"; //$NON-NLS-1$
     private static final Long UPDATED_PARENT_ID = Long.valueOf(7);
 
-    private static final String REAL_NAME = "Cash";
-    private static final String REAL_DESC = "Description";
+    private static final String REAL_NAME = "Cash"; //$NON-NLS-1$
+    private static final String REAL_DESC = "Description"; //$NON-NLS-1$
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.ZERO;
 
     @Test

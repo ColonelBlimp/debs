@@ -39,6 +39,6 @@ public class MessagesTest {
 
     @Test
     public void unknownKey() {
-        Messages.getString("unknown.key", "test");
+        Messages.getString("unknown.key", "test"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

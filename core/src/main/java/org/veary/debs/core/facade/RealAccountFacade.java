@@ -65,14 +65,14 @@ public final class RealAccountFacade implements AccountFacade {
 
     private enum BuiltInAccounts {
 
-        BALANCE("Balance"),
-        NET_WORTH("Net Worth"),
-        ASSETS("Assets"),
-        LIABILITIES("Liabilities"),
-        INCOME_AND_LIABILITIES("Income & Liabilities"),
-        INCOME("Income"),
-        EXPENSES("Expenses"),
-        OPENING_BALANCE("Opening Balance");
+        BALANCE("Balance"), //$NON-NLS-1$
+        NET_WORTH("Net Worth"), //$NON-NLS-1$
+        ASSETS("Assets"), //$NON-NLS-1$
+        LIABILITIES("Liabilities"), //$NON-NLS-1$
+        INCOME_AND_LIABILITIES("Income & Liabilities"), //$NON-NLS-1$
+        INCOME("Income"), //$NON-NLS-1$
+        EXPENSES("Expenses"), //$NON-NLS-1$
+        OPENING_BALANCE("Opening Balance"); //$NON-NLS-1$
 
         private final String name;
 
@@ -111,7 +111,7 @@ public final class RealAccountFacade implements AccountFacade {
         for (String builtIn : Validator.getEnumValuesAsStringArray(BuiltInAccounts.class)) {
             if (builtIn.equals(name)) {
                 throw new IllegalArgumentException(
-                    Messages.getString("RealAccountFacade.update.error.builtin", name));
+                    Messages.getString("RealAccountFacade.update.error.builtin", name)); //$NON-NLS-1$
             }
         }
 
@@ -236,10 +236,7 @@ public final class RealAccountFacade implements AccountFacade {
 
             Optional<TreeNode<Account>> result = balance.findNode(
                 elementData -> {
-                    if (elementData.getId().equals(account.getParentId())) {
-                        return true;
-                    }
-                    return false;
+                    return elementData.getId().equals(account.getParentId());
                 });
 
             if (result.isPresent()) {
@@ -247,18 +244,6 @@ public final class RealAccountFacade implements AccountFacade {
             } else {
                 throw new AssertionError(Messages.getString(
                     "RealAccountFacade.chart.assert.unknownparent", account.getName())); //$NON-NLS-1$
-            }
-        }
-
-        if (LOG.isTraceEnabled()) {
-            for (TreeNode<Account> node : balance) {
-                int level = node.getLevel();
-                if (level > 0) {
-                    LOG.trace("{}{}", String.format("%" + node.getLevel() + "s", " "), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                        node.getData().getName());
-                } else {
-                    LOG.trace("{}", node.getData().getName());
-                }
             }
         }
 

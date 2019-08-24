@@ -52,8 +52,8 @@ public class ValidatorTest {
         dataMap.put(Account.Fields.CREATED.toString(), LocalDateTime.now());
         dataMap.put(Account.Fields.BALANCE.toString(), new Money(BigDecimal.valueOf(100000L)));
         dataMap.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
-        dataMap.put(Account.Fields.NAME.toString(), "Test");
-        dataMap.put(Account.Fields.DESCRIPTION.toString(), "Desc");
+        dataMap.put(Account.Fields.NAME.toString(), "Test"); //$NON-NLS-1$
+        dataMap.put(Account.Fields.DESCRIPTION.toString(), "Desc"); //$NON-NLS-1$
         dataMap.put(Account.Fields.PARENT_ID.toString(), Long.valueOf(1));
         Account.newInstance(dataMap);
     }
@@ -67,10 +67,10 @@ public class ValidatorTest {
         dataMap.put(Account.Fields.CREATED.toString(), LocalDateTime.now());
         dataMap.put(Account.Fields.BALANCE.toString(), new Money(BigDecimal.valueOf(100000L)));
         dataMap.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
-        dataMap.put(Account.Fields.NAME.toString(), "Test");
-        dataMap.put(Account.Fields.DESCRIPTION.toString(), "Desc");
+        dataMap.put(Account.Fields.NAME.toString(), "Test"); //$NON-NLS-1$
+        dataMap.put(Account.Fields.DESCRIPTION.toString(), "Desc"); //$NON-NLS-1$
         dataMap.put(Account.Fields.PARENT_ID.toString(), Long.valueOf(1));
-        dataMap.put("Bad Key", Account.Types.ASSET);
+        dataMap.put("Bad Key", Account.Types.ASSET); //$NON-NLS-1$
         Account.newInstance(dataMap);
     }
 
@@ -83,7 +83,7 @@ public class ValidatorTest {
         dataMap.put(Account.Fields.CREATED.toString(), LocalDateTime.now());
         dataMap.put(Account.Fields.BALANCE.toString(), new Money(BigDecimal.valueOf(100000L)));
         dataMap.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
-        dataMap.put(Account.Fields.NAME.toString(), "Test");
+        dataMap.put(Account.Fields.NAME.toString(), "Test"); //$NON-NLS-1$
         dataMap.put(Account.Fields.DESCRIPTION.toString(), null);
         dataMap.put(Account.Fields.PARENT_ID.toString(), Long.valueOf(1));
         dataMap.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET);

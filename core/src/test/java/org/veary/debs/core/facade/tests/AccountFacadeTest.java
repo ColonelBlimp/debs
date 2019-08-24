@@ -46,8 +46,8 @@ import org.veary.debs.tests.JndiTestBase;
  */
 public class AccountFacadeTest extends JndiTestBase {
 
-    private static final String NAME = "Fuel";
-    private static final String DESC = "Desc";
+    private static final String NAME = "Fuel"; //$NON-NLS-1$
+    private static final String DESC = "Desc"; //$NON-NLS-1$
     private static final Long PARENT_ID = Long.valueOf(2);
 
     @Test
@@ -88,12 +88,12 @@ public class AccountFacadeTest extends JndiTestBase {
     public void getByNameMethod() {
         AccountFacade facade = new RealAccountFacade(this.accountDao);
         Assert.assertNotNull(facade);
-        Optional<Account> result = facade.getByName("Unknown Name");
+        Optional<Account> result = facade.getByName("Unknown Name"); //$NON-NLS-1$
         Assert.assertTrue(result.isEmpty());
     }
 
-    private static final String NEW_NAME = "Car Fuel";
-    private static final String NEW_DESC = "Fuel for a car";
+    private static final String NEW_NAME = "Car Fuel"; //$NON-NLS-1$
+    private static final String NEW_DESC = "Fuel for a car"; //$NON-NLS-1$
     private static final Long NEW_PARENT_ID = Long.valueOf(8);
 
     @Test(dependsOnMethods = { "createMethod" })

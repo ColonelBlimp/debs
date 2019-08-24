@@ -17,13 +17,13 @@ public final class AccountFacadeListTest extends JndiTestBase {
     @Test
     public void getAllAccountsMethod() {
         this.groupA = this.accountFacade
-            .create(Account.newInstance("Group A", "Group A Desc", Long.valueOf(1),
+            .create(Account.newInstance("Group A", "Group A Desc", Long.valueOf(1), //$NON-NLS-1$ //$NON-NLS-2$
                 Account.Types.GROUP));
         this.groupAA = this.accountFacade
-            .create(Account.newInstance("Group A-A", "Group A-A Desc", this.groupA,
+            .create(Account.newInstance("Group A-A", "Group A-A Desc", this.groupA, //$NON-NLS-1$ //$NON-NLS-2$
                 Account.Types.GROUP));
         this.accountFacade.create(
-            Account.newInstance("Group A-B", "Group A-B Desc", this.groupA, Account.Types.GROUP));
+            Account.newInstance("Group A-B", "Group A-B Desc", this.groupA, Account.Types.GROUP)); //$NON-NLS-1$ //$NON-NLS-2$
 
         List<Account> list = this.accountFacade.getAllAccounts(false);
         Assert.assertFalse(list.isEmpty());
@@ -36,7 +36,7 @@ public final class AccountFacadeListTest extends JndiTestBase {
         Assert.assertFalse(list.isEmpty());
         Assert.assertTrue(list.size() == 11);
 
-        Optional<Account> result = this.accountFacade.getByName("Group A-B");
+        Optional<Account> result = this.accountFacade.getByName("Group A-B"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
         this.accountFacade.delete(result.get());
 
@@ -53,7 +53,7 @@ public final class AccountFacadeListTest extends JndiTestBase {
     public void getActualAccountsMethod() {
         Long id = this.accountFacade
             .create(
-                Account.newInstance("Cash", "Cash Account", this.groupAA, Account.Types.ASSET));
+                Account.newInstance("Cash", "Cash Account", this.groupAA, Account.Types.ASSET)); //$NON-NLS-1$ //$NON-NLS-2$
         List<Account> list = this.accountFacade.getAllAccounts(false);
         Assert.assertFalse(list.isEmpty());
         Assert.assertTrue(list.size() == 11);
@@ -93,5 +93,15 @@ public final class AccountFacadeListTest extends JndiTestBase {
     public void getChartOfAccountsMethod() {
         TreeNode<Account> chart = this.accountFacade.getChartOfAccounts();
         Assert.assertNotNull(chart);
+
+        for (TreeNode<Account> node : chart) {
+            int level = node.getLevel();
+            if (level > 0) {
+                System.out.println(
+                    String.format("%" + node.getLevel() + "s", " ") + node.getData().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            } else {
+                System.out.println(node.getData().getName());
+            }
+        }
     }
 }

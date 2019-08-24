@@ -68,7 +68,7 @@ abstract class PersistentObjectImpl implements PersistentObject {
     }
 
     public void setId(Long id) {
-        this.id = Objects.requireNonNull(id, Messages.getParameterIsNull("id"));
+        this.id = Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
     }
 
     public void setDeleted(boolean isDeleted) {
@@ -76,6 +76,6 @@ abstract class PersistentObjectImpl implements PersistentObject {
     }
 
     public void setCreationTimestamp(LocalDateTime created) {
-        this.created = Objects.requireNonNull(created, Messages.getParameterIsNull("created"));
+        this.created = Objects.requireNonNull(created, Messages.getParameterIsNull("created")); //$NON-NLS-1$
     }
 }

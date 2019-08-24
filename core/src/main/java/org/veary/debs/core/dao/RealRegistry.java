@@ -78,20 +78,20 @@ public final class RealRegistry implements Registry {
     public RealRegistry() {
         LOG.trace(LOG_CALLED);
         this.systemRegistry = new HashMap<>();
-        init("system.xml");
+        init("system.xml"); //$NON-NLS-1$
     }
 
     /**
      * Constructor.
      *
-     * @param filename the name of the file containing the SQL statements which is located on the
-     *     classpath
+     * @param filename the name of the file containing the SQL statements which is located on
+     *     the classpath
      */
     public RealRegistry(String... filename) {
         LOG.trace(LOG_CALLED);
         this.systemRegistry = new HashMap<>();
 
-        String xmlFile = "system.xml";
+        String xmlFile = "system.xml"; //$NON-NLS-1$
         if (filename.length > 0) {
             xmlFile = filename[0];
         }
@@ -103,7 +103,7 @@ public final class RealRegistry implements Registry {
         LOG.trace(LOG_CALLED);
         if (!this.systemRegistry.containsKey(Objects.requireNonNull(key))) {
             throw new IllegalArgumentException(
-                Messages.getString("RealRegistry.getSql.missingkey", key));
+                Messages.getString("RealRegistry.getSql.missingkey", key)); //$NON-NLS-1$
         }
         return Objects.requireNonNull(this.systemRegistry.get(key));
     }

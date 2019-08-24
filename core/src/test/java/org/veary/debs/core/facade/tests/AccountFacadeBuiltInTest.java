@@ -36,16 +36,16 @@ public class AccountFacadeBuiltInTest extends JndiTestBase {
     @Test(expectedExceptions = { IllegalArgumentException.class },
         expectedExceptionsMessageRegExp = "The 'Balance' is a build-in account and cannot be modified!")
     public void deleteBuildIn_Balance() {
-        Optional<Account> result = this.accountFacade.getByName("Balance");
+        Optional<Account> result = this.accountFacade.getByName("Balance"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.update(result.get(), "Balance", null, null, null);
+        this.accountFacade.update(result.get(), "Balance", null, null, null); //$NON-NLS-1$
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class },
         expectedExceptionsMessageRegExp = "The 'Opening Balance' is a build-in account and cannot be modified!")
     public void deleteBuildIn_OpeningBalance() {
-        Optional<Account> result = this.accountFacade.getByName("Opening Balance");
+        Optional<Account> result = this.accountFacade.getByName("Opening Balance"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.update(result.get(), "Opening Balance", null, null, null);
+        this.accountFacade.update(result.get(), "Opening Balance", null, null, null); //$NON-NLS-1$
     }
 }

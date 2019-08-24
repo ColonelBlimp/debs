@@ -24,6 +24,9 @@
 
 package org.veary.debs.tests;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.jndi.JndiIntegration;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -36,18 +39,16 @@ import org.veary.debs.dao.Registry;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.persist.PersistenceManagerFactory;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.jndi.JndiIntegration;
-
 public class GuicePersistTestModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(Context.class).to(InitialContext.class);
-		bind(DataSource.class).toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs"));
-		bind(PersistenceManagerFactory.class);
-		bind(Registry.class).to(RealRegistry.class);
-		bind(AccountDao.class).to(RealAccountDao.class);
-		bind(AccountFacade.class).to(RealAccountFacade.class);
-	}
+    @Override
+    protected void configure() {
+        bind(Context.class).to(InitialContext.class);
+        bind(DataSource.class)
+            .toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs")); //$NON-NLS-1$
+        bind(PersistenceManagerFactory.class);
+        bind(Registry.class).to(RealRegistry.class);
+        bind(AccountDao.class).to(RealAccountDao.class);
+        bind(AccountFacade.class).to(RealAccountFacade.class);
+    }
 }

@@ -35,7 +35,7 @@ public class RegistryTest {
 
     @Test(expectedExceptions = DebsException.class)
     public void instantationUnknownException() {
-        new RealRegistry("unknown.xml");
+        new RealRegistry("unknown.xml"); //$NON-NLS-1$
     }
 
     @Test
@@ -51,9 +51,9 @@ public class RegistryTest {
 
     @Test(dependsOnMethods = { "instantiationWithoutFilename" })
     public void getSqlMethod() {
-        String sql = this.registry.getSql("createAccount");
+        String sql = this.registry.getSql("createAccount"); //$NON-NLS-1$
         Assert.assertEquals(sql,
-            "INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES(?,?,?,?)");
+            "INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES(?,?,?,?)"); //$NON-NLS-1$
     }
 
     @Test(
@@ -61,6 +61,6 @@ public class RegistryTest {
         expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "Unknown key: badkey")
     public void missingKeyException() {
-        this.registry.getSql("badkey");
+        this.registry.getSql("badkey"); //$NON-NLS-1$
     }
 }

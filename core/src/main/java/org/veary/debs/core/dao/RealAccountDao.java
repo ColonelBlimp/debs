@@ -128,7 +128,7 @@ public final class RealAccountDao implements AccountDao {
         Objects.requireNonNull(newBalance, Messages.getParameterIsNull("newBalance")); //$NON-NLS-1$
 
         final SqlStatement update = SqlStatement
-            .newInstance(this.registry.getSql("updateAccountBalance"));
+            .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
         update.setParameter(1, newBalance.getValue());
         update.setParameter(2, object.getId());
 
@@ -181,9 +181,9 @@ public final class RealAccountDao implements AccountDao {
     public List<Account> getAllAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
-        String key = "getAllAccounts";
+        String key = "getAllAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
-            key = "getAllAccountsIncludeDeleted";
+            key = "getAllAccountsIncludeDeleted"; //$NON-NLS-1$
         }
 
         return getAccountsList(key);
@@ -193,9 +193,9 @@ public final class RealAccountDao implements AccountDao {
     public List<Account> getGroupAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
-        String key = "getGroupAccounts";
+        String key = "getGroupAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
-            key = "getGroupAccountsIncludeDeleted";
+            key = "getGroupAccountsIncludeDeleted"; //$NON-NLS-1$
         }
 
         return getAccountsList(key);
@@ -205,9 +205,9 @@ public final class RealAccountDao implements AccountDao {
     public List<Account> getActualAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
-        String key = "getActualAccounts";
+        String key = "getActualAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
-            key = "getActualAccountsIncludeDeleted";
+            key = "getActualAccountsIncludeDeleted"; //$NON-NLS-1$
         }
 
         return getAccountsList(key);
