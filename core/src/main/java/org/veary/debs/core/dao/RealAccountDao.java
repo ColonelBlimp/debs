@@ -48,11 +48,9 @@ import org.veary.persist.exceptions.NoResultException;
 /**
  * <b>Purpose:</b> Concrete implementation of the {@code AccountDao} interface.
  *
- * <p>
- * <b>Responsibility:</b> Handling all CRUD actions for {@link Account} object.
+ * <p> <b>Responsibility:</b> Handling all CRUD actions for {@link Account} object.
  *
- * <p>
- * <b>Note:</b> Annotated for JSR330.
+ * <p> <b>Note:</b> Annotated for JSR330.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -60,179 +58,189 @@ import org.veary.persist.exceptions.NoResultException;
 @Singleton
 public final class RealAccountDao implements AccountDao {
 
-	private static final Logger LOG = LogManager.getLogger(RealAccountDao.class);
-	private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+    private static final Logger LOG = LogManager.getLogger(RealAccountDao.class);
+    private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+    private static final String PARAM_OBJECT = "object"; //$NON-NLS-1$
 
-	private final Registry registry;
-	private final PersistenceManagerFactory factory;
+    private final Registry registry;
+    private final PersistenceManagerFactory factory;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param registry
-	 * @param factory
-	 */
-	@Inject
-	public RealAccountDao(Registry registry, PersistenceManagerFactory factory) {
-		LOG.trace(LOG_CALLED);
-		this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
-		this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
-	}
+    /**
+     * Constructor.
+     *
+     * @param registry
+     * @param factory
+     */
+    @Inject
+    public RealAccountDao(Registry registry, PersistenceManagerFactory factory) {
+        LOG.trace(LOG_CALLED);
+        this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
+    }
 
-	@Override
-	public Long createAccount(Account object) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public Long createAccount(Account object) {
+        LOG.trace(LOG_CALLED);
 
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+        Objects.requireNonNull(object, Messages.getParameterIsNull(PARAM_OBJECT));
 
-		final SqlStatement insert = SqlStatement.newInstance(this.registry.getSql("createAccount")); //$NON-NLS-1$
-		insert.setParameter(1, object.getName());
-		insert.setParameter(2, object.getDescription());
-		insert.setParameter(3, object.getParentId());
-		insert.setParameter(4, object.getType().getId());
+        final SqlStatement insert = SqlStatement
+            .newInstance(this.registry.getSql("createAccount")); //$NON-NLS-1$
+        insert.setParameter(1, object.getName());
+        insert.setParameter(2, object.getDescription());
+        insert.setParameter(3, object.getParentId());
+        insert.setParameter(4, object.getType().getId());
 
-		final TransactionManager manager = this.factory.createTransactionManager();
-		manager.begin();
-		final Long newId = manager.persist(insert);
-		manager.commit();
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+        final Long newId = manager.persist(insert);
+        manager.commit();
 
-		return newId;
-	}
+        return newId;
+    }
 
-	@Override
-	public void updateAccount(Account original, Account updated) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public void updateAccount(Account original, Account updated) {
+        LOG.trace(LOG_CALLED);
 
-		Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
-		Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
+        Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
+        Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
 
-		final SqlStatement update = SqlStatement.newInstance(this.registry.getSql("updateAccount")); //$NON-NLS-1$
-		update.setParameter(1, updated.getName());
-		update.setParameter(2, updated.getDescription());
-		update.setParameter(3, updated.getParentId());
-		update.setParameter(4, updated.getType().getId());
-		update.setParameter(5, original.getId());
+        final SqlStatement update = SqlStatement
+            .newInstance(this.registry.getSql("updateAccount")); //$NON-NLS-1$
+        update.setParameter(1, updated.getName());
+        update.setParameter(2, updated.getDescription());
+        update.setParameter(3, updated.getParentId());
+        update.setParameter(4, updated.getType().getId());
+        update.setParameter(5, original.getId());
 
-		final TransactionManager manager = this.factory.createTransactionManager();
-		manager.begin();
-		manager.persist(update);
-		manager.commit();
-	}
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+        manager.persist(update);
+        manager.commit();
+    }
 
-	@Override
-	public void updateAccountBalance(Account object, Money newBalance) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public void updateAccountBalance(Account object, Money newBalance) {
+        LOG.trace(LOG_CALLED);
 
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-		Objects.requireNonNull(newBalance, Messages.getParameterIsNull("newBalance")); //$NON-NLS-1$
+        Objects.requireNonNull(object, Messages.getParameterIsNull(PARAM_OBJECT));
+        Objects.requireNonNull(newBalance, Messages.getParameterIsNull("newBalance")); //$NON-NLS-1$
 
-		final SqlStatement update = SqlStatement.newInstance(this.registry.getSql("updateAccountBalance"));
-		update.setParameter(1, newBalance.getValue());
-		update.setParameter(2, object.getId());
+        final SqlStatement update = SqlStatement
+            .newInstance(this.registry.getSql("updateAccountBalance"));
+        update.setParameter(1, newBalance.getValue());
+        update.setParameter(2, object.getId());
 
-		final TransactionManager manager = this.factory.createTransactionManager();
-		manager.begin();
-		manager.persist(update);
-		manager.commit();
-	}
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+        manager.persist(update);
+        manager.commit();
+    }
 
-	@Override
-	public void deleteAccount(Account object) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public void deleteAccount(Account object) {
+        LOG.trace(LOG_CALLED);
 
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-		final SqlStatement update = SqlStatement.newInstance(this.registry.getSql("deleteAccount")); //$NON-NLS-1$
-		update.setParameter(1, object.getId());
+        Objects.requireNonNull(object, Messages.getParameterIsNull(PARAM_OBJECT));
+        final SqlStatement update = SqlStatement
+            .newInstance(this.registry.getSql("deleteAccount")); //$NON-NLS-1$
+        update.setParameter(1, object.getId());
 
-		final TransactionManager manager = this.factory.createTransactionManager();
-		manager.begin();
-		manager.persist(update);
-		manager.commit();
-	}
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+        manager.persist(update);
+        manager.commit();
+    }
 
-	@Override
-	public Account getAccountById(Long id) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public Account getAccountById(Long id) {
+        LOG.trace(LOG_CALLED);
 
-		Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
 
-		final SqlStatement select = SqlStatement.newInstance(this.registry.getSql("getAccountById")); //$NON-NLS-1$
-		select.setParameter(1, id);
+        final SqlStatement select = SqlStatement
+            .newInstance(this.registry.getSql("getAccountById")); //$NON-NLS-1$
+        select.setParameter(1, id);
 
-		return executeAndReturnSingleResult(select);
-	}
+        return executeAndReturnSingleResult(select);
+    }
 
-	@Override
-	public Account getAccountByName(String name) {
-		Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
+    @Override
+    public Account getAccountByName(String name) {
+        Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
 
-		final SqlStatement select = SqlStatement.newInstance(this.registry.getSql("getAccountByName")); //$NON-NLS-1$
-		select.setParameter(1, name);
+        final SqlStatement select = SqlStatement
+            .newInstance(this.registry.getSql("getAccountByName")); //$NON-NLS-1$
+        select.setParameter(1, name);
 
-		return executeAndReturnSingleResult(select);
-	}
+        return executeAndReturnSingleResult(select);
+    }
 
-	@Override
-	public List<Account> getAllAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public List<Account> getAllAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
 
-		String key = "getAllAccounts";
-		if (includeDeleted) {
-			key = "getAllAccountsIncludeDeleted";
-		}
+        String key = "getAllAccounts";
+        if (includeDeleted) {
+            key = "getAllAccountsIncludeDeleted";
+        }
 
-		return getAccountsList(key);
-	}
+        return getAccountsList(key);
+    }
 
-	@Override
-	public List<Account> getGroupAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public List<Account> getGroupAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
 
-		String key = "getGroupAccounts";
-		if (includeDeleted) {
-			key = "getGroupAccountsIncludeDeleted";
-		}
+        String key = "getGroupAccounts";
+        if (includeDeleted) {
+            key = "getGroupAccountsIncludeDeleted";
+        }
 
-		return getAccountsList(key);
-	}
+        return getAccountsList(key);
+    }
 
-	@Override
-	public List<Account> getActualAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
+    @Override
+    public List<Account> getActualAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
 
-		String key = "getActualAccounts";
-		if (includeDeleted) {
-			key = "getActualAccountsIncludeDeleted";
-		}
+        String key = "getActualAccounts";
+        if (includeDeleted) {
+            key = "getActualAccountsIncludeDeleted";
+        }
 
-		return getAccountsList(key);
-	}
+        return getAccountsList(key);
+    }
 
-	private Account executeAndReturnSingleResult(SqlStatement statement) {
-		LOG.trace(LOG_CALLED);
-		final QueryManager manager = this.factory.createQueryManager();
-		return (Account) manager.createQuery(statement, Account.class).execute().getSingleResult();
-	}
+    private Account executeAndReturnSingleResult(SqlStatement statement) {
+        LOG.trace(LOG_CALLED);
+        final QueryManager manager = this.factory.createQueryManager();
+        return (Account) manager.createQuery(statement, Account.class).execute()
+            .getSingleResult();
+    }
 
-	private List<Account> executeAndReturnListResult(SqlStatement statement) {
-		LOG.trace(LOG_CALLED);
-		final QueryManager manager = this.factory.createQueryManager();
-		final List<Object> results = manager.createQuery(statement, Account.class).execute().getResultList();
+    private List<Account> executeAndReturnListResult(SqlStatement statement) {
+        LOG.trace(LOG_CALLED);
+        final QueryManager manager = this.factory.createQueryManager();
+        final List<Object> results = manager.createQuery(statement, Account.class).execute()
+            .getResultList();
 
-		final List<Account> list = new ArrayList<>(results.size());
+        final List<Account> list = new ArrayList<>(results.size());
 
-		for (Object object : results) {
-			list.add((Account) object);
-		}
+        for (Object object : results) {
+            list.add((Account) object);
+        }
 
-		return Collections.unmodifiableList(list);
-	}
+        return Collections.unmodifiableList(list);
+    }
 
-	private List<Account> getAccountsList(String key) {
-		try {
-			return executeAndReturnListResult(SqlStatement.newInstance(this.registry.getSql(key)));
-		} catch (NoResultException e) {
-			return Collections.emptyList();
-		}
-	}
+    private List<Account> getAccountsList(String key) {
+        try {
+            return executeAndReturnListResult(
+                SqlStatement.newInstance(this.registry.getSql(key)));
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
 }

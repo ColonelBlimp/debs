@@ -78,12 +78,24 @@ public final class RealRegistry implements Registry {
     public RealRegistry() {
         LOG.trace(LOG_CALLED);
         this.systemRegistry = new HashMap<>();
+        init("system.xml");
+    }
 
-        readXmlFile("system.xml", "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
-                parseMethodNode(this.systemRegistry, method);
-            }
-        });
+    /**
+     * Constructor.
+     *
+     * @param filename the name of the file containing the SQL statements which is located on the
+     *     classpath
+     */
+    public RealRegistry(String... filename) {
+        LOG.trace(LOG_CALLED);
+        this.systemRegistry = new HashMap<>();
+
+        String xmlFile = "system.xml";
+        if (filename.length > 0) {
+            xmlFile = filename[0];
+        }
+        init(xmlFile);
     }
 
     @Override
@@ -94,6 +106,15 @@ public final class RealRegistry implements Registry {
                 Messages.getString("RealRegistry.getSql.missingkey", key));
         }
         return Objects.requireNonNull(this.systemRegistry.get(key));
+    }
+
+    private void init(String fileName) {
+        LOG.trace(LOG_CALLED);
+        readXmlFile(fileName, "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$
+            for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
+                parseMethodNode(this.systemRegistry, method);
+            }
+        });
     }
 
     private void readXmlFile(String fileName, String element, String nodeSelector,

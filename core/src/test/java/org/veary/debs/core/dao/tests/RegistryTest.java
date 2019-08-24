@@ -25,27 +25,33 @@
 package org.veary.debs.core.dao.tests;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import org.veary.debs.core.dao.RealRegistry;
+import org.veary.debs.exceptions.DebsException;
 
 public class RegistryTest {
 
     private RealRegistry registry;
 
-    @BeforeSuite
-    public void setUp() {
-        this.registry = new RealRegistry();
+    @Test(expectedExceptions = DebsException.class)
+    public void instantationException() {
+        new RealRegistry("unknown.xml");
     }
 
     @Test
-    public void instantiation() {
+    public void instantiationWithoutFilename() {
+        this.registry = new RealRegistry();
+    }
+
+    @Test(dependsOnMethods = { "instantiationWithoutFilename" })
+    public void getSqlMethod() {
         String sql = this.registry.getSql("createAccount");
         Assert.assertEquals(sql,
             "INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES(?,?,?,?)");
     }
 
     @Test(
+        dependsOnMethods = { "instantiationWithoutFilename" },
         expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "Unknown key: badkey")
     public void missingKeyException() {
