@@ -24,38 +24,61 @@
 
 package org.veary.debs.facade;
 
+import java.util.Optional;
+
 import org.veary.debs.model.Account;
 
 /**
  * <b>Purpose:</b> Encapsulates the account subsystem in a simple interface.
  *
- * <p><b>Responsibility:</b> Hides the complexity of the subsystem making it easier to use.
+ * <p>
+ * <b>Responsibility:</b> Hides the complexity of the subsystem making it easier
+ * to use.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public interface AccountFacade {
 
-    /**
-     * Creates an {@code Account} within the system from the referenced object. The
-     * {@code Account} object must be created using
-     * {@link Account#newInstance(String, String, org.veary.debs.model.Account.Types)}.
-     *
-     * @param object {@link Account}
-     * @return {@code Long} the unique identifier of the new {@code Account}. Non-{@code null}.
-     */
-    Long create(Account object);
+	/**
+	 * Creates an {@code Account} within the system from the referenced object. The
+	 * {@code Account} object must be created using
+	 * {@link Account#newInstance(String, String, org.veary.debs.model.Account.Types)}.
+	 *
+	 * @param object {@link Account}
+	 * @return {@code Long} the unique identifier of the new {@code Account}.
+	 *         Non-{@code null}.
+	 */
+	Long create(Account object);
 
-    /**
-     * Update the referenced {@code Account} with any or all of the give parameters.
-     *
-     * @param original the {@code Account} to be updated
-     * @param name a new unique name, or {@code null} if this field is not to be updated
-     * @param description a new description, or {@code null} if this field is not to be updated
-     * @param parentId a new unique parent identifier, or {@code null} if this field is not to
-     *     be updated
-     * @param type a different type, or {@code null} if this field is not to be updated
-     */
-    void update(Account original, String name, String description, Long parentId,
-        Account.Types type);
+	/**
+	 * Update the referenced {@code Account} with any or all of the give parameters.
+	 *
+	 * @param original    the {@code Account} to be updated
+	 * @param name        a new unique name, or {@code null} if this field is not to
+	 *                    be updated
+	 * @param description a new description, or {@code null} if this field is not to
+	 *                    be updated
+	 * @param parentId    a new unique parent identifier, or {@code null} if this
+	 *                    field is not to be updated
+	 * @param type        a different type, or {@code null} if this field is not to
+	 *                    be updated
+	 */
+	void update(Account original, String name, String description, Long parentId, Account.Types type);
+
+	/**
+	 * Fetch an {@code Account} from persistent storage.
+	 *
+	 * @param id the unique identifier of the account to be retrieved
+	 * @return {@code Optional<Account>}
+	 */
+	Optional<Account> getById(Long id);
+
+	/**
+	 * Fetch an {@code Account} from persistent storage.
+	 *
+	 * @param name the unique name of the account to be retrieved
+	 * @return {@code Optional<Account>}
+	 */
+	Optional<Account> getByName(String name);
 }
