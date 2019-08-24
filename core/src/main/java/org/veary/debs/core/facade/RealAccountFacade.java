@@ -35,6 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.model.AccountEntity;
+import org.veary.debs.core.utils.Validator;
 import org.veary.debs.dao.AccountDao;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
@@ -43,14 +44,11 @@ import org.veary.debs.model.PersistentObject;
 import org.veary.persist.exceptions.NoResultException;
 
 /**
- * <b>Purpose:</b> Concrete implementation of the {@code AccountFacade}
- * interface.
+ * <b>Purpose:</b> Concrete implementation of the {@code AccountFacade} interface.
  *
- * <p>
- * <b>Responsibility:</b>
+ * <p> <b>Responsibility:</b>
  *
- * <p>
- * <b>Notes:</b> annotated for JSR330
+ * <p> <b>Notes:</b> annotated for JSR330
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -58,114 +56,144 @@ import org.veary.persist.exceptions.NoResultException;
 @Singleton
 public final class RealAccountFacade implements AccountFacade {
 
-	private static final Logger LOG = LogManager.getLogger(RealAccountFacade.class);
-	private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+    private static final Logger LOG = LogManager.getLogger(RealAccountFacade.class);
+    private static final String LOG_CALLED = "called"; //$NON-NLS-1$
 
-	private final AccountDao dao;
+    private final AccountDao dao;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param dao {@link AccountDao}
-	 */
-	@Inject
-	public RealAccountFacade(AccountDao dao) {
-		this.dao = Objects.requireNonNull(dao, Messages.getParameterIsNull("dao")); //$NON-NLS-1$
-	}
+    private enum BuiltInAccounts {
 
-	@Override
-	public Long create(Account object) {
-		LOG.trace(LOG_CALLED);
-		return this.dao.createAccount(validateInput(object));
-	}
+        BALANCE("Balance"),
+        NET_WORTH("Net Worth"),
+        ASSETS("Assets"),
+        LIABILITIES("Liabilities"),
+        INCOME_AND_LIABILITIES("Income & Liabilities"),
+        INCOME("Income"),
+        EXPENSES("Expenses"),
+        OPENING_BALANCE("Opening Balance");
 
-	@Override
-	public void update(Account original, String name, String description, Long parentId, Types type) {
-		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
+        private final String name;
 
-		final AccountEntity updated = new AccountEntity(original);
+        private BuiltInAccounts(String name) {
+            this.name = name;
+        }
 
-		if (name != null) {
-			updated.setName(name);
-		}
-		if (description != null) {
-			updated.setDescription(description);
-		}
-		if (parentId != null) {
-			updated.setParentId(parentId);
-		}
-		if (type != null) {
-			updated.setType(type);
-		}
+        @Override
+        public String toString() {
+            return this.name;
+        }
+    }
 
-		this.dao.updateAccount(original, updated);
-	}
+    /**
+     * Constructor.
+     *
+     * @param dao {@link AccountDao}
+     */
+    @Inject
+    public RealAccountFacade(AccountDao dao) {
+        this.dao = Objects.requireNonNull(dao, Messages.getParameterIsNull("dao")); //$NON-NLS-1$
+    }
 
-	@Override
-	public Optional<Account> getById(Long id) {
-		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+    @Override
+    public Long create(Account object) {
+        LOG.trace(LOG_CALLED);
+        return this.dao.createAccount(validateInput(object));
+    }
 
-		try {
-			return Optional.of(this.dao.getAccountById(id));
-		} catch (NoResultException e) {
-			return Optional.empty();
-		}
-	}
+    @Override
+    public void update(Account original, String name, String description, Long parentId,
+        Types type) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
 
-	@Override
-	public Optional<Account> getByName(String name) {
-		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
+        for (String builtIn : Validator.getEnumValuesAsStringArray(BuiltInAccounts.class)) {
+            if (builtIn.equals(name)) {
+                throw new IllegalArgumentException("A built-in Account cannot be edited.");
+            }
+        }
 
-		try {
-			return Optional.of(this.dao.getAccountByName(name));
-		} catch (NoResultException e) {
-			return Optional.empty();
-		}
-	}
+        final AccountEntity updated = new AccountEntity(original);
 
-	@Override
-	public List<Account> getAllAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
-		return this.dao.getAllAccounts(includeDeleted);
-	}
+        if (name != null) {
+            updated.setName(name);
+        }
+        if (description != null) {
+            updated.setDescription(description);
+        }
+        if (parentId != null) {
+            updated.setParentId(parentId);
+        }
+        if (type != null) {
+            updated.setType(type);
+        }
 
-	@Override
-	public List<Account> getActualAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
-		return this.dao.getActualAccounts(includeDeleted);
-	}
+        this.dao.updateAccount(original, updated);
+    }
 
-	@Override
-	public List<Account> getGroupAccounts(boolean includeDeleted) {
-		LOG.trace(LOG_CALLED);
-		return this.dao.getGroupAccounts(includeDeleted);
-	}
+    @Override
+    public Optional<Account> getById(Long id) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
 
-	@Override
-	public void delete(Account object) {
-		LOG.trace(LOG_CALLED);
-		this.dao.deleteAccount(validateInput(object));
-	}
+        try {
+            return Optional.of(this.dao.getAccountById(id));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 
-	/**
-	 * The {@code AccountDao} allows the {@code parentId} parameter to be zero.
-	 * However, the facade does <b>not</b> allow this as a value of zero is the
-	 * 'Balance' Group Account.
-	 *
-	 * @param object the {@code Account} object to be validated
-	 * @return {@code Account}
-	 */
-	private Account validateInput(Account object) {
-		LOG.trace(LOG_CALLED);
-		Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+    @Override
+    public Optional<Account> getByName(String name) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
 
-		if (object.getParentId().longValue() <= PersistentObject.DEFAULT_ID.longValue()) {
-			throw new IllegalStateException(Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
-		}
+        try {
+            return Optional.of(this.dao.getAccountByName(name));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 
-		return object;
-	}
+    @Override
+    public List<Account> getAllAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
+        return this.dao.getAllAccounts(includeDeleted);
+    }
+
+    @Override
+    public List<Account> getActualAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
+        return this.dao.getActualAccounts(includeDeleted);
+    }
+
+    @Override
+    public List<Account> getGroupAccounts(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
+        return this.dao.getGroupAccounts(includeDeleted);
+    }
+
+    @Override
+    public void delete(Account object) {
+        LOG.trace(LOG_CALLED);
+        this.dao.deleteAccount(validateInput(object));
+    }
+
+    /**
+     * The {@code AccountDao} allows the {@code parentId} parameter to be zero. However, the
+     * facade does <b>not</b> allow this as a value of zero is the 'Balance' Group Account.
+     *
+     * @param object the {@code Account} object to be validated
+     * @return {@code Account}
+     */
+    private Account validateInput(Account object) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        if (object.getParentId().longValue() <= PersistentObject.DEFAULT_ID.longValue()) {
+            throw new IllegalStateException(
+                Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
+        }
+
+        return object;
+    }
 }
