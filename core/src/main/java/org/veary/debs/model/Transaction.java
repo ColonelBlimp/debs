@@ -24,14 +24,63 @@
 
 package org.veary.debs.model;
 
+import java.time.LocalDate;
+
+import org.veary.debs.core.model.TransactionEntity;
+
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Defines the contract for an accounting transaction.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public interface Transaction extends PersistentObject {
 
+    /**
+     * Returns the transaction's date.
+     *
+     * @return {@link LocalDate}
+     */
+    LocalDate getDate();
+
+    /**
+     * Returns the narrative (description) for this transaction.
+     *
+     * @return {@code String}
+     */
+    String getNarrative();
+
+    /**
+     * Returns the reference for this transaction.
+     *
+     * @return {@code String}
+     */
+    String getReference();
+
+    /**
+     * Returns the Entry describing where the value <b>came from</b>.
+     *
+     * @return {@link Entry}
+     */
+    Entry getFromEntry();
+
+    /**
+     * Returns the Entry describing where the value <b>went to</b>.
+     *
+     * @return {@link Entry}
+     */
+    Entry getToEntry();
+
+    /**
+     * Static method for creating a new Transaction object. Fields other than those referenced
+     * are set to their default values.
+     *
+     * @param date {@link LocalDate}
+     * @param narrative {@code String}
+     * @param reference {@code String}
+     * @return a new unpersisted {@code Transaction} object
+     */
+    static Transaction newInstance(LocalDate date, String narrative, String reference) {
+        return new TransactionEntity(date, narrative, reference);
+    }
 }
