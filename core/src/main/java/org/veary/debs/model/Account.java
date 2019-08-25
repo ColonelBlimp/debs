@@ -104,7 +104,7 @@ public interface Account extends PersistentObject {
          * @param id Type's unique identifier
          */
         Types(Integer id) {
-            this.id = Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+            this.id = id;
         }
 
         /**

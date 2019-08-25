@@ -8,8 +8,8 @@
 			"save-password": true,
 			"read-only": false,
 			"configuration": {
-				"database": "./debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
-				"url": "jdbc:h2:./debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
+				"database": "~/debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
+				"url": "jdbc:h2:~/debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
 				"type": "dev",
 				"bootstrap": {
 					"defaultObject": "DEBS"
