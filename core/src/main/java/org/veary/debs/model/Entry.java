@@ -27,8 +27,8 @@ package org.veary.debs.model;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
-import org.h2.mvstore.tx.Transaction;
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.EntryEntity;
@@ -144,9 +144,11 @@ public interface Entry extends PersistentObject {
      * Returns a {@link LocalDateTime} representing the timestamp when this {@code Entry} was
      * marked as {@code cleared}.
      *
-     * @return {@link LocalDateTime}
+     * <p><b>Note:</b> The returned value will be empty if this entry has not been cleared.
+     *
+     * @return {@link Optional<LocalDateTime>}
      */
-    LocalDateTime getClearedTimestamp();
+    Optional<LocalDateTime> getClearedTimestamp();
 
     /**
      * Is the entry cleared.
@@ -172,7 +174,7 @@ public interface Entry extends PersistentObject {
      * Static factory method.
      *
      * @param type {@link Entry.Type}
-     * @param account {@link Account}
+     * @param account {@link Entry}
      * @param amount {@link Money}
      * @param isCleared boolean indicating if the {@code Entry} object is cleared or not
      * @return new instance of {@code Entry}

@@ -110,11 +110,20 @@ public class EntryTest {
         dataMap.put(Fields.AMOUNT.toString(), AMOUNT.getValue());
         dataMap.put(Fields.ETYPE.toString(), Entry.Types.TO.getId());
         dataMap.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
-        dataMap.put(Fields.CLEARED.toString(), Boolean.FALSE);
+        dataMap.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
 
         Entry object = Entry.newInstance(dataMap);
         Assert.assertNotNull(object);
+
+        Assert.assertEquals(object.getId(), REAL_ID);
+        Assert.assertNotNull(object.getCreationTimestamp());
+        Assert.assertFalse(object.isDeleted());
+        Assert.assertTrue(object.isCleared());
+        Assert.assertTrue(object.getAmount().eq(AMOUNT));
+        Assert.assertEquals(object.getType(), Entry.Types.TO);
+        Assert.assertEquals(object.getAccountId(), this.toAccount.getId());
+        Assert.assertFalse(object.getClearedTimestamp().isEmpty());
     }
 
     @Test

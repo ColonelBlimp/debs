@@ -29,6 +29,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
@@ -86,9 +87,13 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
         setCreationTimestamp(DaoUtils
             .localDateTimeFromTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+
         this.type = Entry.Types.getType((Integer) dataMap.get(Fields.ETYPE.toString()));
         this.accountId = (Long) dataMap.get(Fields.ACCOUNT_ID.toString());
         this.amount = new Money((BigDecimal) dataMap.get(Fields.AMOUNT.toString()));
+        this.cleared = (Boolean) dataMap.get(Fields.CLEARED.toString());
+        this.clearedTimestamp = DaoUtils
+            .localDateTimeFromTimestamp((Timestamp) dataMap.get(Fields.CLEARED_TS.toString()));
         validateInput();
     }
 
@@ -108,8 +113,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     @Override
-    public LocalDateTime getClearedTimestamp() {
-        return this.clearedTimestamp;
+    public Optional<LocalDateTime> getClearedTimestamp() {
+        return Optional.ofNullable(this.clearedTimestamp);
     }
 
     @Override
@@ -120,11 +125,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     private void validateInput() {
         if (this.amount.isPlus() && this.type.equals(Entry.Types.FROM)) {
             throw new IllegalStateException(
-                "A 'FROM' entry must have a negative amount. Actual: " + this.amount);
+                Messages.getString("EntryEntry.validateInput.amount.fromexception", this.amount)); //$NON-NLS-1$
         }
         if (this.amount.isMinus() && this.type.equals(Entry.Types.TO)) {
             throw new IllegalStateException(
-                "A 'TO' entry must have a positive amount. Actual: " + this.amount);
+                Messages.getString("EntryEntry.validateInput.amount.toexception", this.amount)); //$NON-NLS-1$
         }
     }
 }
