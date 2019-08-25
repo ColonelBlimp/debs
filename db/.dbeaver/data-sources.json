@@ -1,0 +1,20 @@
+{
+	"folders": {},
+	"connections": {
+		"h2_embedded-16cc721af0e-5aab683134bd4101": {
+			"provider": "generic",
+			"driver": "h2_embedded",
+			"name": "H2 Embedded - debs",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"database": "./debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
+				"url": "jdbc:h2:./debs;INIT=CREATE SCHEMA IF NOT EXISTS DEBS",
+				"type": "dev",
+				"bootstrap": {
+					"defaultObject": "DEBS"
+				}
+			}
+		}
+	}
+}
