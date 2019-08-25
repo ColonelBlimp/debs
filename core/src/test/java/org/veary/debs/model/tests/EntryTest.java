@@ -116,4 +116,24 @@ public class EntryTest {
         Entry object = Entry.newInstance(dataMap);
         Assert.assertNotNull(object);
     }
+
+    @Test
+    public void Types() {
+        Integer id = Entry.Types.FROM.getId();
+        Assert.assertNotNull(id);
+        Entry.Types type = Entry.Types.getType(id);
+        Assert.assertEquals(type, Entry.Types.FROM);
+
+        id = Entry.Types.TO.getId();
+        Assert.assertNotNull(id);
+        type = Entry.Types.getType(id);
+        Assert.assertEquals(type, Entry.Types.TO);
+    }
+
+    @Test(
+        expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "Unknown Entry Type: 20")
+    public void TypesException() {
+        Entry.Types.getType(Integer.valueOf(20));
+    }
 }
