@@ -138,4 +138,9 @@ public final class Money {
         return this.value.equals(
             Objects.requireNonNull(that, Messages.getParameterIsNull("that")).value); //$NON-NLS-1$
     }
+
+    @Override
+    public String toString() {
+        return String.format("%.2f", this.value.doubleValue()); //$NON-NLS-1$
+    }
 }

@@ -31,6 +31,7 @@ import java.util.Objects;
 import org.h2.mvstore.tx.Transaction;
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.model.EntryEntity;
 
 /**
  * <b>Purpose:</b> Defines the contacts the entries associated with a {@link Transaction}. Every
@@ -56,7 +57,9 @@ public interface Entry extends PersistentObject {
         DELETED("DELETED"), //$NON-NLS-1$
         AMOUNT("AMOUNT"), //$NON-NLS-1$
         ETYPE("ETYPE"), //$NON-NLS-1$
-        ACCOUNT_ID("ACCOUNT_ID"); //$NON-NLS-1$
+        ACCOUNT_ID("ACCOUNT_ID"), //$NON-NLS-1$
+        CLEARED("CLEARED"), //$NON-NLS-1$
+        CLEARED_TS("CLEARED_TS"); //$NON-NLS-1$
 
         private final String name;
 
@@ -162,7 +165,7 @@ public interface Entry extends PersistentObject {
      * @return {@code Entry} new instance. Non-{@code null}.
      */
     static Entry newInstance(Map<String, Object> dataMap) {
-        throw new UnsupportedOperationException();
+        return new EntryEntity(dataMap);
     }
 
     /**
@@ -175,6 +178,6 @@ public interface Entry extends PersistentObject {
      * @return new instance of {@code Entry}
      */
     static Entry newInstance(Types type, Account account, Money amount, boolean isCleared) {
-        throw new UnsupportedOperationException();
+        return new EntryEntity(type, account, amount, isCleared);
     }
 }

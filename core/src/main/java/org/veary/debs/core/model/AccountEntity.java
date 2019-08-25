@@ -47,7 +47,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
     private String name;
     private String description;
-    private Types type;
+    private Account.Types type;
     private Money balance;
     private Long parentId;
 
@@ -60,7 +60,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
      *     {@code Long.valueOf(0)} if there is no parent.
      * @param type the account's type
      */
-    public AccountEntity(String name, String description, Long parentId, Types type) {
+    public AccountEntity(String name, String description, Long parentId, Account.Types type) {
         this.name = Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
         this.description = Objects.requireNonNull(description,
             Messages.getParameterIsNull("description")); //$NON-NLS-1$
@@ -75,7 +75,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
      * @param dataMap {@code Map<String, Object>}
      */
     public AccountEntity(Map<String, Object> dataMap) {
-        Validator.validateDataMap(dataMap, Validator.getEnumValuesAsStringArray(Fields.class));
+        Validator.validateDataMap(dataMap,
+            Validator.getEnumValuesAsStringArray(Account.Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
