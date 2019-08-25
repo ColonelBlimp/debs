@@ -72,6 +72,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     /**
      * Constructor.
      *
+     * <p><b>Note:</b> This constructor is required by the {@code org.veary.persist} library.
+     *
      * @param dataMap {@code Map<String, Object>}
      */
     public AccountEntity(Map<String, Object> dataMap) {

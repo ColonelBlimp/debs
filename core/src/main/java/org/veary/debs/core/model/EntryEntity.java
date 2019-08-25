@@ -57,10 +57,10 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     /**
      * Constructor.
      *
-     * @param type
-     * @param account
-     * @param amount
-     * @param isCleared
+     * @param type {@link Entry.Type}
+     * @param account the associated {@link Account}
+     * @param amount the {@link Money} value
+     * @param isCleared {@code true} if the entry is cleared, otherwise {@code false}
      */
     public EntryEntity(Types type, Account account, Money amount, boolean isCleared) {
         this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
@@ -77,7 +77,9 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     /**
      * Constructor.
      *
-     * @param dataMap
+     * <p><b>Note:</b> This constructor is required by the {@code org.veary.persist} library.
+     * 
+     * @param dataMap {@code Map<String, Object>}
      */
     public EntryEntity(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,

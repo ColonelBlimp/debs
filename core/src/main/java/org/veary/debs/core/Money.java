@@ -47,11 +47,22 @@ public final class Money {
 
     private final BigDecimal value;
 
+    /**
+     * Constructor. The given {@link BigDecimal} will be have it's scale set to in the
+     * constructor.
+     *
+     * @param value {@link BigDecimal}
+     */
     public Money(BigDecimal value) {
         this.value = Objects.requireNonNull(value,
             Messages.getParameterIsNull("value")).setScale(SCALE, ROUNDING); //$NON-NLS-1$
     }
 
+    /**
+     * Return the value as a {@link BigDecimal}.
+     *
+     * @return {@link BigDecimal}
+     */
     public BigDecimal getValue() {
         return this.value;
     }
