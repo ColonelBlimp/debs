@@ -26,7 +26,6 @@ package org.veary.debs.core.facade.tests;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -81,7 +80,7 @@ public class SystemFacadeTest extends JndiTestBase {
 
     @Test(dependsOnMethods = { "postTransactionMethod" })
     public void getTransactionByIdMethod() {
-        Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
+        java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
     }
 

@@ -40,14 +40,12 @@ import org.veary.debs.model.PersistentObject;
  */
 abstract class PersistentObjectImpl implements PersistentObject {
 
-    private static final Long DEFAULT_ID = Long.valueOf(0);
-
     private Long id;
     private boolean isDeleted;
     private LocalDateTime created;
 
     PersistentObjectImpl() {
-        this.id = DEFAULT_ID;
+        this.id = Long.valueOf(0);
         this.created = LocalDateTime.now();
         this.isDeleted = false;
     }

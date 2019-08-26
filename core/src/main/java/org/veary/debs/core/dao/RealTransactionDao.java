@@ -31,11 +31,14 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.model.TransactionGetByIdEntity;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.PersistenceManagerFactory;
+import org.veary.persist.Query;
+import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
 import org.veary.persist.exceptions.NoResultException;
@@ -107,6 +110,12 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
             .newInstance(this.registry.getSql("getTransactionById")); //$NON-NLS-1$
         select.setParameter(1, id);
 
+        QueryManager manager = this.factory.createQueryManager();
+        Query query = manager.createQuery(select, TransactionGetByIdEntity.class);
+        query.execute();
+        TransactionGetByIdEntity object = (TransactionGetByIdEntity) query.getSingleResult();
+
+        LOG.trace(">> {}", object);
         throw new NoResultException("");
         //        return null;
     }
