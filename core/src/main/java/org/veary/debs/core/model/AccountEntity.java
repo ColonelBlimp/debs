@@ -31,8 +31,8 @@ import java.util.Objects;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
-import org.veary.debs.dao.DaoUtils;
 import org.veary.debs.model.Account;
 
 /**

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.veary.debs.dao;
+package org.veary.debs.core.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

@@ -71,6 +71,10 @@ public class SystemFacadeTest extends JndiTestBase {
             false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
         Entry toEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
+
+        Long txId = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
+        Assert.assertNotNull(txId);
+        Assert.assertTrue(txId.longValue() > 0L);
     }
 
     private static final String FROM_NAME = "Cash"; //$NON-NLS-1$

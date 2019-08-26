@@ -31,6 +31,8 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.model.EntryEntity;
+import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Entry;
@@ -60,6 +62,16 @@ public final class RealSystemFacade implements SystemFacade {
     @Override
     public Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry) {
         LOG.trace(LOG_CALLED);
-        return null;
+        TransactionEntity transactionEntity = (TransactionEntity) Objects.requireNonNull(
+            transaction, Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
+        EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(fromEntry,
+            Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
+        EntryEntity toEntryEntity = (EntryEntity) Objects.requireNonNull(toEntry,
+            Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
+
+        transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
+        LOG.debug(transactionEntity);
+
+        return Long.valueOf(1);
     }
 }

@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.model;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -33,8 +34,8 @@ import java.util.Optional;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
-import org.veary.debs.dao.DaoUtils;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 
@@ -146,5 +147,32 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             throw new IllegalStateException(
                 Messages.getString("EntryEntry.validateInput.amount.toexception", this.amount)); //$NON-NLS-1$
         }
+    }
+
+    /**
+     * For debugging purposes only.
+     */
+    @Override
+    public String toString() {
+        String NL = System.lineSeparator();
+        Class<?> clazz = this.getClass();
+        StringBuilder sb = new StringBuilder(NL).append(clazz.getSimpleName());
+        sb.append(" {").append(NL); //$NON-NLS-1$
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (!field.isSynthetic()) {
+                sb.append("  ").append(field.getName()).append(": "); //$NON-NLS-1$ //$NON-NLS-2$
+                try {
+                    Object value = field.get(this);
+                    sb.append(value);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    sb.append("{error}"); //$NON-NLS-1$
+                }
+                sb.append(NL);
+            }
+        }
+        sb.append("}"); //$NON-NLS-1$
+        return sb.toString();
     }
 }

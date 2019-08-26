@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.model;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -35,7 +36,9 @@ import org.veary.debs.model.Transaction;
 /**
  * <b>Purpose:</b> ?
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> To assembly all the constituent parts of a transaction, ensure the
+ * integrity of the transaction and its constituent parts and all CRUD operations relating to
+ * transactions.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -102,5 +105,45 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
 
     public boolean isCleared() {
         return this.cleared;
+    }
+
+    public void setEntries(EntryEntity fromEntry, EntryEntity toEntry) {
+        Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
+        Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
+
+        fromEntry.setAmount(this.amount.negate());
+        fromEntry.setCleared(this.cleared);
+        toEntry.setAmount(this.amount);
+        toEntry.setCleared(this.cleared);
+
+        this.fromEntry = fromEntry;
+        this.toEntry = toEntry;
+    }
+
+    /**
+     * For debugging purposes only.
+     */
+    @Override
+    public String toString() {
+        String NL = System.lineSeparator();
+        Class<?> clazz = this.getClass();
+        StringBuilder sb = new StringBuilder(NL).append(clazz.getSimpleName());
+        sb.append(" {").append(NL); //$NON-NLS-1$
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (!field.isSynthetic()) {
+                sb.append("  ").append(field.getName()).append(": "); //$NON-NLS-1$ //$NON-NLS-2$
+                try {
+                    Object value = field.get(this);
+                    sb.append(value);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    sb.append("{error}"); //$NON-NLS-1$
+                }
+                sb.append(NL);
+            }
+        }
+        sb.append("}"); //$NON-NLS-1$
+        return sb.toString();
     }
 }

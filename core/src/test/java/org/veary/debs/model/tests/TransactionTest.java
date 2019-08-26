@@ -24,6 +24,15 @@
 
 package org.veary.debs.model.tests;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.veary.debs.core.Money;
+import org.veary.debs.core.model.TransactionEntity;
+import org.veary.debs.model.Transaction;
+
 /**
  * <b>Purpose:</b> ?
  *
@@ -34,4 +43,16 @@ package org.veary.debs.model.tests;
  */
 public class TransactionTest {
 
+    private static final LocalDate DATE = LocalDate.now();
+    private static final String NARRATIVE = "Test Narrative"; //$NON-NLS-1$
+    private static final String REFERENCE = "Test Reference"; //$NON-NLS-1$
+    private static final Money AMOUNT = new Money(BigDecimal.valueOf(123456));
+
+    @Test
+    public void instantiationNotCleared() {
+        TransactionEntity entity = (TransactionEntity) Transaction.newInstance(DATE, NARRATIVE,
+            REFERENCE, AMOUNT,
+            false);
+        Assert.assertNotNull(entity);
+    }
 }
