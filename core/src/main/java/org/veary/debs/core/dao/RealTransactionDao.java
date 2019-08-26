@@ -24,7 +24,9 @@
 
 package org.veary.debs.core.dao;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -33,7 +35,11 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
+import org.veary.debs.model.Entry;
+import org.veary.debs.model.Transaction;
 import org.veary.persist.PersistenceManagerFactory;
+import org.veary.persist.SqlStatement;
+import org.veary.persist.TransactionManager;
 
 /**
  * <b>Purpose:</b> ?
@@ -56,5 +62,49 @@ public final class RealTransactionDao implements TransactionDao {
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
         this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
+    }
+
+    @Override
+    public Long createTransaction(Transaction object) {
+        LOG.trace(LOG_CALLED);
+
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+
+        createTransactionEntry(manager, object.getFromEntry());
+        createTransactionEntry(manager, object.getToEntry());
+
+        final SqlStatement insertTx = SqlStatement
+            .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
+
+        Long id = manager.persist(insertTx);
+        manager.commit();
+
+        return null;
+    }
+
+    private Long createTransactionEntry(TransactionManager manager, Entry object) {
+        LOG.trace(LOG_CALLED);
+
+        final SqlStatement insertTxEntry = SqlStatement
+            .newInstance(this.registry.getSql("createTransactionEntry")); //$NON-NLS-1$
+        insertTxEntry.setParameter(1, object.getAmount());
+        insertTxEntry.setParameter(2, object.getType().getId());
+        insertTxEntry.setParameter(3, object.getAccountId());
+        insertTxEntry.setParameter(4, object.isCleared());
+        if (object.isCleared()) {
+            Optional<LocalDateTime> result = object.getClearedTimestamp();
+            if (result.isEmpty()) {
+                throw new AssertionError(
+                    "Entry marked as cleared, but not cleared timestamp has been set.");
+            }
+            insertTxEntry.setParameter(5, result.get());
+        } else {
+            insertTxEntry.setParameter(5, null);
+        }
+
+        return manager.persist(insertTxEntry);
     }
 }

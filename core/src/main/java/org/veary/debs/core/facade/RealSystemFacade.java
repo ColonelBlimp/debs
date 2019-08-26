@@ -62,6 +62,7 @@ public final class RealSystemFacade implements SystemFacade {
     @Override
     public Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry) {
         LOG.trace(LOG_CALLED);
+
         TransactionEntity transactionEntity = (TransactionEntity) Objects.requireNonNull(
             transaction, Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
         EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(fromEntry,
@@ -72,6 +73,6 @@ public final class RealSystemFacade implements SystemFacade {
         transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
         LOG.debug(transactionEntity);
 
-        return Long.valueOf(1);
+        return this.transactionDao.createTransaction(transactionEntity);
     }
 }

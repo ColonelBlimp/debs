@@ -22,25 +22,23 @@
  * SOFTWARE.
  */
 
-package org.veary.debs.dao;
+package org.veary.debs.core.dao.tests;
 
-import org.veary.debs.model.Entry;
-import org.veary.debs.model.Transaction;
+import org.testng.annotations.Test;
+import org.veary.debs.tests.JndiTestBase;
 
 /**
- * <b>Purpose:</b> Defined the contract from CRUD operations on {@link Transaction} and
- * {@link Entry} objects.
+ * <b>Purpose:</b> ?
+ *
+ * <p><b>Responsibility:</b>
  *
  * @author Marc L. Veary
  * @since 1.0
  */
-public interface TransactionDao {
+public class TransactionDaoTest extends JndiTestBase {
 
-    /**
-     * Create a new {@link Transaction} and persist it.
-     *
-     * @param object {@link Transaction}
-     * @return {@code Long} the unique identifier
-     */
-    Long createTransaction(Transaction object);
+    @Test
+    public void createMethod() {
+
+    }
 }

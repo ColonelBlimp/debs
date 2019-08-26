@@ -41,4 +41,10 @@ SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE!=8
 	<method name="getActualAccounts"><![CDATA[
 SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE!=8 AND DELETED=FALSE
 	]]></method>
+	<method name="createTransactionEntry"><![CDATA[
+INSERT INTO DEBS.ENTRY(AMOUNT,ETYPE,ACCOUNT_ID,CLEARED) VALUES(?,?,?,?)
+	]]></method>
+	<method name="createTransaction"><![CDATA[
+INSERT INTO DEBS.TRANSACTION(REFERENCE,NARRATIVE) VALUES(?,?,?,?)
+	]]></method>
 </system>
