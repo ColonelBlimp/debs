@@ -26,6 +26,7 @@ package org.veary.debs.dao;
 
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
+import org.veary.persist.exceptions.NoResultException;
 
 /**
  * <b>Purpose:</b> Defined the contract from CRUD operations on {@link Transaction} and
@@ -43,4 +44,16 @@ public interface TransactionDao {
      * @return {@code Long} the unique identifier
      */
     Long createTransaction(Transaction object);
+
+    /**
+     * Retrieve an {@code Transaction} matching the referenced unique identifier.
+     *
+     * <p><b>Note:</b> This will also return an {@code Transaction} which is marked as
+     * <b>deleted<b>.
+     *
+     * @param id the unique identifier
+     * @return {@code Transaction}. Non-{@code null}.
+     * @throws NoResultException if there is no record matching the referenced unique identifer
+     */
+    Transaction getTransactionById(Long id);
 }

@@ -25,8 +25,10 @@
 package org.veary.debs.core.facade;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,15 +39,20 @@ import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
+import org.veary.persist.exceptions.NoResultException;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Concrete implementation of the {@link SystemFacade} interface.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> Handling all the processes for manipulating {@code Transaction}
+ * within the system.
+ *
+ * <p><b>Notes:</b> annotated for JSR330
  *
  * @author Marc L. Veary
  * @since 1.0
  */
+@Singleton
 public final class RealSystemFacade implements SystemFacade {
 
     private static final Logger LOG = LogManager.getLogger(RealSystemFacade.class);
@@ -53,9 +60,15 @@ public final class RealSystemFacade implements SystemFacade {
 
     private final TransactionDao transactionDao;
 
+    /**
+     * Constructor.
+     *
+     * @param transactionDao {@link TransactionDao}
+     */
     @Inject
     public RealSystemFacade(TransactionDao transactionDao) {
-        this.transactionDao = Objects.requireNonNull(transactionDao,
+        this.transactionDao = Objects.requireNonNull(
+            transactionDao,
             Messages.getParameterIsNull("transactionDao")); //$NON-NLS-1$
     }
 
@@ -64,15 +77,30 @@ public final class RealSystemFacade implements SystemFacade {
         LOG.trace(LOG_CALLED);
 
         TransactionEntity transactionEntity = (TransactionEntity) Objects.requireNonNull(
-            transaction, Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
-        EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(fromEntry,
+            transaction,
+            Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
+
+        EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(
+            fromEntry,
             Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
-        EntryEntity toEntryEntity = (EntryEntity) Objects.requireNonNull(toEntry,
+
+        EntryEntity toEntryEntity = (EntryEntity) Objects.requireNonNull(
+            toEntry,
             Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 
         transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
-        LOG.debug(transactionEntity);
 
         return this.transactionDao.createTransaction(transactionEntity);
+    }
+
+    @Override
+    public Optional<Transaction> getTransactionById(Long id) {
+        LOG.trace(LOG_CALLED);
+
+        try {
+            return Optional.of(this.transactionDao.getTransactionById(id));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

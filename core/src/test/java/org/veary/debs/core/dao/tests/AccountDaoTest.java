@@ -84,7 +84,7 @@ public class AccountDaoTest extends JndiTestBase {
         updated.setType(Types.GROUP);
         updated.setParentId(UPDATED_PARENT_ID);
 
-        // Field which cannot be updated with the updateAccount method
+        // Fields which cannot be updated with the updateAccount method
         LocalDateTime updatedCreation = LocalDateTime.now();
         updated.setId(Long.valueOf(1000));
         updated.setBalance(UPDATED_BALANCE);

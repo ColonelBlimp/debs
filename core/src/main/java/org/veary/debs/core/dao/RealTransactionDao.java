@@ -24,9 +24,7 @@
 
 package org.veary.debs.core.dao;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -40,6 +38,7 @@ import org.veary.debs.model.Transaction;
 import org.veary.persist.PersistenceManagerFactory;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
+import org.veary.persist.exceptions.NoResultException;
 
 /**
  * <b>Purpose:</b> ?
@@ -49,19 +48,24 @@ import org.veary.persist.TransactionManager;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class RealTransactionDao implements TransactionDao {
+public final class RealTransactionDao extends AbstractDao<Transaction> implements TransactionDao {
 
     private static final Logger LOG = LogManager.getLogger(RealTransactionDao.class);
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
 
     private final Registry registry;
-    private final PersistenceManagerFactory factory;
 
+    /**
+     * Constructor.
+     *
+     * @param registry {@link Registry}
+     * @param factory {@link PersistenceManagerFactory}
+     */
     @Inject
     public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
+        super(factory);
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
-        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
     }
 
     @Override
@@ -73,37 +77,56 @@ public final class RealTransactionDao implements TransactionDao {
         TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
 
-        createTransactionEntry(manager, object.getFromEntry());
-        createTransactionEntry(manager, object.getToEntry());
+        Long fromId = createTransactionEntry(manager,
+            Objects.requireNonNull(object.getFromEntry(),
+                Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"))); //$NON-NLS-1$
+        Long toId = createTransactionEntry(manager,
+            Objects.requireNonNull(object.getToEntry(),
+                Messages.getString("RealTransactionDao.createTransaction.toEntry.null"))); //$NON-NLS-1$
 
         final SqlStatement insertTx = SqlStatement
             .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
+        insertTx.setParameter(1, object.getNarrative());
+        insertTx.setParameter(2, object.getReference());
+        insertTx.setParameter(3, fromId);
+        insertTx.setParameter(4, toId);
 
         Long id = manager.persist(insertTx);
         manager.commit();
 
-        return null;
+        return id;
     }
 
+    @Override
+    public Transaction getTransactionById(Long id) {
+        LOG.trace(LOG_CALLED);
+
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+
+        final SqlStatement select = SqlStatement
+            .newInstance(this.registry.getSql("getTransactionById")); //$NON-NLS-1$
+        select.setParameter(1, id);
+
+        throw new NoResultException("");
+        //        return null;
+    }
+
+    /**
+     * A separate call will need to be made to set this item as cleared!
+     *
+     * @param manager {@code TransactionManager}
+     * @param object {@code Entry}
+     * @return the unique identifier of the new {@code Entry}
+     */
     private Long createTransactionEntry(TransactionManager manager, Entry object) {
         LOG.trace(LOG_CALLED);
 
         final SqlStatement insertTxEntry = SqlStatement
             .newInstance(this.registry.getSql("createTransactionEntry")); //$NON-NLS-1$
-        insertTxEntry.setParameter(1, object.getAmount());
+        insertTxEntry.setParameter(1, object.getAmount().getValue());
         insertTxEntry.setParameter(2, object.getType().getId());
         insertTxEntry.setParameter(3, object.getAccountId());
         insertTxEntry.setParameter(4, object.isCleared());
-        if (object.isCleared()) {
-            Optional<LocalDateTime> result = object.getClearedTimestamp();
-            if (result.isEmpty()) {
-                throw new AssertionError(
-                    "Entry marked as cleared, but not cleared timestamp has been set.");
-            }
-            insertTxEntry.setParameter(5, result.get());
-        } else {
-            insertTxEntry.setParameter(5, null);
-        }
 
         return manager.persist(insertTxEntry);
     }

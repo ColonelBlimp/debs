@@ -26,6 +26,7 @@ package org.veary.debs.core.facade.tests;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -58,6 +59,7 @@ public class SystemFacadeTest extends JndiTestBase {
 
     private Account fromAccount;
     private Account toAccount;
+    private Long txId;
 
     private static final LocalDate DATE = LocalDate.now();
     private static final String NARRATIVE = "Test Narrative"; //$NON-NLS-1$
@@ -72,9 +74,15 @@ public class SystemFacadeTest extends JndiTestBase {
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
         Entry toEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 
-        Long txId = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
-        Assert.assertNotNull(txId);
-        Assert.assertTrue(txId.longValue() > 0L);
+        this.txId = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
+        Assert.assertNotNull(this.txId);
+        Assert.assertTrue(this.txId.longValue() > 0L);
+    }
+
+    @Test(dependsOnMethods = { "postTransactionMethod" })
+    public void getTransactionByIdMethod() {
+        Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
     }
 
     private static final String FROM_NAME = "Cash"; //$NON-NLS-1$

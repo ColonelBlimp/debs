@@ -24,13 +24,15 @@
 
 package org.veary.debs.facade;
 
+import java.util.Optional;
+
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
 /**
  * <b>Purpose:</b> Defines the contract for accessing the main accounting system.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> Hides the complexity of the subsystem making it easier to use.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -46,4 +48,12 @@ public interface SystemFacade {
      * @return {@code Long} the unique identifier of the new transaction
      */
     Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry);
+
+    /**
+     * Fetch a {@code Transaction} from persistent storage.
+     *
+     * @param id the unique identifier of the transaction to be retrieved
+     * @return {@code Optional<Transaction>}
+     */
+    Optional<Transaction> getTransactionById(Long id);
 }

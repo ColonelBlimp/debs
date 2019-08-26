@@ -24,7 +24,6 @@
 
 package org.veary.debs.core.dao;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +39,6 @@ import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.model.Account;
 import org.veary.persist.PersistenceManagerFactory;
-import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
 import org.veary.persist.exceptions.NoResultException;
@@ -56,14 +54,13 @@ import org.veary.persist.exceptions.NoResultException;
  * @since 1.0
  */
 @Singleton
-public final class RealAccountDao implements AccountDao {
+public final class RealAccountDao extends AbstractDao<Account> implements AccountDao {
 
     private static final Logger LOG = LogManager.getLogger(RealAccountDao.class);
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
     private static final String PARAM_OBJECT = "object"; //$NON-NLS-1$
 
     private final Registry registry;
-    private final PersistenceManagerFactory factory;
 
     /**
      * Constructor.
@@ -73,9 +70,9 @@ public final class RealAccountDao implements AccountDao {
      */
     @Inject
     public RealAccountDao(Registry registry, PersistenceManagerFactory factory) {
+        super(factory);
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
-        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
     }
 
     @Override
@@ -163,7 +160,7 @@ public final class RealAccountDao implements AccountDao {
             .newInstance(this.registry.getSql("getAccountById")); //$NON-NLS-1$
         select.setParameter(1, id);
 
-        return executeAndReturnSingleResult(select);
+        return executeAndReturnSingleResult(select, Account.class);
     }
 
     @Override
@@ -174,7 +171,7 @@ public final class RealAccountDao implements AccountDao {
             .newInstance(this.registry.getSql("getAccountByName")); //$NON-NLS-1$
         select.setParameter(1, name);
 
-        return executeAndReturnSingleResult(select);
+        return executeAndReturnSingleResult(select, Account.class);
     }
 
     @Override
@@ -213,28 +210,31 @@ public final class RealAccountDao implements AccountDao {
         return getAccountsList(key);
     }
 
-    private Account executeAndReturnSingleResult(SqlStatement statement) {
+    /*
+    @Override
+    protected Account executeAndReturnSingleResult(SqlStatement statement) {
         LOG.trace(LOG_CALLED);
         final QueryManager manager = this.factory.createQueryManager();
         return (Account) manager.createQuery(statement, Account.class).execute()
             .getSingleResult();
     }
-
-    private List<Account> executeAndReturnListResult(SqlStatement statement) {
+    
+    @Override
+    protected List<Account> executeAndReturnListResult(SqlStatement statement) {
         LOG.trace(LOG_CALLED);
         final QueryManager manager = this.factory.createQueryManager();
         final List<Object> results = manager.createQuery(statement, Account.class).execute()
             .getResultList();
-
+    
         final List<Account> list = new ArrayList<>(results.size());
-
+    
         for (Object object : results) {
             list.add((Account) object);
         }
-
+    
         return Collections.unmodifiableList(list);
     }
-
+    */
     private List<Account> getAccountsList(String key) {
         try {
             return executeAndReturnListResult(
