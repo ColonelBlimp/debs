@@ -34,6 +34,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.AccountEntity;
+import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Fields;
@@ -49,9 +50,10 @@ import org.veary.debs.model.Entry.Fields;
 public class EntryTest {
 
     private AccountEntity fromAccount;
-    private Account toAccount;
+    private AccountEntity toAccount;
 
     private static final Long FROM_ACC_ID = Long.valueOf(10);
+    private static final Long TO_ACC_ID = Long.valueOf(11);
 
     @BeforeClass
     public void setUp() {
@@ -60,6 +62,7 @@ public class EntryTest {
         this.fromAccount.setId(FROM_ACC_ID);
         this.toAccount = new AccountEntity("Fuel", "Test", Long.valueOf(7), //$NON-NLS-1$ //$NON-NLS-2$
             Account.Types.EXPENSE);
+        this.toAccount.setId(TO_ACC_ID);
     }
 
     private static final Entry.Types FROM = Entry.Types.FROM;
@@ -70,31 +73,36 @@ public class EntryTest {
         expectedExceptions = IllegalStateException.class,
         expectedExceptionsMessageRegExp = "A 'FROM' entry must have a negative amount. Actual: 1000.00")
     public void instantiationDefault_BadFromAmountException() {
-        Entry.newInstance(FROM, this.fromAccount, AMOUNT, false);
+        EntryEntity entity = (EntryEntity) Entry.newInstance(FROM, this.fromAccount);
+        entity.setAmount(AMOUNT);
     }
 
     @Test(
         expectedExceptions = IllegalStateException.class,
         expectedExceptionsMessageRegExp = "A 'TO' entry must have a positive amount. Actual: -1000.00")
     public void instantiationDefault_BadToAmountException() {
-        Entry.newInstance(TO, this.toAccount, AMOUNT.negate(), false);
+        EntryEntity entity = (EntryEntity) Entry.newInstance(TO, this.toAccount);
+        entity.setAmount(AMOUNT.negate());
     }
 
     @Test
-    public void instantiationDefaultNotCleared() {
-        Entry object = Entry.newInstance(FROM, this.fromAccount, AMOUNT.negate(), false);
+    public void instantiationFromDefault() {
+        Entry object = Entry.newInstance(FROM, this.fromAccount);
         Assert.assertNotNull(object);
-    }
-
-    @Test
-    public void instantiationDefaultCleared() {
-        Entry object = Entry.newInstance(FROM, this.fromAccount, AMOUNT.negate(), true);
-        Assert.assertNotNull(object);
-        Assert.assertTrue(object.isCleared());
-        Assert.assertNotNull(object.getClearedTimestamp());
+        Assert.assertFalse(object.isCleared());
+        Assert.assertTrue(object.getClearedTimestamp().isEmpty());
         Assert.assertTrue(object.getType().equals(FROM));
         Assert.assertEquals(object.getAccountId(), FROM_ACC_ID);
-        Assert.assertTrue(object.getAmount().eq(AMOUNT.negate()));
+    }
+
+    @Test
+    public void instantiationToDefault() {
+        Entry object = Entry.newInstance(TO, this.toAccount);
+        Assert.assertNotNull(object);
+        Assert.assertFalse(object.isCleared());
+        Assert.assertTrue(object.getClearedTimestamp().isEmpty());
+        Assert.assertTrue(object.getType().equals(TO));
+        Assert.assertEquals(object.getAccountId(), TO_ACC_ID);
     }
 
     private static final Long REAL_ID = Long.valueOf(2);

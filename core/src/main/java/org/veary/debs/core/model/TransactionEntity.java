@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import org.veary.debs.Messages;
+import org.veary.debs.core.Money;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
@@ -41,18 +42,33 @@ import org.veary.debs.model.Transaction;
  */
 public final class TransactionEntity extends PersistentObjectImpl implements Transaction {
 
+    private final Money amount;
+
     private LocalDate date;
     private String narrative;
     private String reference;
     private Entry fromEntry;
     private Entry toEntry;
+    private boolean cleared;
 
-    public TransactionEntity(LocalDate date, String narrative, String reference) {
+    /**
+     * Constructor.
+     *
+     * @param date
+     * @param narrative
+     * @param reference
+     * @param amount
+     * @param cleared
+     */
+    public TransactionEntity(LocalDate date, String narrative, String reference, Money amount,
+        boolean cleared) {
         this.date = Objects.requireNonNull(date, Messages.getParameterIsNull("date")); //$NON-NLS-1$
         this.narrative = Objects.requireNonNull(narrative,
             Messages.getParameterIsNull("narrative")); //$NON-NLS-1$
         this.reference = Objects.requireNonNull(reference,
             Messages.getParameterIsNull("reference")); //$NON-NLS-1$
+        this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
+        this.cleared = cleared;
     }
 
     @Override
@@ -78,5 +94,13 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     @Override
     public Entry getToEntry() {
         return this.toEntry;
+    }
+
+    public Money getAmount() {
+        return this.amount;
+    }
+
+    public boolean isCleared() {
+        return this.cleared;
     }
 }

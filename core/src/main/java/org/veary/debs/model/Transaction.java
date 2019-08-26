@@ -26,6 +26,7 @@ package org.veary.debs.model;
 
 import java.time.LocalDate;
 
+import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
 
 /**
@@ -80,7 +81,8 @@ public interface Transaction extends PersistentObject {
      * @param reference {@code String}
      * @return a new unpersisted {@code Transaction} object
      */
-    static Transaction newInstance(LocalDate date, String narrative, String reference) {
-        return new TransactionEntity(date, narrative, reference);
+    static Transaction newInstance(LocalDate date, String narrative, String reference,
+        Money amount, boolean cleared) {
+        return new TransactionEntity(date, narrative, reference, amount, cleared);
     }
 }

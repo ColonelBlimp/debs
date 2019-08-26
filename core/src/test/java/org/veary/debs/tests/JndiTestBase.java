@@ -8,8 +8,11 @@ import java.io.File;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.veary.debs.core.facade.RealAccountFacade;
+import org.veary.debs.core.facade.RealSystemFacade;
 import org.veary.debs.dao.AccountDao;
+import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.facade.SystemFacade;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 
@@ -19,6 +22,8 @@ public abstract class JndiTestBase {
     protected Injector injector;
     protected AccountDao accountDao;
     protected AccountFacade accountFacade;
+    protected TransactionDao transactionDao;
+    protected SystemFacade systemFacade;
 
     @BeforeClass
     public void setUp() {
@@ -29,6 +34,8 @@ public abstract class JndiTestBase {
         this.injector = Guice.createInjector(new GuicePersistTestModule());
         this.accountDao = this.injector.getInstance(AccountDao.class);
         this.accountFacade = this.injector.getInstance(RealAccountFacade.class);
+        this.transactionDao = this.injector.getInstance(TransactionDao.class);
+        this.systemFacade = this.injector.getInstance(RealSystemFacade.class);
     }
 
     @AfterClass

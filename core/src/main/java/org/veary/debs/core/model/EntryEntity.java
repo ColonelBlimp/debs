@@ -59,26 +59,20 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
      *
      * @param type {@link Entry.Type}
      * @param account the associated {@link Account}
-     * @param amount the {@link Money} value
-     * @param isCleared {@code true} if the entry is cleared, otherwise {@code false}
      */
-    public EntryEntity(Types type, Account account, Money amount, boolean isCleared) {
+    public EntryEntity(Types type, Account account) {
         this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
         this.accountId = (Objects.requireNonNull(account, Messages.getParameterIsNull("account"))) //$NON-NLS-1$
             .getId();
-        this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
-        if (isCleared) {
-            this.clearedTimestamp = LocalDateTime.now();
-        }
-        this.cleared = isCleared;
-        validateInput();
+        this.amount = new Money(BigDecimal.ZERO);
+        this.cleared = false;
     }
 
     /**
      * Constructor.
      *
      * <p><b>Note:</b> This constructor is required by the {@code org.veary.persist} library.
-     * 
+     *
      * @param dataMap {@code Map<String, Object>}
      */
     public EntryEntity(Map<String, Object> dataMap) {
@@ -122,6 +116,25 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     @Override
     public boolean isCleared() {
         return this.cleared;
+    }
+
+    public void setType(Types type) {
+        this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
+        validateInput();
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = Objects.requireNonNull(accountId,
+            Messages.getParameterIsNull("accountId")); //$NON-NLS-1$
+    }
+
+    public void setAmount(Money amount) {
+        this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
+        validateInput();
+    }
+
+    public void setCleared(boolean cleared) {
+        this.cleared = cleared;
     }
 
     private void validateInput() {

@@ -175,11 +175,9 @@ public interface Entry extends PersistentObject {
      *
      * @param type {@link Entry.Type}
      * @param account {@link Entry}
-     * @param amount {@link Money}
-     * @param isCleared boolean indicating if the {@code Entry} object is cleared or not
      * @return new instance of {@code Entry}
      */
-    static Entry newInstance(Types type, Account account, Money amount, boolean isCleared) {
-        return new EntryEntity(type, account, amount, isCleared);
+    static Entry newInstance(Types type, Account account) {
+        return new EntryEntity(type, account);
     }
 }

@@ -22,39 +22,39 @@
  * SOFTWARE.
  */
 
-package org.veary.debs.tests;
+package org.veary.debs.core.dao;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.jndi.JndiIntegration;
+import java.util.Objects;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+import javax.inject.Inject;
 
-import org.veary.debs.core.dao.RealAccountDao;
-import org.veary.debs.core.dao.RealRegistry;
-import org.veary.debs.core.dao.RealTransactionDao;
-import org.veary.debs.core.facade.RealAccountFacade;
-import org.veary.debs.core.facade.RealSystemFacade;
-import org.veary.debs.dao.AccountDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.veary.debs.Messages;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
-import org.veary.debs.facade.AccountFacade;
-import org.veary.debs.facade.SystemFacade;
 import org.veary.persist.PersistenceManagerFactory;
 
-public class GuicePersistTestModule extends AbstractModule {
+/**
+ * <b>Purpose:</b> ?
+ *
+ * <p><b>Responsibility:</b>
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
+public final class RealTransactionDao implements TransactionDao {
 
-    @Override
-    protected void configure() {
-        bind(Context.class).to(InitialContext.class);
-        bind(DataSource.class)
-            .toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs")); //$NON-NLS-1$
-        bind(PersistenceManagerFactory.class);
-        bind(Registry.class).to(RealRegistry.class);
-        bind(AccountDao.class).to(RealAccountDao.class);
-        bind(TransactionDao.class).to(RealTransactionDao.class);
-        bind(AccountFacade.class).to(RealAccountFacade.class);
-        bind(SystemFacade.class).to(RealSystemFacade.class);
+    private static final Logger LOG = LogManager.getLogger(RealTransactionDao.class);
+    private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+
+    private final Registry registry;
+    private final PersistenceManagerFactory factory;
+
+    @Inject
+    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
+        LOG.trace(LOG_CALLED);
+        this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
     }
 }
