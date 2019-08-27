@@ -57,7 +57,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     /**
      * Constructor.
      *
-     * @param type {@link Entry.Type}
+     * @param type {@link Entry.Types}
      * @param account the associated {@link Account}
      */
     public EntryEntity(Types type, Account account) {

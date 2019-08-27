@@ -45,7 +45,7 @@ public interface AccountDao {
      * Create an new {@code Account} and persist.
      *
      * @param object new {@link Account} object created using
-     *     {@link Account#newInstance(String, String, Account.Types)}.
+     *     {@link Account#newInstance(String, String, Long, Account.Types)}.
      * @return {@code Long} the unique identifier
      */
     Long createAccount(Account object);
@@ -65,6 +65,7 @@ public interface AccountDao {
     /**
      * Updates the referenced {@code Account}'s balance with the new referenced {@code balance}.
      *
+     * @param object {@link Account}
      * @param newBalance the new balance to be written to the account record
      */
     void updateAccountBalance(Account object, Money newBalance);
@@ -82,7 +83,7 @@ public interface AccountDao {
      * Retrieve an {@code Account} matching the referenced unique identifier.
      *
      * <p><b>Note:</b> This will also return an {@code Account} which is marked as
-     * <b>deleted<b>.
+     * <b>deleted</b>.
      *
      * @param id the unique identifier
      * @return {@code Account}. Non-{@code null}.
@@ -127,7 +128,7 @@ public interface AccountDao {
 
     /**
      * Return a list of all Actual {@code Account} objects.
-     * 
+     *
      * @param includeDeleted {@code true} if deleted accounts should be included in the list
      * @return {@code List<Account>}. Can be empty, but not {@code null}.
      */

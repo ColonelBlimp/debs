@@ -57,10 +57,10 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     /**
      * Constructor.
      *
-     * @param date
-     * @param narrative
-     * @param reference
-     * @param amount
+     * @param date {@link LocalDate}
+     * @param narrative {@code String}
+     * @param reference {@code String}
+     * @param amount {@link Money}
      * @param cleared {@code true} if <b>both</b> {@code Entry} object should be marked as
      *     <i>cleared</i>, otherwise {@code false}. <b>Note:</b> The {@code Transaction} object
      *     itself does does not have a <i>cleared</i> field.

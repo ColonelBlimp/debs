@@ -44,7 +44,7 @@ public interface AccountFacade {
     /**
      * Creates an {@code Account} within the system from the referenced object. The
      * {@code Account} object must be created using
-     * {@link Account#newInstance(String, String, org.veary.debs.model.Account.Types)}.
+     * {@link Account#newInstance(String, String, Long, Account.Types)}.
      *
      * @param object {@link Account}
      * @return {@code Long} the unique identifier of the new {@code Account}. Non-{@code null}.
@@ -125,7 +125,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code TreeNode<Account>} which is a hierachical tree of the chart of accounts.
      *
-     * @return {@link TreeNode<Account>}
+     * @return {@link TreeNode}
      */
     TreeNode<Account> getChartOfAccounts();
 }

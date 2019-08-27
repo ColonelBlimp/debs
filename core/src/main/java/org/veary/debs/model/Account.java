@@ -34,7 +34,7 @@ import org.veary.debs.core.model.AccountEntity;
 /**
  * <b>Purpose:</b> Defines the contract for all account objects. Where an account has a
  * {@code parentId} the parent account is termed a <b>Group Account</b> and itself has no
- * <b>transactions</b>. Accounts which have <b>transactions<b> are termed an <b>Actual
+ * <b>transactions</b>. Accounts which have <b>transactions</b> are termed an <b>Actual
  * Account</b>.
  *
  * @author Marc L. Veary

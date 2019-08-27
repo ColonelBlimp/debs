@@ -79,6 +79,9 @@ public interface Transaction extends PersistentObject {
      * @param date {@link LocalDate}
      * @param narrative {@code String}
      * @param reference {@code String}
+     * @param amount {@link Money}
+     * @param cleared {@code true} if the whole transaction should be marked as <i>cleared</i>,
+     *     otherwise {@code false}
      * @return a new unpersisted {@code Transaction} object
      */
     static Transaction newInstance(LocalDate date, String narrative, String reference,

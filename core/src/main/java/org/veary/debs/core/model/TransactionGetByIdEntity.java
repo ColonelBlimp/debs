@@ -119,7 +119,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
     /**
      * Constructor.
      *
-     * @param dataMap
+     * @param dataMap {@code Map}
      */
     public TransactionGetByIdEntity(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,

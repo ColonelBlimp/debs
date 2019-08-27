@@ -35,7 +35,7 @@ import org.veary.debs.Messages;
 /**
  * <b>Purpose:</b> Represents a monetary value. Internally, the value is stored as a
  * {@link BigDecimal} with a <i>scale</i> of 2 and <i>rounding</i> set to
- * {@link RoundingMode.HALF_EVEN}.
+ * {@link RoundingMode#HALF_EVEN}.
  *
  * @author Marc L. Veary
  * @since 1.0

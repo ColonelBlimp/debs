@@ -172,7 +172,7 @@ public interface Entry extends PersistentObject {
     /**
      * Static factory method.
      *
-     * @param type {@link Entry.Type}
+     * @param type {@link Entry.Types}
      * @param account {@link Entry}
      * @return new instance of {@code Entry}
      */

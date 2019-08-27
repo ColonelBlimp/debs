@@ -49,7 +49,7 @@ public interface TransactionDao {
      * Retrieve an {@code Transaction} matching the referenced unique identifier.
      *
      * <p><b>Note:</b> This will also return an {@code Transaction} which is marked as
-     * <b>deleted<b>.
+     * <b>deleted</b>.
      *
      * @param id the unique identifier
      * @return {@code Transaction}. Non-{@code null}.
