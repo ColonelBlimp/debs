@@ -54,5 +54,11 @@ public class TransactionTest {
             REFERENCE, AMOUNT,
             false);
         Assert.assertNotNull(entity);
+        Assert.assertEquals(entity.getNarrative(), NARRATIVE);
+        Assert.assertEquals(entity.getReference(), REFERENCE);
+        Assert.assertEquals(entity.getDate(), DATE);
+        Assert.assertTrue(entity.getAmount().eq(AMOUNT));
+        Assert.assertFalse(entity.isCleared());
+        Assert.assertFalse(entity.isDeleted());
     }
 }
