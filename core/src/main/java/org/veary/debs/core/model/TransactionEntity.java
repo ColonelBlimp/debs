@@ -76,6 +76,11 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.cleared = cleared;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param object
+     */
     public TransactionEntity(TransactionGetByIdEntity object) {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
 
@@ -86,10 +91,10 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.date = Objects.requireNonNull(object.getDate());
         this.reference = Objects.requireNonNull(object.getReference());
         this.narrative = Objects.requireNonNull(object.getNarrative());
+        this.amount = Objects.requireNonNull(object.getFromAmount());
 
-        EntryEntity fromEntry = new EntryEntity(object, Entry.Types.FROM);
-        //        EntryEntity toEntry = new EntryEntity(object, Entry.Types.TO);
-        //        this.amount = Objects.requireNonNull(object.getToEntryAmount());
+        this.fromEntry = new EntryEntity(object, Entry.Types.FROM);
+        this.toEntry = new EntryEntity(object, Entry.Types.TO);
     }
 
     @Override

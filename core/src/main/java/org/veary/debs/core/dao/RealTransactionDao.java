@@ -90,8 +90,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         final SqlStatement insertTx = SqlStatement
             .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
         insertTx.setParameter(1, object.getDate());
-        insertTx.setParameter(2, object.getNarrative());
-        insertTx.setParameter(3, object.getReference());
+        insertTx.setParameter(2, object.getReference());
+        insertTx.setParameter(3, object.getNarrative());
         insertTx.setParameter(4, fromId);
         insertTx.setParameter(5, toId);
 

@@ -82,6 +82,13 @@ public class SystemFacadeTest extends JndiTestBase {
     public void getTransactionByIdMethod() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
+        Transaction object = result.get();
+        Assert.assertEquals(object.getDate(), DATE);
+        Assert.assertEquals(object.getNarrative(), NARRATIVE);
+        Assert.assertEquals(object.getReference(), REFERENCE);
+        Assert.assertTrue(object.getToEntry().getAmount().eq(AMOUNT));
+        Assert.assertTrue(object.getFromEntry().getAmount().eq(AMOUNT.negate()));
+        System.out.println(result.get());
     }
 
     private static final String FROM_NAME = "Cash"; //$NON-NLS-1$
