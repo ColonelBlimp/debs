@@ -30,7 +30,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
@@ -67,6 +66,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             .getId();
         this.amount = new Money(BigDecimal.ZERO);
         this.cleared = false;
+        this.clearedTimestamp = LocalDateTime.MIN;
     }
 
     /**
@@ -114,7 +114,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.type = Objects.requireNonNull(object.getFromType());
             this.accountId = Objects.requireNonNull(object.getFromAccountId());
             this.cleared = object.isFromCleared();
-            //TODO: this.clearedTimestamp = Objects.requireNonNull(object.getFromClearedTimestamp());
+            this.clearedTimestamp = Objects.requireNonNull(object.getFromClearedTimestamp());
         } else {
             setId(Objects.requireNonNull(object.getToId()));
             setDeleted(object.isDeleted());
@@ -124,7 +124,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.type = Objects.requireNonNull(object.getToType());
             this.accountId = Objects.requireNonNull(object.getToAccountId());
             this.cleared = object.isToCleared();
-            //TODO: this.clearedTimestamp = Objects.requireNonNull(object.getToClearedTimestamp());
+            this.clearedTimestamp = Objects.requireNonNull(object.getToClearedTimestamp());
         }
     }
 
@@ -144,8 +144,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     @Override
-    public Optional<LocalDateTime> getClearedTimestamp() {
-        return Optional.ofNullable(this.clearedTimestamp);
+    public LocalDateTime getClearedTimestamp() {
+        return this.clearedTimestamp;
     }
 
     @Override
@@ -188,10 +188,10 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
      */
     @Override
     public String toString() {
-        String NL = System.lineSeparator();
+        String newLine = System.lineSeparator();
         Class<?> clazz = this.getClass();
-        StringBuilder sb = new StringBuilder(NL).append(clazz.getSimpleName());
-        sb.append(" {").append(NL); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder(newLine).append(clazz.getSimpleName());
+        sb.append(" {").append(newLine); //$NON-NLS-1$
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -203,10 +203,25 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     sb.append("{error}"); //$NON-NLS-1$
                 }
-                sb.append(NL);
+                sb.append(newLine);
             }
         }
         sb.append("}"); //$NON-NLS-1$
         return sb.toString();
+    }
+
+    /**
+     * Setting the cleared timestamp to anything other than {@link LocalDateTime#MIN} will also
+     * set the {@code cleared} flag to {@code true}. The reverse is also true.
+     *
+     * @param clearedTimestamp {@link LocalDateTime}
+     */
+    public void setClearedTimestamp(LocalDateTime clearedTimestamp) {
+        this.cleared = true;
+        this.clearedTimestamp = clearedTimestamp;
+
+        if (clearedTimestamp.equals(LocalDateTime.MIN)) {
+            this.cleared = false;
+        }
     }
 }

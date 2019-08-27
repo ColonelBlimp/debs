@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.dao;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -133,6 +134,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTxEntry.setParameter(2, object.getType().getId());
         insertTxEntry.setParameter(3, object.getAccountId());
         insertTxEntry.setParameter(4, object.isCleared());
+        insertTxEntry.setParameter(5, LocalDateTime.MIN); // The default meaning 'not cleared'
 
         return manager.persist(insertTxEntry);
     }

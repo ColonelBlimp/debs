@@ -77,9 +77,9 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     }
 
     /**
-     * Constructor.
+     * Special Constructor.
      *
-     * @param object
+     * @param object {@link TransactionGetByIdEntity}
      */
     public TransactionEntity(TransactionGetByIdEntity object) {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
@@ -148,10 +148,10 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
      */
     @Override
     public String toString() {
-        String NL = System.lineSeparator();
+        String newLine = System.lineSeparator();
         Class<?> clazz = this.getClass();
-        StringBuilder sb = new StringBuilder(NL).append(clazz.getSimpleName());
-        sb.append(" {").append(NL); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder(newLine).append(clazz.getSimpleName());
+        sb.append(" {").append(newLine); //$NON-NLS-1$
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -163,7 +163,7 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     sb.append("{error}"); //$NON-NLS-1$
                 }
-                sb.append(NL);
+                sb.append(newLine);
             }
         }
         sb.append("}"); //$NON-NLS-1$

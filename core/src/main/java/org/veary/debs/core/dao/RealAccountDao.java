@@ -210,31 +210,6 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
         return getAccountsList(key);
     }
 
-    /*
-    @Override
-    protected Account executeAndReturnSingleResult(SqlStatement statement) {
-        LOG.trace(LOG_CALLED);
-        final QueryManager manager = this.factory.createQueryManager();
-        return (Account) manager.createQuery(statement, Account.class).execute()
-            .getSingleResult();
-    }
-    
-    @Override
-    protected List<Account> executeAndReturnListResult(SqlStatement statement) {
-        LOG.trace(LOG_CALLED);
-        final QueryManager manager = this.factory.createQueryManager();
-        final List<Object> results = manager.createQuery(statement, Account.class).execute()
-            .getResultList();
-    
-        final List<Account> list = new ArrayList<>(results.size());
-    
-        for (Object object : results) {
-            list.add((Account) object);
-        }
-    
-        return Collections.unmodifiableList(list);
-    }
-    */
     private List<Account> getAccountsList(String key) {
         try {
             return executeAndReturnListResult(

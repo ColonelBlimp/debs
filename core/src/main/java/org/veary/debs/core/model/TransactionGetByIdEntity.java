@@ -63,7 +63,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         FROM_ETYPE("FROM_ETYPE"), //$NON-NLS-1$
         FROM_ACCOUNT_ID("FROM_ACCOUNT_ID"), //$NON-NLS-1$
         FROM_CLEARED("FROM_CLEARED"), //$NON-NLS-1$
-        //        FROM_CLEARED_TS("FROM_CLEARED_TS"), //$NON-NLS-1$
+        FROM_CLEARED_TS("FROM_CLEARED_TS"), //$NON-NLS-1$
 
         TO_ID("TO_ID"), //$NON-NLS-1$
         TO_CREATED("TO_CREATED"), //$NON-NLS-1$
@@ -71,8 +71,8 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         TO_AMOUNT("TO_AMOUNT"), //$NON-NLS-1$
         TO_ETYPE("TO_ETYPE"), //$NON-NLS-1$
         TO_ACCOUNT_ID("TO_ACCOUNT_ID"), //$NON-NLS-1$
-        TO_CLEARED("TO_CLEARED"); //$NON-NLS-1$
-        //        TO_CLEARED_TS("TO_CLEARED_TS"), //$NON-NLS-1$
+        TO_CLEARED("TO_CLEARED"), //$NON-NLS-1$
+        TO_CLEARED_TS("TO_CLEARED_TS"); //$NON-NLS-1$
 
         private final String name;
 
@@ -135,7 +135,8 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         this.fromType = Types.getType((Integer) dataMap.get(Fields.FROM_ETYPE.toString()));
         this.fromAccountId = (Long) dataMap.get(Fields.FROM_ACCOUNT_ID.toString());
         this.fromCleared = (boolean) dataMap.get(Fields.FROM_CLEARED.toString());
-        //TODO: this.fromClearedTimestamp
+        this.fromClearedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
+            (Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString()));
 
         this.toId = (Long) dataMap.get(Fields.TO_ID.toString());
         this.toCreatedTimestamp = DaoUtils
@@ -145,7 +146,8 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         this.toType = Types.getType((Integer) dataMap.get(Fields.TO_ETYPE.toString()));
         this.toAccountId = (Long) dataMap.get(Fields.TO_ACCOUNT_ID.toString());
         this.toCleared = (boolean) dataMap.get(Fields.TO_CLEARED.toString());
-        //TODO: this.toClearedTimestamp
+        this.toClearedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
+            (Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString()));
     }
 
     public String getReference() {
@@ -191,10 +193,10 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
      */
     @Override
     public String toString() {
-        String NL = System.lineSeparator();
+        String newLine = System.lineSeparator();
         Class<?> clazz = this.getClass();
-        StringBuilder sb = new StringBuilder(NL).append(clazz.getSimpleName());
-        sb.append(" {").append(NL); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder(newLine).append(clazz.getSimpleName());
+        sb.append(" {").append(newLine); //$NON-NLS-1$
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -206,7 +208,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     sb.append("{error}"); //$NON-NLS-1$
                 }
-                sb.append(NL);
+                sb.append(newLine);
             }
         }
         sb.append("}"); //$NON-NLS-1$

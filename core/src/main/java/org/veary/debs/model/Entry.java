@@ -27,7 +27,6 @@ package org.veary.debs.model;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
@@ -146,9 +145,9 @@ public interface Entry extends PersistentObject {
      *
      * <p><b>Note:</b> The returned value will be empty if this entry has not been cleared.
      *
-     * @return {@link Optional<LocalDateTime>}
+     * @return {@link LocalDateTime}. Not {@code null}.
      */
-    Optional<LocalDateTime> getClearedTimestamp();
+    LocalDateTime getClearedTimestamp();
 
     /**
      * Is the entry cleared.

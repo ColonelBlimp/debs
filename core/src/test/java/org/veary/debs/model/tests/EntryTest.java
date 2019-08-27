@@ -26,6 +26,7 @@ package org.veary.debs.model.tests;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.AccountEntity;
 import org.veary.debs.core.model.EntryEntity;
+import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Fields;
@@ -85,14 +87,25 @@ public class EntryTest {
         entity.setAmount(AMOUNT.negate());
     }
 
+    private static final Long SET_ACC_ID = Long.valueOf(101);
+    private static final LocalDateTime SET_CLEARED_TS = LocalDateTime.now();
+
     @Test
     public void instantiationFromDefault() {
         Entry object = Entry.newInstance(FROM, this.fromAccount);
         Assert.assertNotNull(object);
         Assert.assertFalse(object.isCleared());
-        Assert.assertTrue(object.getClearedTimestamp().isEmpty());
+        Assert.assertEquals(object.getClearedTimestamp(), LocalDateTime.MIN);
         Assert.assertTrue(object.getType().equals(FROM));
         Assert.assertEquals(object.getAccountId(), FROM_ACC_ID);
+
+        ((EntryEntity) object).setAccountId(SET_ACC_ID);
+        Assert.assertEquals(object.getAccountId(), SET_ACC_ID);
+        ((EntryEntity) object).setType(TO);
+        Assert.assertTrue(object.getType().equals(TO));
+        ((EntryEntity) object).setClearedTimestamp(SET_CLEARED_TS);
+        Assert.assertEquals(object.getClearedTimestamp(), SET_CLEARED_TS);
+        Assert.assertTrue(object.isCleared());
     }
 
     @Test
@@ -100,7 +113,7 @@ public class EntryTest {
         Entry object = Entry.newInstance(TO, this.toAccount);
         Assert.assertNotNull(object);
         Assert.assertFalse(object.isCleared());
-        Assert.assertTrue(object.getClearedTimestamp().isEmpty());
+        Assert.assertEquals(object.getClearedTimestamp(), LocalDateTime.MIN);
         Assert.assertTrue(object.getType().equals(TO));
         Assert.assertEquals(object.getAccountId(), TO_ACC_ID);
     }
@@ -131,7 +144,8 @@ public class EntryTest {
         Assert.assertTrue(object.getAmount().eq(AMOUNT));
         Assert.assertEquals(object.getType(), Entry.Types.TO);
         Assert.assertEquals(object.getAccountId(), this.toAccount.getId());
-        Assert.assertFalse(object.getClearedTimestamp().isEmpty());
+        Assert.assertEquals(object.getClearedTimestamp(),
+            DaoUtils.localDateTimeFromSqlTimestamp(REAL_CLEARED_TS));
     }
 
     @Test
