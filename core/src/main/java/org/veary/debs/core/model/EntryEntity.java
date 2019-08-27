@@ -88,9 +88,10 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         this.type = Entry.Types.getType((Integer) dataMap.get(Fields.ETYPE.toString()));
         this.accountId = (Long) dataMap.get(Fields.ACCOUNT_ID.toString());
         this.amount = new Money((BigDecimal) dataMap.get(Fields.AMOUNT.toString()));
-        this.cleared = (Boolean) dataMap.get(Fields.CLEARED.toString());
-        this.clearedTimestamp = DaoUtils
-            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CLEARED_TS.toString()));
+        setCleared((boolean) dataMap.get(Fields.CLEARED.toString()));
+        setClearedTimestamp(DaoUtils
+            .localDateTimeFromSqlTimestamp(
+                (Timestamp) dataMap.get(Fields.CLEARED_TS.toString())));
         validateInput();
     }
 
@@ -113,6 +114,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.amount = Objects.requireNonNull(object.getFromAmount());
             this.type = Objects.requireNonNull(object.getFromType());
             this.accountId = Objects.requireNonNull(object.getFromAccountId());
+            // These two might cause some issues?
             this.cleared = object.isFromCleared();
             this.clearedTimestamp = Objects.requireNonNull(object.getFromClearedTimestamp());
         } else {
@@ -123,6 +125,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.amount = Objects.requireNonNull(object.getToAmount());
             this.type = Objects.requireNonNull(object.getToType());
             this.accountId = Objects.requireNonNull(object.getToAccountId());
+            // These two might cause some issues?
             this.cleared = object.isToCleared();
             this.clearedTimestamp = Objects.requireNonNull(object.getToClearedTimestamp());
         }
@@ -170,6 +173,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
     public void setCleared(boolean cleared) {
         this.cleared = cleared;
+        if (cleared) {
+            this.clearedTimestamp = LocalDateTime.now();
+        } else {
+            this.clearedTimestamp = LocalDateTime.MIN;
+        }
     }
 
     private void validateInput() {
@@ -217,11 +225,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
      * @param clearedTimestamp {@link LocalDateTime}
      */
     public void setClearedTimestamp(LocalDateTime clearedTimestamp) {
-        this.cleared = true;
         this.clearedTimestamp = clearedTimestamp;
-
         if (clearedTimestamp.equals(LocalDateTime.MIN)) {
             this.cleared = false;
+        } else {
+            this.cleared = true;
         }
     }
 }
