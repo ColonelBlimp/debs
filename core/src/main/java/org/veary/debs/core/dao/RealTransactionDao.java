@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
@@ -41,7 +42,6 @@ import org.veary.persist.Query;
 import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
-import org.veary.persist.exceptions.NoResultException;
 
 /**
  * <b>Purpose:</b> ?
@@ -89,10 +89,11 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         final SqlStatement insertTx = SqlStatement
             .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
-        insertTx.setParameter(1, object.getNarrative());
-        insertTx.setParameter(2, object.getReference());
-        insertTx.setParameter(3, fromId);
-        insertTx.setParameter(4, toId);
+        insertTx.setParameter(1, object.getDate());
+        insertTx.setParameter(2, object.getNarrative());
+        insertTx.setParameter(3, object.getReference());
+        insertTx.setParameter(4, fromId);
+        insertTx.setParameter(5, toId);
 
         Long id = manager.persist(insertTx);
         manager.commit();
@@ -113,11 +114,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionGetByIdEntity.class);
         query.execute();
-        TransactionGetByIdEntity object = (TransactionGetByIdEntity) query.getSingleResult();
-
-        LOG.trace(">> {}", object);
-        throw new NoResultException("");
-        //        return null;
+        return new TransactionEntity((TransactionGetByIdEntity) query.getSingleResult());
     }
 
     /**

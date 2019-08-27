@@ -83,7 +83,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
         setCreationTimestamp(DaoUtils
-            .localDateTimeFromTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
 
         this.name = (String) dataMap.get(Fields.NAME.toString());
         this.description = (String) dataMap.get(Fields.DESCRIPTION.toString());

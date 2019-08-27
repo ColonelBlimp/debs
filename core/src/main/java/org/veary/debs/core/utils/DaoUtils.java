@@ -24,9 +24,14 @@
 
 package org.veary.debs.core.utils;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
+
+import org.veary.debs.Messages;
 
 /**
  * <b>Purpose:</b> ?
@@ -38,10 +43,31 @@ import java.time.ZoneOffset;
  */
 public final class DaoUtils {
 
-    public static LocalDateTime localDateTimeFromTimestamp(Timestamp ts) {
-        return LocalDateTime.ofInstant(ts.toInstant(), ZoneOffset.ofHours(0));
+    /**
+     * Takes a {@code java.sql.Timestamp} object and returns a {@code LocalDateTime} object.
+     *
+     * @param ts {@code java.sql.Timestamp}
+     * @return {@code LocalDateTime}
+     */
+    public static LocalDateTime localDateTimeFromSqlTimestamp(Timestamp ts) {
+        return LocalDateTime.ofInstant(
+            Objects.requireNonNull(ts, Messages.getParameterIsNull("ts")).toInstant(), //$NON-NLS-1$
+            ZoneOffset.ofHours(0));
     }
 
+    /**
+     * Takes a {@code java.sql.Date} object and returns a {@code LocalDate} object.
+     *
+     * @param date {@code java.sql.Date}
+     * @return {@code LocalDate}
+     */
+    public static LocalDate localDateFromSqlDate(Date date) {
+        return Objects.requireNonNull(date, Messages.getParameterIsNull("date")).toLocalDate(); //$NON-NLS-1$
+    }
+
+    /**
+     * Private constructor.
+     */
     private DaoUtils() {
     }
 }

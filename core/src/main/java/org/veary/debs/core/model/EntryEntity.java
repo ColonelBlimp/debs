@@ -83,15 +83,49 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
         setCreationTimestamp(DaoUtils
-            .localDateTimeFromTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
 
         this.type = Entry.Types.getType((Integer) dataMap.get(Fields.ETYPE.toString()));
         this.accountId = (Long) dataMap.get(Fields.ACCOUNT_ID.toString());
         this.amount = new Money((BigDecimal) dataMap.get(Fields.AMOUNT.toString()));
         this.cleared = (Boolean) dataMap.get(Fields.CLEARED.toString());
         this.clearedTimestamp = DaoUtils
-            .localDateTimeFromTimestamp((Timestamp) dataMap.get(Fields.CLEARED_TS.toString()));
+            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CLEARED_TS.toString()));
         validateInput();
+    }
+
+    /**
+     * Special constructor.
+     *
+     * @param object {@link TransactionGetByIdEntity}
+     * @param type {@code Entry.Types}
+     */
+    public EntryEntity(TransactionGetByIdEntity object, Types type) {
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+        Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
+
+        this.type = type;
+        if (type.equals(Types.FROM)) {
+            setId(Objects.requireNonNull(object.getFromId()));
+            setDeleted(object.isDeleted());
+            setCreationTimestamp(Objects.requireNonNull(object.getFromCreatedTimestamp()));
+
+            this.amount = Objects.requireNonNull(object.getFromAmount());
+            this.type = Objects.requireNonNull(object.getFromType());
+            this.accountId = Objects.requireNonNull(object.getFromAccountId());
+            this.cleared = object.isFromCleared();
+            //TODO: this.clearedTimestamp = Objects.requireNonNull(object.getFromClearedTimestamp());
+        } else {
+            setId(Objects.requireNonNull(object.getToId()));
+            setDeleted(object.isDeleted());
+            setCreationTimestamp(Objects.requireNonNull(object.getToCreatedTimestamp()));
+
+            this.amount = Objects.requireNonNull(object.getToAmount());
+            this.type = Objects.requireNonNull(object.getToType());
+            this.accountId = Objects.requireNonNull(object.getToAccountId());
+            this.cleared = object.isToCleared();
+            //TODO: this.clearedTimestamp = Objects.requireNonNull(object.getToClearedTimestamp());
+        }
     }
 
     @Override

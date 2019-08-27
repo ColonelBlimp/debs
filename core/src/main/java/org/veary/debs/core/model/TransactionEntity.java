@@ -45,7 +45,7 @@ import org.veary.debs.model.Transaction;
  */
 public final class TransactionEntity extends PersistentObjectImpl implements Transaction {
 
-    private final Money amount;
+    private Money amount;
 
     private LocalDate date;
     private String narrative;
@@ -61,7 +61,9 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
      * @param narrative
      * @param reference
      * @param amount
-     * @param cleared
+     * @param cleared {@code true} if <b>both</b> {@code Entry} object should be marked as
+     *     <i>cleared</i>, otherwise {@code false}. <b>Note:</b> The {@code Transaction} object
+     *     itself does does not have a <i>cleared</i> field.
      */
     public TransactionEntity(LocalDate date, String narrative, String reference, Money amount,
         boolean cleared) {
@@ -72,6 +74,22 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
             Messages.getParameterIsNull("reference")); //$NON-NLS-1$
         this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
         this.cleared = cleared;
+    }
+
+    public TransactionEntity(TransactionGetByIdEntity object) {
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        setId(Objects.requireNonNull(object.getId()));
+        setDeleted(object.isDeleted());
+        setCreationTimestamp(Objects.requireNonNull(object.getCreationTimestamp()));
+
+        this.date = Objects.requireNonNull(object.getDate());
+        this.reference = Objects.requireNonNull(object.getReference());
+        this.narrative = Objects.requireNonNull(object.getNarrative());
+
+        EntryEntity fromEntry = new EntryEntity(object, Entry.Types.FROM);
+        //        EntryEntity toEntry = new EntryEntity(object, Entry.Types.TO);
+        //        this.amount = Objects.requireNonNull(object.getToEntryAmount());
     }
 
     @Override

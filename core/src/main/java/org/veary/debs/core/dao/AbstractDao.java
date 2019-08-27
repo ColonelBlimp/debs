@@ -52,6 +52,11 @@ abstract class AbstractDao<T> {
 
     protected final PersistenceManagerFactory factory;
 
+    /**
+     * Constructor.
+     *
+     * @param factory {@link PersistenceManagerFactory}
+     */
     protected AbstractDao(PersistenceManagerFactory factory) {
         this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
     }
