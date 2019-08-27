@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
@@ -94,7 +95,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
     private LocalDateTime fromCreatedTimestamp;
     private boolean fromDeleted;
     private Money fromAmount;
-    private Entry.Types fromType;
+    private Entry.Types fromType = Entry.Types.FROM;
     private Long fromAccountId;
     private boolean fromCleared;
     private LocalDateTime fromClearedTimestamp;
@@ -103,10 +104,17 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
     private LocalDateTime toCreatedTimestamp;
     private boolean toDeleted;
     private Money toAmount;
-    private Entry.Types toType;
+    private Entry.Types toType = Entry.Types.TO;
     private Long toAccountId;
     private boolean toCleared;
     private LocalDateTime toClearedTimestamp;
+
+    /**
+     * Default Constructor.
+     *
+     */
+    public TransactionGetByIdEntity() {
+    }
 
     /**
      * Constructor.
@@ -131,23 +139,23 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         this.fromCreatedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
             (Timestamp) dataMap.get(Fields.FROM_CREATED.toString()));
         this.fromDeleted = (boolean) dataMap.get(Fields.FROM_DELETED.toString());
-        this.fromAmount = new Money((BigDecimal) dataMap.get(Fields.FROM_AMOUNT.toString()));
+        setFromAmount(new Money((BigDecimal) dataMap.get(Fields.FROM_AMOUNT.toString())));
         this.fromType = Types.getType((Integer) dataMap.get(Fields.FROM_ETYPE.toString()));
         this.fromAccountId = (Long) dataMap.get(Fields.FROM_ACCOUNT_ID.toString());
-        this.fromCleared = (boolean) dataMap.get(Fields.FROM_CLEARED.toString());
-        this.fromClearedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
-            (Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString()));
+        setFromCleared((boolean) dataMap.get(Fields.FROM_CLEARED.toString()));
+        setFromClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
+            (Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString())));
 
         this.toId = (Long) dataMap.get(Fields.TO_ID.toString());
         this.toCreatedTimestamp = DaoUtils
             .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.TO_CREATED.toString()));
         this.toDeleted = (boolean) dataMap.get(Fields.TO_DELETED.toString());
-        this.toAmount = new Money((BigDecimal) dataMap.get(Fields.TO_AMOUNT.toString()));
+        setToAmount(new Money((BigDecimal) dataMap.get(Fields.TO_AMOUNT.toString())));
         this.toType = Types.getType((Integer) dataMap.get(Fields.TO_ETYPE.toString()));
         this.toAccountId = (Long) dataMap.get(Fields.TO_ACCOUNT_ID.toString());
-        this.toCleared = (boolean) dataMap.get(Fields.TO_CLEARED.toString());
-        this.toClearedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
-            (Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString()));
+        setToCleared((boolean) dataMap.get(Fields.TO_CLEARED.toString()));
+        setToClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
+            (Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString())));
     }
 
     public String getReference() {
@@ -164,10 +172,6 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setNarrative(String narrative) {
         this.narrative = narrative;
-    }
-
-    public Long getFromEntryId() {
-        return this.fromId;
     }
 
     public Long getToAccountId() {
@@ -229,6 +233,11 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setFromCleared(boolean fromCleared) {
         this.fromCleared = fromCleared;
+        if (fromCleared) {
+            this.fromClearedTimestamp = LocalDateTime.now();
+        } else {
+            this.fromClearedTimestamp = LocalDateTime.MIN;
+        }
     }
 
     public boolean isToCleared() {
@@ -237,6 +246,11 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setToCleared(boolean toCleared) {
         this.toCleared = toCleared;
+        if (toCleared) {
+            this.toClearedTimestamp = LocalDateTime.now();
+        } else {
+            this.toClearedTimestamp = LocalDateTime.MIN;
+        }
     }
 
     public Long getFromId() {
@@ -252,15 +266,16 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
     }
 
     public void setFromAmount(Money fromAmount) {
+        if (fromAmount.isPlus()) {
+            throw new IllegalArgumentException(
+                Messages.getString("TransactionGetByIdEntity.setFromAmount.wrongsign", //$NON-NLS-1$
+                    fromAmount));
+        }
         this.fromAmount = fromAmount;
     }
 
     public Entry.Types getFromType() {
         return this.fromType;
-    }
-
-    public void setFromType(Entry.Types fromType) {
-        this.fromType = fromType;
     }
 
     public Long getFromAccountId() {
@@ -277,6 +292,11 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setFromClearedTimestamp(LocalDateTime fromClearedTimestamp) {
         this.fromClearedTimestamp = fromClearedTimestamp;
+        if (fromClearedTimestamp.equals(LocalDateTime.MIN)) {
+            this.fromCleared = false;
+        } else {
+            this.fromCleared = true;
+        }
     }
 
     public Long getToId() {
@@ -292,15 +312,15 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
     }
 
     public void setToAmount(Money toAmount) {
+        if (toAmount.isMinus()) {
+            throw new IllegalArgumentException(
+                Messages.getString("TransactionGetByIdEntity.setToAmount.wrongsign", toAmount)); //$NON-NLS-1$
+        }
         this.toAmount = toAmount;
     }
 
     public Entry.Types getToType() {
         return this.toType;
-    }
-
-    public void setToType(Entry.Types toType) {
-        this.toType = toType;
     }
 
     public LocalDateTime getToClearedTimestamp() {
@@ -309,6 +329,11 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setToClearedTimestamp(LocalDateTime toClearedTimestamp) {
         this.toClearedTimestamp = toClearedTimestamp;
+        if (toClearedTimestamp.equals(LocalDateTime.MIN)) {
+            this.toCleared = false;
+        } else {
+            this.toCleared = true;
+        }
     }
 
     public LocalDateTime getFromCreatedTimestamp() {

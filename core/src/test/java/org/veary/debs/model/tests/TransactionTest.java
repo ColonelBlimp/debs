@@ -26,11 +26,13 @@ package org.veary.debs.model.tests;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
+import org.veary.debs.core.model.TransactionGetByIdEntity;
 import org.veary.debs.model.Transaction;
 
 /**
@@ -60,5 +62,75 @@ public class TransactionTest {
         Assert.assertTrue(entity.getAmount().eq(AMOUNT));
         Assert.assertFalse(entity.isCleared());
         Assert.assertFalse(entity.isDeleted());
+    }
+
+    private static final Long ACOUNT_FROM_ID = Long.valueOf(11);
+    private static final LocalDateTime CREATION = LocalDateTime.now();
+    private static final Long FROM_ID = Long.valueOf(100);
+    private static final Long ID = Long.valueOf(123);
+    private static final Long TO_ID = Long.valueOf(200);
+    private static final Long ACOUNT_TO_ID = Long.valueOf(22);
+
+    @Test
+    public void transactionGetByIdMethod() {
+        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        object.setCreationTimestamp(CREATION);
+        object.setDate(DATE);
+        object.setDeleted(true);
+        object.setFromAccountId(ACOUNT_FROM_ID);
+        object.setFromAmount(AMOUNT.negate());
+        object.setFromClearedTimestamp(LocalDateTime.MIN);
+        object.setFromCreatedTimestamp(CREATION);
+        object.setFromDeleted(false);
+        object.setFromId(FROM_ID);
+        object.setId(ID);
+        object.setNarrative(NARRATIVE);
+        object.setReference(REFERENCE);
+        object.setToAccountId(ACOUNT_TO_ID);
+        object.setToAmount(AMOUNT);
+        object.setToClearedTimestamp(LocalDateTime.MIN);
+        object.setToCreatedTimestamp(CREATION);
+        object.setToDeleted(false);
+        object.setToId(TO_ID);
+
+        Assert.assertEquals(object.getCreationTimestamp(), CREATION);
+        Assert.assertEquals(object.getDate(), DATE);
+        Assert.assertTrue(object.isDeleted());
+        Assert.assertEquals(object.getFromAccountId(), ACOUNT_FROM_ID);
+        Assert.assertTrue(object.getFromAmount().eq(AMOUNT.negate()));
+        Assert.assertEquals(object.getFromClearedTimestamp(), LocalDateTime.MIN);
+        Assert.assertFalse(object.isFromCleared());
+        Assert.assertEquals(object.getFromCreatedTimestamp(), CREATION);
+        Assert.assertFalse(object.isFromDeleted());
+        Assert.assertEquals(object.getFromId(), FROM_ID);
+        Assert.assertEquals(object.getId(), ID);
+        Assert.assertEquals(object.getNarrative(), NARRATIVE);
+        Assert.assertEquals(object.getReference(), REFERENCE);
+        Assert.assertEquals(object.getToAccountId(), ACOUNT_TO_ID);
+        Assert.assertTrue(object.getToAmount().eq(AMOUNT));
+        Assert.assertEquals(object.getToCreatedTimestamp(), CREATION);
+        Assert.assertFalse(object.isToDeleted());
+        Assert.assertEquals(object.getToId(), TO_ID);
+        System.out.println(object);
+
+        object.setFromCleared(true);
+        Assert.assertFalse(object.getFromClearedTimestamp().equals(LocalDateTime.MIN));
+
+        object.setToCleared(true);
+        Assert.assertFalse(object.getToClearedTimestamp().equals(LocalDateTime.MIN));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "The amount for the 'FROM' account must be a minus. Value: 123456.00")
+    public void setFromMoneyException() {
+        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        object.setFromAmount(AMOUNT);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "The amount for the 'TO' account must be plus. Value: -123456.00")
+    public void setToMoneyException() {
+        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        object.setToAmount(AMOUNT.negate());
     }
 }
