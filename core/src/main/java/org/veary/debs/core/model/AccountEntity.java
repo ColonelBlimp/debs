@@ -31,7 +31,6 @@ import java.util.Objects;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
-import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Account;
 
@@ -82,8 +81,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
-        setCreationTimestamp(DaoUtils
-            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+        setCreationTimestamp(
+            ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
         this.name = (String) dataMap.get(Fields.NAME.toString());
         this.description = (String) dataMap.get(Fields.DESCRIPTION.toString());

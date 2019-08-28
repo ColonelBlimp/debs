@@ -34,7 +34,6 @@ import java.util.Map;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
-import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Types;
@@ -127,37 +126,36 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
-        setCreationTimestamp(DaoUtils
-            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+        setCreationTimestamp(
+            ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
-        this.date = DaoUtils
-            .localDateFromSqlDate((Date) dataMap.get(Fields.TDATE.toString()));
+        this.date = ((Date) dataMap.get(Fields.TDATE.toString())).toLocalDate();
         this.reference = (String) dataMap.get(Fields.REFERENCE.toString());
         this.narrative = (String) dataMap.get(Fields.NARRATIVE.toString());
 
         this.fromId = (Long) dataMap.get(Fields.FROM_ID.toString());
-        this.fromCreatedTimestamp = DaoUtils.localDateTimeFromSqlTimestamp(
-            (Timestamp) dataMap.get(Fields.FROM_CREATED.toString()));
+        this.fromCreatedTimestamp = ((Timestamp) dataMap.get(Fields.FROM_CREATED.toString()))
+            .toLocalDateTime();
         this.fromDeleted = (boolean) dataMap.get(Fields.FROM_DELETED.toString());
         setFromAmount(new Money((BigDecimal) dataMap.get(Fields.FROM_AMOUNT.toString())));
         this.fromType = Types.getType((Integer) dataMap.get(Fields.FROM_ETYPE.toString()));
         this.fromAccountId = (Long) dataMap.get(Fields.FROM_ACCOUNT_ID.toString());
 
         setFromCleared((boolean) dataMap.get(Fields.FROM_CLEARED.toString()));
-        setFromClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
-            (Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString())));
+        setFromClearedTimestamp(
+            ((Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString())).toLocalDateTime());
 
         this.toId = (Long) dataMap.get(Fields.TO_ID.toString());
-        this.toCreatedTimestamp = DaoUtils
-            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.TO_CREATED.toString()));
+        this.toCreatedTimestamp = ((Timestamp) dataMap.get(Fields.TO_CREATED.toString()))
+            .toLocalDateTime();
         this.toDeleted = (boolean) dataMap.get(Fields.TO_DELETED.toString());
         setToAmount(new Money((BigDecimal) dataMap.get(Fields.TO_AMOUNT.toString())));
         this.toType = Types.getType((Integer) dataMap.get(Fields.TO_ETYPE.toString()));
         this.toAccountId = (Long) dataMap.get(Fields.TO_ACCOUNT_ID.toString());
 
         setToCleared((boolean) dataMap.get(Fields.TO_CLEARED.toString()));
-        setToClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
-            (Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString())));
+        setToClearedTimestamp(
+            ((Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString())).toLocalDateTime());
     }
 
     public String getReference() {

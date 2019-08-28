@@ -33,7 +33,6 @@ import java.util.Objects;
 
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
-import org.veary.debs.core.utils.DaoUtils;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
@@ -83,16 +82,15 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
-        setCreationTimestamp(DaoUtils
-            .localDateTimeFromSqlTimestamp((Timestamp) dataMap.get(Fields.CREATED.toString())));
+        setCreationTimestamp(
+            ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
         this.type = Entry.Types.getType((Integer) dataMap.get(Fields.ETYPE.toString()));
         this.accountId = (Long) dataMap.get(Fields.ACCOUNT_ID.toString());
         this.amount = new Money((BigDecimal) dataMap.get(Fields.AMOUNT.toString()));
         setCleared((boolean) dataMap.get(Fields.CLEARED.toString()));
-        setClearedTimestamp(DaoUtils
-            .localDateTimeFromSqlTimestamp(
-                (Timestamp) dataMap.get(Fields.CLEARED_TS.toString())));
+        setClearedTimestamp(
+            ((Timestamp) dataMap.get(Fields.CLEARED_TS.toString())).toLocalDateTime());
         validateInput();
     }
 
