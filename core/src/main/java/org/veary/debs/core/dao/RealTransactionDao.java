@@ -116,6 +116,11 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     @Override
+    public void updateTransaction(Transaction original, Transaction updated,
+        Entry updatedFromEntry, Entry updatedToEntry) {
+    }
+
+    @Override
     public Transaction getTransactionById(Long id) {
         LOG.trace(LOG_CALLED);
 

@@ -76,18 +76,16 @@ public final class RealSystemFacade implements SystemFacade {
     public Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry) {
         LOG.trace(LOG_CALLED);
 
-        TransactionEntity transactionEntity = (TransactionEntity) Objects.requireNonNull(
-            transaction,
-            Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
+        Objects.requireNonNull(transaction, Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
+        Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
+        Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 
-        EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(
-            fromEntry,
-            Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
+        TransactionEntity transactionEntity = (TransactionEntity) transaction;
+
+        EntryEntity fromEntryEntity = (EntryEntity) fromEntry;
         fromEntryEntity.setAmount(transactionEntity.getAmount().negate());
 
-        EntryEntity toEntryEntity = (EntryEntity) Objects.requireNonNull(
-            toEntry,
-            Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
+        EntryEntity toEntryEntity = (EntryEntity) toEntry;
         toEntryEntity.setAmount(transactionEntity.getAmount());
 
         transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
@@ -102,6 +100,9 @@ public final class RealSystemFacade implements SystemFacade {
         Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
         Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(updatedToEntry, Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
+
+        this.transactionDao.updateTransaction(original, updated, updatedFromEntry,
+            updatedToEntry);
     }
 
     @Override

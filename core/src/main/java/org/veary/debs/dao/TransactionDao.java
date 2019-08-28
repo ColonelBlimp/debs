@@ -46,6 +46,16 @@ public interface TransactionDao {
     Long createTransaction(Transaction object);
 
     /**
+     *
+     * @param original
+     * @param updated
+     * @param updatedFromEntry
+     * @param updatedToEntry
+     */
+    void updateTransaction(Transaction original, Transaction updated, Entry updatedFromEntry,
+        Entry updatedToEntry);
+
+    /**
      * Retrieve an {@code Transaction} matching the referenced unique identifier.
      *
      * <p><b>Note:</b> This will also return an {@code Transaction} which is marked as
