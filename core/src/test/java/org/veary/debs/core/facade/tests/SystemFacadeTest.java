@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.facade.RealSystemFacade;
+import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
@@ -56,8 +57,6 @@ public class SystemFacadeTest extends JndiTestBase {
         Assert.assertNotNull(this.systemFacade);
     }
 
-    private Account fromAccount;
-    private Account toAccount;
     private Long txId;
 
     private static final LocalDate DATE = LocalDate.now();
@@ -76,6 +75,17 @@ public class SystemFacadeTest extends JndiTestBase {
         this.txId = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
         Assert.assertNotNull(this.txId);
         Assert.assertTrue(this.txId.longValue() > 0L);
+
+        // Check balance on the involved accounts
+        Account fromAcc = this.accountDao.getAccountByName(FROM_NAME);
+        Assert.assertNotNull(fromAcc);
+        Assert.assertNotNull(fromAcc.getBalance());
+        //        Assert.assertTrue(fromAcc.getBalance().isMinus());
+
+        Account toAcc = this.accountDao.getAccountByName(TO_NAME);
+        Assert.assertNotNull(toAcc);
+        Assert.assertNotNull(toAcc.getBalance());
+        //        Assert.assertTrue(toAcc.getBalance().isPlus());
     }
 
     @Test(dependsOnMethods = { "postTransactionMethod" })
@@ -88,18 +98,53 @@ public class SystemFacadeTest extends JndiTestBase {
         Assert.assertEquals(object.getReference(), REFERENCE);
         Assert.assertTrue(object.getToEntry().getAmount().eq(AMOUNT));
         Assert.assertTrue(object.getFromEntry().getAmount().eq(AMOUNT.negate()));
+
+        Assert.assertFalse(((TransactionEntity) object).isCleared());
+        //        Assert.assertFalse(object.getFromEntry().isCleared());
+        //        Assert.assertFalse(object.getToEntry().isCleared());
+
         System.out.println(result.get());
     }
 
+    private static final LocalDate UPDATE_DATE = LocalDate.of(2019, 8, 20);
+    private static final String UPDATE_NARRATIVE = "Updated Narrative"; //$NON-NLS-1$
+    private static final String UPDATE_REFERENCE = "Updated Reference"; //$NON-NLS-1$
+    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456));
+
+    @Test(dependsOnMethods = { "postTransactionMethod" })
+    public void updateTransactionMethod() {
+        java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
+        Transaction original = result.get();
+
+        Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
+            UPDATE_REFERENCE, UPDATED_AMOUNT,
+            false);
+        Entry updatedFromEntry = Entry.newInstance(Entry.Types.FROM, this.updatedFromAccount);
+        Entry updatedToEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
+
+        this.systemFacade.updateTransaction(original, updated, updatedFromEntry, updatedToEntry);
+    }
+
+    /* ****************************** PRIVATE ******************************* */
+
+    private static final Long ASSETS_GROUP_ID = Long.valueOf(3);
     private static final String FROM_NAME = "Cash"; //$NON-NLS-1$
     private static final String FROM_DESC = "Cash Description"; //$NON-NLS-1$
     private static final String TO_NAME = "Fuel"; //$NON-NLS-1$
     private static final String TO_DESC = "Fuel Description"; //$NON-NLS-1$
 
+    private static final String UPDATE_FROM_NAME = "Bank"; //$NON-NLS-1$
+    private static final String UPDATED_FROM_DESC = "Bank Description"; //$NON-NLS-1$
+
+    private Account fromAccount;
+    private Account toAccount;
+    private Account updatedFromAccount;
+
     private void createAccounts() {
         if (this.fromAccount == null) {
             this.accountDao
-                .createAccount(Account.newInstance(FROM_NAME, FROM_DESC, Long.valueOf(3),
+                .createAccount(Account.newInstance(FROM_NAME, FROM_DESC, ASSETS_GROUP_ID,
                     Account.Types.ASSET));
             this.fromAccount = this.accountDao.getAccountByName(FROM_NAME);
         }
@@ -109,6 +154,12 @@ public class SystemFacadeTest extends JndiTestBase {
                 .createAccount(Account.newInstance(TO_NAME, TO_DESC, Long.valueOf(7),
                     Account.Types.EXPENSE));
             this.toAccount = this.accountDao.getAccountByName(TO_NAME);
+        }
+
+        if (this.updatedFromAccount == null) {
+            this.accountDao.createAccount(Account.newInstance(UPDATE_FROM_NAME, UPDATED_FROM_DESC,
+                ASSETS_GROUP_ID, Account.Types.ASSET));
+            this.updatedFromAccount = this.accountDao.getAccountByName(UPDATE_FROM_NAME);
         }
     }
 }

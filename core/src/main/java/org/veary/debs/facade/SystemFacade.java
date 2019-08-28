@@ -50,6 +50,20 @@ public interface SystemFacade {
     Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry);
 
     /**
+     * Updates the referenced <i>original</i> transaction, with data from the referenced
+     * <i>updated</i> transaction and updated <i>updatedFromEntry</i> and <i>updatedToEntry</i>.
+     *
+     * <p><b>Note:</b> Only certain field in the {@code original} can be modified.
+     *
+     * @param original {@link Transaction}
+     * @param updated {@link Transaction}
+     * @param updatedFromEntry {@link Entry}
+     * @param updatedToEntry {@link Entry}
+     */
+    void updateTransaction(Transaction original, Transaction updated, Entry updatedFromEntry,
+        Entry updatedToEntry);
+
+    /**
      * Fetch a {@code Transaction} from persistent storage.
      *
      * @param id the unique identifier of the transaction to be retrieved

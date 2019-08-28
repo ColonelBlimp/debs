@@ -63,6 +63,12 @@ public final class RealAccountFacade implements AccountFacade {
 
     private final AccountDao dao;
 
+    /**
+     * <b>Purpose:</b> Enum providing enumerating all the <i>build-in</i> Group Accounts.
+     *
+     * @author Marc L. Veary
+     * @since 1.0
+     */
     private enum BuiltInAccounts {
 
         BALANCE("Balance"), //$NON-NLS-1$

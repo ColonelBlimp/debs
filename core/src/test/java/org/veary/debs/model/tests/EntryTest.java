@@ -95,7 +95,7 @@ public class EntryTest {
         Entry object = Entry.newInstance(FROM, this.fromAccount);
         Assert.assertNotNull(object);
         Assert.assertFalse(object.isCleared());
-        Assert.assertEquals(object.getClearedTimestamp(), LocalDateTime.MIN);
+        Assert.assertEquals(object.getClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
         Assert.assertTrue(object.getType().equals(FROM));
         Assert.assertEquals(object.getAccountId(), FROM_ACC_ID);
 
@@ -113,7 +113,7 @@ public class EntryTest {
         Entry object = Entry.newInstance(TO, this.toAccount);
         Assert.assertNotNull(object);
         Assert.assertFalse(object.isCleared());
-        Assert.assertEquals(object.getClearedTimestamp(), LocalDateTime.MIN);
+        Assert.assertEquals(object.getClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
         Assert.assertTrue(object.getType().equals(TO));
         Assert.assertEquals(object.getAccountId(), TO_ACC_ID);
     }

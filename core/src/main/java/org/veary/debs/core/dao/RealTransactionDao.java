@@ -24,7 +24,6 @@
 
 package org.veary.debs.core.dao;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -34,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
+import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.model.Entry;
@@ -58,6 +58,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
 
     private final Registry registry;
+    private final AccountDao accountDao;
 
     /**
      * Constructor.
@@ -66,10 +67,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
      * @param factory {@link PersistenceManagerFactory}
      */
     @Inject
-    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
+    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory,
+        AccountDao accountDao) {
         super(factory);
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.accountDao = Objects.requireNonNull(accountDao,
+            Messages.getParameterIsNull("accountDao")); //$NON-NLS-1$
     }
 
     @Override
@@ -84,6 +88,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         Long fromId = createTransactionEntry(manager,
             Objects.requireNonNull(object.getFromEntry(),
                 Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"))); //$NON-NLS-1$
+
         Long toId = createTransactionEntry(manager,
             Objects.requireNonNull(object.getToEntry(),
                 Messages.getString("RealTransactionDao.createTransaction.toEntry.null"))); //$NON-NLS-1$
@@ -97,6 +102,9 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTx.setParameter(5, toId);
 
         Long id = manager.persist(insertTx);
+        updateAccountBalance(manager, object.getFromEntry());
+        updateAccountBalance(manager, object.getToEntry());
+
         manager.commit();
 
         return id;
@@ -115,6 +123,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionGetByIdEntity.class);
         query.execute();
+
         return new TransactionEntity((TransactionGetByIdEntity) query.getSingleResult());
     }
 
@@ -134,8 +143,24 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTxEntry.setParameter(2, object.getType().getId());
         insertTxEntry.setParameter(3, object.getAccountId());
         insertTxEntry.setParameter(4, object.isCleared());
-        insertTxEntry.setParameter(5, LocalDateTime.MIN); // The default meaning 'not cleared'
+        insertTxEntry.setParameter(5, object.getClearedTimestamp());
 
         return manager.persist(insertTxEntry);
+    }
+
+    private void updateAccountBalance(TransactionManager manager, Entry entry) {
+        LOG.trace(LOG_CALLED);
+
+        LOG.trace("AccountId: {}", entry.getAccountId());
+        //        Account account = this.accountDao.getAccountById(entry.getAccountId());
+
+        //        queryManager.createQuery(arg0, arg1)
+        /*
+        final SqlStatement update = SqlStatement
+            .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
+        update.setParameter(1, newBalance.getValue());
+        update.setParameter(2, object.getId());
+        manager.persist(update);
+        */
     }
 }

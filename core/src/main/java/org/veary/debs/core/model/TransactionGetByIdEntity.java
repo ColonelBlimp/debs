@@ -142,6 +142,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         setFromAmount(new Money((BigDecimal) dataMap.get(Fields.FROM_AMOUNT.toString())));
         this.fromType = Types.getType((Integer) dataMap.get(Fields.FROM_ETYPE.toString()));
         this.fromAccountId = (Long) dataMap.get(Fields.FROM_ACCOUNT_ID.toString());
+
         setFromCleared((boolean) dataMap.get(Fields.FROM_CLEARED.toString()));
         setFromClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
             (Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString())));
@@ -153,6 +154,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         setToAmount(new Money((BigDecimal) dataMap.get(Fields.TO_AMOUNT.toString())));
         this.toType = Types.getType((Integer) dataMap.get(Fields.TO_ETYPE.toString()));
         this.toAccountId = (Long) dataMap.get(Fields.TO_ACCOUNT_ID.toString());
+
         setToCleared((boolean) dataMap.get(Fields.TO_CLEARED.toString()));
         setToClearedTimestamp(DaoUtils.localDateTimeFromSqlTimestamp(
             (Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString())));
@@ -236,7 +238,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         if (fromCleared) {
             this.fromClearedTimestamp = LocalDateTime.now();
         } else {
-            this.fromClearedTimestamp = LocalDateTime.MIN;
+            this.fromClearedTimestamp = EntryEntity.NOT_CLEARED_TIMESTAMP;
         }
     }
 
@@ -249,7 +251,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
         if (toCleared) {
             this.toClearedTimestamp = LocalDateTime.now();
         } else {
-            this.toClearedTimestamp = LocalDateTime.MIN;
+            this.toClearedTimestamp = EntryEntity.NOT_CLEARED_TIMESTAMP;
         }
     }
 
@@ -292,7 +294,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setFromClearedTimestamp(LocalDateTime fromClearedTimestamp) {
         this.fromClearedTimestamp = fromClearedTimestamp;
-        if (fromClearedTimestamp.equals(LocalDateTime.MIN)) {
+        if (fromClearedTimestamp.equals(EntryEntity.NOT_CLEARED_TIMESTAMP)) {
             this.fromCleared = false;
         } else {
             this.fromCleared = true;
@@ -329,7 +331,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
 
     public void setToClearedTimestamp(LocalDateTime toClearedTimestamp) {
         this.toClearedTimestamp = toClearedTimestamp;
-        if (toClearedTimestamp.equals(LocalDateTime.MIN)) {
+        if (toClearedTimestamp.equals(EntryEntity.NOT_CLEARED_TIMESTAMP)) {
             this.toCleared = false;
         } else {
             this.toCleared = true;

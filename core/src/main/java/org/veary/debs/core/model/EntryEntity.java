@@ -48,6 +48,8 @@ import org.veary.debs.model.Entry;
  */
 public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
+    public static final LocalDateTime NOT_CLEARED_TIMESTAMP = LocalDateTime.of(1, 1, 1, 0, 0, 0);
+
     private Types type;
     private Long accountId;
     private Money amount;
@@ -65,8 +67,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         this.accountId = (Objects.requireNonNull(account, Messages.getParameterIsNull("account"))) //$NON-NLS-1$
             .getId();
         this.amount = new Money(BigDecimal.ZERO);
-        this.cleared = false;
-        this.clearedTimestamp = LocalDateTime.MIN;
+        setCleared(false);
     }
 
     /**
@@ -176,7 +177,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         if (cleared) {
             this.clearedTimestamp = LocalDateTime.now();
         } else {
-            this.clearedTimestamp = LocalDateTime.MIN;
+            this.clearedTimestamp = NOT_CLEARED_TIMESTAMP;
         }
     }
 
@@ -219,14 +220,14 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     /**
-     * Setting the cleared timestamp to anything other than {@link LocalDateTime#MIN} will also
-     * set the {@code cleared} flag to {@code true}. The reverse is also true.
+     * Setting the cleared timestamp to anything other than {@link #} will also set the
+     * {@code cleared} flag to {@code true}. The reverse is also true.
      *
      * @param clearedTimestamp {@link LocalDateTime}
      */
     public void setClearedTimestamp(LocalDateTime clearedTimestamp) {
         this.clearedTimestamp = clearedTimestamp;
-        if (clearedTimestamp.equals(LocalDateTime.MIN)) {
+        if (clearedTimestamp.equals(NOT_CLEARED_TIMESTAMP)) {
             this.cleared = false;
         } else {
             this.cleared = true;

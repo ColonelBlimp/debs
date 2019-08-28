@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
 import org.veary.debs.model.Transaction;
@@ -79,7 +80,7 @@ public class TransactionTest {
         object.setDeleted(true);
         object.setFromAccountId(ACOUNT_FROM_ID);
         object.setFromAmount(AMOUNT.negate());
-        object.setFromClearedTimestamp(LocalDateTime.MIN);
+        object.setFromClearedTimestamp(EntryEntity.NOT_CLEARED_TIMESTAMP);
         object.setFromCreatedTimestamp(CREATION);
         object.setFromDeleted(false);
         object.setFromId(FROM_ID);
@@ -88,7 +89,7 @@ public class TransactionTest {
         object.setReference(REFERENCE);
         object.setToAccountId(ACOUNT_TO_ID);
         object.setToAmount(AMOUNT);
-        object.setToClearedTimestamp(LocalDateTime.MIN);
+        object.setToClearedTimestamp(EntryEntity.NOT_CLEARED_TIMESTAMP);
         object.setToCreatedTimestamp(CREATION);
         object.setToDeleted(false);
         object.setToId(TO_ID);
@@ -98,7 +99,7 @@ public class TransactionTest {
         Assert.assertTrue(object.isDeleted());
         Assert.assertEquals(object.getFromAccountId(), ACOUNT_FROM_ID);
         Assert.assertTrue(object.getFromAmount().eq(AMOUNT.negate()));
-        Assert.assertEquals(object.getFromClearedTimestamp(), LocalDateTime.MIN);
+        Assert.assertEquals(object.getFromClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
         Assert.assertFalse(object.isFromCleared());
         Assert.assertEquals(object.getFromCreatedTimestamp(), CREATION);
         Assert.assertFalse(object.isFromDeleted());
@@ -114,10 +115,10 @@ public class TransactionTest {
         System.out.println(object);
 
         object.setFromCleared(true);
-        Assert.assertFalse(object.getFromClearedTimestamp().equals(LocalDateTime.MIN));
+        Assert.assertFalse(object.getFromClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
 
         object.setToCleared(true);
-        Assert.assertFalse(object.getToClearedTimestamp().equals(LocalDateTime.MIN));
+        Assert.assertFalse(object.getToClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,

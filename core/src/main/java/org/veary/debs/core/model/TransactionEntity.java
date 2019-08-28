@@ -134,9 +134,7 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 
-        fromEntry.setAmount(this.amount.negate());
         fromEntry.setCleared(this.cleared);
-        toEntry.setAmount(this.amount);
         toEntry.setCleared(this.cleared);
 
         this.fromEntry = fromEntry;

@@ -83,14 +83,25 @@ public final class RealSystemFacade implements SystemFacade {
         EntryEntity fromEntryEntity = (EntryEntity) Objects.requireNonNull(
             fromEntry,
             Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
+        fromEntryEntity.setAmount(transactionEntity.getAmount().negate());
 
         EntryEntity toEntryEntity = (EntryEntity) Objects.requireNonNull(
             toEntry,
             Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
+        toEntryEntity.setAmount(transactionEntity.getAmount());
 
         transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
 
         return this.transactionDao.createTransaction(transactionEntity);
+    }
+
+    @Override
+    public void updateTransaction(Transaction original, Transaction updated,
+        Entry updatedFromEntry, Entry updatedToEntry) {
+        Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
+        Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
+        Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
+        Objects.requireNonNull(updatedToEntry, Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
     }
 
     @Override
