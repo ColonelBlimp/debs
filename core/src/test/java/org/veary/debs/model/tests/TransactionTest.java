@@ -115,10 +115,31 @@ public class TransactionTest {
         System.out.println(object);
 
         object.setFromCleared(true);
-        Assert.assertFalse(object.getFromClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
+        Assert.assertFalse(
+            object.getFromClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
 
         object.setToCleared(true);
-        Assert.assertFalse(object.getToClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
+        Assert.assertFalse(
+            object.getToClearedTimestamp().equals(EntryEntity.NOT_CLEARED_TIMESTAMP));
+    }
+
+    @Test
+    public void setClearedTimestamp() {
+        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        object.setFromCleared(false);
+        Assert.assertFalse(object.isFromCleared());
+        Assert.assertEquals(object.getFromClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
+        object.setToCleared(false);
+        Assert.assertFalse(object.isToCleared());
+        Assert.assertEquals(object.getToClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
+
+        object.setFromClearedTimestamp(CREATION);
+        Assert.assertEquals(object.getFromClearedTimestamp(), CREATION);
+        Assert.assertTrue(object.isFromCleared());
+
+        object.setToClearedTimestamp(CREATION);
+        Assert.assertEquals(object.getToClearedTimestamp(), CREATION);
+        Assert.assertTrue(object.isToCleared());
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,

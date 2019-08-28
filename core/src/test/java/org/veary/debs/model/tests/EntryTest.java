@@ -148,6 +148,16 @@ public class EntryTest {
     }
 
     @Test
+    public void setClearedTimestamp() {
+        EntryEntity object = (EntryEntity) Entry.newInstance(FROM, this.fromAccount);
+        object.setClearedTimestamp(LOCAL_DATE_TIME);
+        Assert.assertTrue(object.isCleared());
+
+        object.setClearedTimestamp(EntryEntity.NOT_CLEARED_TIMESTAMP);
+        Assert.assertFalse(object.isCleared());
+    }
+
+    @Test
     public void Types() {
         Integer id = Entry.Types.FROM.getId();
         Assert.assertNotNull(id);
