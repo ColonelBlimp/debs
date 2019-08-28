@@ -67,6 +67,12 @@ public class SystemFacadeTest extends JndiTestBase {
     @Test(dependsOnMethods = { "fromGuice" })
     public void postTransactionMethod() {
         createAccounts();
+
+        //        List<Account> list = this.accountDao.getActualAccounts(false);
+        //        for (Account acc : list) {
+        //            System.out.println(">>> " + acc.getId());
+        //        }
+
         Transaction transaction = Transaction.newInstance(DATE, NARRATIVE, REFERENCE, AMOUNT,
             false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
@@ -100,8 +106,8 @@ public class SystemFacadeTest extends JndiTestBase {
         Assert.assertTrue(object.getFromEntry().getAmount().eq(AMOUNT.negate()));
 
         Assert.assertFalse(((TransactionEntity) object).isCleared());
-        //        Assert.assertFalse(object.getFromEntry().isCleared());
-        //        Assert.assertFalse(object.getToEntry().isCleared());
+        Assert.assertFalse(object.getFromEntry().isCleared());
+        Assert.assertFalse(object.getToEntry().isCleared());
 
         System.out.println(result.get());
     }

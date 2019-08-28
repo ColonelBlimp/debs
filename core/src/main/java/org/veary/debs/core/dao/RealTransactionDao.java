@@ -33,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
-import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.model.Entry;
@@ -58,7 +57,6 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
 
     private final Registry registry;
-    private final AccountDao accountDao;
 
     /**
      * Constructor.
@@ -67,13 +65,10 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
      * @param factory {@link PersistenceManagerFactory}
      */
     @Inject
-    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory,
-        AccountDao accountDao) {
+    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
         super(factory);
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
-        this.accountDao = Objects.requireNonNull(accountDao,
-            Messages.getParameterIsNull("accountDao")); //$NON-NLS-1$
     }
 
     @Override
@@ -102,6 +97,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTx.setParameter(5, toId);
 
         Long id = manager.persist(insertTx);
+
         updateAccountBalance(manager, object.getFromEntry());
         updateAccountBalance(manager, object.getToEntry());
 
