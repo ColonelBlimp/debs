@@ -68,11 +68,6 @@ public class SystemFacadeTest extends JndiTestBase {
     public void postTransactionMethod() {
         createAccounts();
 
-        //        List<Account> list = this.accountDao.getActualAccounts(false);
-        //        for (Account acc : list) {
-        //            System.out.println(">>> " + acc.getId());
-        //        }
-
         Transaction transaction = Transaction.newInstance(DATE, NARRATIVE, REFERENCE, AMOUNT,
             false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
@@ -86,12 +81,14 @@ public class SystemFacadeTest extends JndiTestBase {
         Account fromAcc = this.accountDao.getAccountByName(FROM_NAME);
         Assert.assertNotNull(fromAcc);
         Assert.assertNotNull(fromAcc.getBalance());
-        //        Assert.assertTrue(fromAcc.getBalance().isMinus());
+        Assert.assertTrue(fromAcc.getBalance().isMinus());
+        Assert.assertTrue(fromAcc.getBalance().eq(AMOUNT.negate()));
 
         Account toAcc = this.accountDao.getAccountByName(TO_NAME);
         Assert.assertNotNull(toAcc);
         Assert.assertNotNull(toAcc.getBalance());
-        //        Assert.assertTrue(toAcc.getBalance().isPlus());
+        Assert.assertTrue(toAcc.getBalance().isPlus());
+        Assert.assertTrue(toAcc.getBalance().eq(AMOUNT));
     }
 
     @Test(dependsOnMethods = { "postTransactionMethod" })

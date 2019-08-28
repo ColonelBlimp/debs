@@ -31,8 +31,10 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
+import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.model.Entry;
@@ -57,6 +59,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
 
     private final Registry registry;
+    private final AccountDao accountDao;
 
     /**
      * Constructor.
@@ -65,10 +68,12 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
      * @param factory {@link PersistenceManagerFactory}
      */
     @Inject
-    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
+    public RealTransactionDao(Registry registry, PersistenceManagerFactory factory,
+        AccountDao accountDao) {
         super(factory);
         LOG.trace(LOG_CALLED);
         this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.accountDao = accountDao;
     }
 
     @Override
@@ -76,17 +81,21 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         LOG.trace(LOG_CALLED);
 
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+        Objects.requireNonNull(object.getFromEntry(),
+            Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"));
+        Objects.requireNonNull(object.getToEntry(),
+            Messages.getString("RealTransactionDao.createTransaction.toEntry.null"));
+
+        Money newFromBalance = getCurrentBalanceForAccount(object.getFromEntry().getAccountId());
+        newFromBalance = newFromBalance.plus(object.getFromEntry().getAmount());
+        Money newToBalance = getCurrentBalanceForAccount(object.getToEntry().getAccountId());
+        newToBalance = newToBalance.plus(object.getToEntry().getAmount());
 
         TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
 
-        Long fromId = createTransactionEntry(manager,
-            Objects.requireNonNull(object.getFromEntry(),
-                Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"))); //$NON-NLS-1$
-
-        Long toId = createTransactionEntry(manager,
-            Objects.requireNonNull(object.getToEntry(),
-                Messages.getString("RealTransactionDao.createTransaction.toEntry.null"))); //$NON-NLS-1$
+        Long fromId = createTransactionEntry(manager, object.getFromEntry());
+        Long toId = createTransactionEntry(manager, object.getToEntry());
 
         final SqlStatement insertTx = SqlStatement
             .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
@@ -98,8 +107,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         Long id = manager.persist(insertTx);
 
-        updateAccountBalance(manager, object.getFromEntry());
-        updateAccountBalance(manager, object.getToEntry());
+        updateAccountBalance(manager, object.getFromEntry(), newFromBalance);
+        updateAccountBalance(manager, object.getToEntry(), newToBalance);
 
         manager.commit();
 
@@ -144,19 +153,19 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         return manager.persist(insertTxEntry);
     }
 
-    private void updateAccountBalance(TransactionManager manager, Entry entry) {
+    private void updateAccountBalance(TransactionManager manager, Entry entry, Money newBalance) {
         LOG.trace(LOG_CALLED);
 
-        LOG.trace("AccountId: {}", entry.getAccountId());
-        //        Account account = this.accountDao.getAccountById(entry.getAccountId());
+        LOG.trace("Account Id: {}, new balance: {}", entry.getAccountId(), newBalance); //$NON-NLS-1$
 
-        //        queryManager.createQuery(arg0, arg1)
-        /*
         final SqlStatement update = SqlStatement
             .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
         update.setParameter(1, newBalance.getValue());
-        update.setParameter(2, object.getId());
+        update.setParameter(2, entry.getAccountId());
         manager.persist(update);
-        */
+    }
+
+    private Money getCurrentBalanceForAccount(Long accountId) {
+        return this.accountDao.getAccountById(accountId).getBalance();
     }
 }
