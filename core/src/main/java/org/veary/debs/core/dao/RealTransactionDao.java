@@ -95,6 +95,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         manager.begin();
 
         Long fromId = createTransactionEntry(manager, object.getFromEntry());
+        LOG.trace("New FROM entry id: {}", fromId);
         Long toId = createTransactionEntry(manager, object.getToEntry());
 
         final SqlStatement insertTx = SqlStatement
