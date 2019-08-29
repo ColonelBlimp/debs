@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.model;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Map;
@@ -152,5 +153,32 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
     public void setParentId(Long parentId) {
         this.parentId = Objects.requireNonNull(parentId, Messages.getParameterIsNull("parentId")); //$NON-NLS-1$
+    }
+
+    /**
+     * For debugging purposes only.
+     */
+    @Override
+    public String toString() {
+        String newLine = System.lineSeparator();
+        Class<?> clazz = this.getClass();
+        StringBuilder sb = new StringBuilder(newLine).append(clazz.getSimpleName());
+        sb.append(" {").append(newLine); //$NON-NLS-1$
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (!field.isSynthetic()) {
+                sb.append("  ").append(field.getName()).append(": "); //$NON-NLS-1$ //$NON-NLS-2$
+                try {
+                    Object value = field.get(this);
+                    sb.append(value);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    sb.append("{error}"); //$NON-NLS-1$
+                }
+                sb.append(newLine);
+            }
+        }
+        sb.append("}"); //$NON-NLS-1$
+        return sb.toString();
     }
 }

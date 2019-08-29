@@ -127,6 +127,15 @@ public class SystemFacadeTest extends JndiTestBase {
         Entry updatedToEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 
         this.systemFacade.updateTransaction(original, updated, updatedFromEntry, updatedToEntry);
+
+        Account fromAccount = this.accountDao
+            .getAccountById(original.getFromEntry().getAccountId());
+        System.out.println("Original FROM Account: " + fromAccount);
+        /*
+        Account otherFromAccount = this.accountDao
+            .getAccountById(this.updatedFromAccount.getId());
+        System.out.println("Other FROM Account: " + otherFromAccount);
+        */
     }
 
     /* ****************************** PRIVATE ******************************* */

@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionGetByIdEntity;
 import org.veary.debs.dao.AccountDao;
@@ -82,9 +83,9 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
         Objects.requireNonNull(object.getFromEntry(),
-            Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"));
+            Messages.getString("RealTransactionDao.createTransaction.fromEntry.null")); //$NON-NLS-1$
         Objects.requireNonNull(object.getToEntry(),
-            Messages.getString("RealTransactionDao.createTransaction.toEntry.null"));
+            Messages.getString("RealTransactionDao.createTransaction.toEntry.null")); //$NON-NLS-1$
 
         Money newFromBalance = getCurrentBalanceForAccount(object.getFromEntry().getAccountId());
         newFromBalance = newFromBalance.plus(object.getFromEntry().getAmount());
@@ -95,7 +96,6 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         manager.begin();
 
         Long fromId = createTransactionEntry(manager, object.getFromEntry());
-        LOG.trace("New FROM entry id: {}", fromId);
         Long toId = createTransactionEntry(manager, object.getToEntry());
 
         final SqlStatement insertTx = SqlStatement
@@ -119,6 +119,59 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     @Override
     public void updateTransaction(Transaction original, Transaction updated,
         Entry updatedFromEntry, Entry updatedToEntry) {
+
+        Money currentFromBalance = getCurrentBalanceForAccount(
+            original.getFromEntry().getAccountId());
+        Money currentToBalance = getCurrentBalanceForAccount(
+            original.getToEntry().getAccountId());
+
+        // Update the Transaction object
+        TransactionEntity updatedEntity = (TransactionEntity) updated;
+        updatedEntity.setId(updated.getId());
+
+        // Update the Transaction Entry objects
+        EntryEntity updatedFromEntryEntity = (EntryEntity) updatedFromEntry;
+        updatedFromEntryEntity.setId(updatedFromEntry.getId());
+
+        EntryEntity updatedToEntryEntity = (EntryEntity) updatedToEntry;
+        updatedToEntryEntity.setId(updatedToEntry.getId());
+
+        Money newFromBalance = getCurrentBalanceForAccount(updatedFromEntryEntity.getAccountId());
+        newFromBalance = newFromBalance.plus(updatedFromEntryEntity.getAmount());
+        Money newToBalance = getCurrentBalanceForAccount(updatedToEntryEntity.getAccountId());
+        newToBalance = newToBalance.plus(updatedToEntryEntity.getAmount());
+
+        TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+
+        Long fromId = createTransactionEntry(manager, updatedFromEntryEntity);
+        Long toId = createTransactionEntry(manager, updatedToEntryEntity);
+
+        final SqlStatement updateTx = SqlStatement
+            .newInstance(this.registry.getSql("updateTransaction")); //$NON-NLS-1$
+        updateTx.setParameter(1, updatedEntity.getDate());
+        updateTx.setParameter(2, updatedEntity.getReference());
+        updateTx.setParameter(3, updatedEntity.getNarrative());
+        updateTx.setParameter(4, fromId);
+        updateTx.setParameter(5, toId);
+        updateTx.setParameter(6, updatedEntity.getId());
+
+        Long id = manager.persist(updateTx);
+
+        /* Has the FROM account changed? If so, update the original FROM account balance by ADDING the
+         * OLD amount.
+         */
+        if (!original.getFromEntry().getAccountId().equals(updatedFromEntry.getAccountId())) {
+            Money newBalance = currentFromBalance.minus(original.getFromEntry().getAmount());
+            updateAccountBalance(manager, original.getFromEntry(), newBalance);
+            updateAccountBalance(manager, updatedFromEntryEntity, newFromBalance);
+        } else {
+
+        }
+
+        updateAccountBalance(manager, updatedToEntryEntity, newToBalance);
+
+        manager.commit();
     }
 
     @Override
