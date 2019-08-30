@@ -46,14 +46,14 @@ public interface TransactionDao {
     Long createTransaction(Transaction object);
 
     /**
+     * Update the referenced {@code original} {@link Transaction} with the details from the
+     * reference {@code updated} {@link Transaction}.
      *
-     * @param original
-     * @param updated
-     * @param updatedFromEntry
-     * @param updatedToEntry
+     * @param original the <i>original</i> transaction to be updated.
+     * @param updated an difference instance of a {@link Transaction} holding the details to be
+     *     updated
      */
-    void updateTransaction(Transaction original, Transaction updated, Entry updatedFromEntry,
-        Entry updatedToEntry);
+    void updateTransaction(Transaction original, Transaction updated);
 
     /**
      * Retrieve an {@code Transaction} matching the referenced unique identifier.

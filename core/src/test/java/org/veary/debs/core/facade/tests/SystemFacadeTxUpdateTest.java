@@ -45,7 +45,7 @@ import org.veary.debs.tests.JndiTestBase;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class SystemFacadeTest extends JndiTestBase {
+public class SystemFacadeTxUpdateTest extends JndiTestBase {
 
     @Test
     public void instantiation() {
@@ -112,25 +112,33 @@ public class SystemFacadeTest extends JndiTestBase {
     private static final LocalDate UPDATE_DATE = LocalDate.of(2019, 8, 20);
     private static final String UPDATE_NARRATIVE = "Updated Narrative"; //$NON-NLS-1$
     private static final String UPDATE_REFERENCE = "Updated Reference"; //$NON-NLS-1$
-    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456));
+    //    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456));
 
+    /**
+     * Change all the transaction's details except the amount and entries.
+     */
     @Test(dependsOnMethods = { "postTransactionMethod" })
-    public void updateTransactionMethod() {
+    public void updateTxNoEntryChanges() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
         Transaction original = result.get();
 
         Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
-            UPDATE_REFERENCE, UPDATED_AMOUNT,
-            false);
-        Entry updatedFromEntry = Entry.newInstance(Entry.Types.FROM, this.updatedFromAccount);
-        Entry updatedToEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
+            UPDATE_REFERENCE, AMOUNT, false);
+        //        Entry updatedFromEntry = Entry.newInstance(Entry.Types.FROM, this.updatedFromAccount);
+        //        Entry updatedToEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 
-        this.systemFacade.updateTransaction(original, updated, updatedFromEntry, updatedToEntry);
-
+        this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
+            original.getToEntry());
+        /*
         Account fromAccount = this.accountDao
             .getAccountById(original.getFromEntry().getAccountId());
         System.out.println("Original FROM Account: " + fromAccount);
+        
+        Account toAccount = this.accountDao
+            .getAccountById(original.getToEntry().getAccountId());
+        System.out.println("Original TO Account: " + toAccount);
+        */
         /*
         Account otherFromAccount = this.accountDao
             .getAccountById(this.updatedFromAccount.getId());

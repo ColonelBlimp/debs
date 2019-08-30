@@ -33,7 +33,6 @@ import javax.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
-import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.SystemFacade;
@@ -81,14 +80,7 @@ public final class RealSystemFacade implements SystemFacade {
         Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 
         TransactionEntity transactionEntity = (TransactionEntity) transaction;
-
-        EntryEntity fromEntryEntity = (EntryEntity) fromEntry;
-        fromEntryEntity.setAmount(transactionEntity.getAmount().negate());
-
-        EntryEntity toEntryEntity = (EntryEntity) toEntry;
-        toEntryEntity.setAmount(transactionEntity.getAmount());
-
-        transactionEntity.setEntries(fromEntryEntity, toEntryEntity);
+        transactionEntity.setEntries(fromEntry, toEntry);
 
         return this.transactionDao.createTransaction(transactionEntity);
     }
@@ -101,8 +93,10 @@ public final class RealSystemFacade implements SystemFacade {
         Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(updatedToEntry, Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
 
-        this.transactionDao.updateTransaction(original, updated, updatedFromEntry,
-            updatedToEntry);
+        TransactionEntity transactionEntity = (TransactionEntity) updated;
+        transactionEntity.setEntries(updatedFromEntry, updatedToEntry);
+
+        this.transactionDao.updateTransaction(original, updated);
     }
 
     @Override

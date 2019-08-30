@@ -231,4 +231,22 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.cleared = true;
         }
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (!(that instanceof EntryEntity)) {
+            return false;
+        }
+
+        EntryEntity other = (EntryEntity) that;
+
+        return this.type.equals(other.type) &&
+            this.accountId.equals(other.accountId) &&
+            this.amount.eq(other.amount) &&
+            this.clearedTimestamp.equals(other.clearedTimestamp) &&
+            this.cleared == other.cleared;
+    }
 }

@@ -91,7 +91,7 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.date = Objects.requireNonNull(object.getDate());
         this.reference = Objects.requireNonNull(object.getReference());
         this.narrative = Objects.requireNonNull(object.getNarrative());
-        this.amount = Objects.requireNonNull(object.getFromAmount());
+        this.amount = Objects.requireNonNull(object.getToAmount());
 
         this.fromEntry = new EntryEntity(object, Entry.Types.FROM);
         this.toEntry = new EntryEntity(object, Entry.Types.TO);
@@ -130,12 +130,15 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         return this.cleared;
     }
 
-    public void setEntries(EntryEntity fromEntry, EntryEntity toEntry) {
+    public void setEntries(Entry fromEntry, Entry toEntry) {
         Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 
-        fromEntry.setCleared(this.cleared);
-        toEntry.setCleared(this.cleared);
+        ((EntryEntity) fromEntry).setCleared(this.cleared);
+        ((EntryEntity) toEntry).setCleared(this.cleared);
+
+        ((EntryEntity) fromEntry).setAmount(this.amount.negate());
+        ((EntryEntity) toEntry).setAmount(this.amount);
 
         this.fromEntry = fromEntry;
         this.toEntry = toEntry;
@@ -166,5 +169,25 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         }
         sb.append("}"); //$NON-NLS-1$
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (!(that instanceof TransactionEntity)) {
+            return false;
+        }
+
+        TransactionEntity other = (TransactionEntity) that;
+
+        return this.amount.eq(other.amount) &&
+            this.date.equals(other.date) &&
+            this.narrative.equals(other.narrative) &&
+            this.reference.contentEquals(other.reference) &&
+            this.fromEntry.equals(other.fromEntry) &&
+            this.toEntry.equals(other.toEntry) &&
+            this.cleared == other.cleared;
     }
 }

@@ -181,4 +181,22 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
         sb.append("}"); //$NON-NLS-1$
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (!(that instanceof AccountEntity)) {
+            return false;
+        }
+
+        AccountEntity other = (AccountEntity) that;
+
+        return this.name.equals(other.name) &&
+            this.description.equals(other.description) &&
+            this.type.equals(other.type) &&
+            this.balance.eq(other.balance) &&
+            this.parentId.equals(other.parentId);
+    }
 }
