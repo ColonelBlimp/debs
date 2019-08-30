@@ -45,6 +45,8 @@ import org.veary.debs.model.Transaction;
  */
 public final class TransactionEntity extends PersistentObjectImpl implements Transaction {
 
+    private volatile int hashCode = 0;
+
     private Money amount;
 
     private LocalDate date;
@@ -189,5 +191,14 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
             this.fromEntry.equals(other.fromEntry) &&
             this.toEntry.equals(other.toEntry) &&
             this.cleared == other.cleared;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.hashCode == 0) {
+            this.hashCode = Objects.hash(this.amount, this.date, this.narrative, this.reference,
+                this.fromEntry, this.toEntry, this.cleared);
+        }
+        return this.hashCode;
     }
 }

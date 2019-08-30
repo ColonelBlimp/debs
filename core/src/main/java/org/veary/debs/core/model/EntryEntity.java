@@ -49,6 +49,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
     public static final LocalDateTime NOT_CLEARED_TIMESTAMP = LocalDateTime.of(1, 1, 1, 0, 0, 0);
 
+    private volatile int hashCode = 0;
+
     private Types type;
     private Long accountId;
     private Money amount;
@@ -248,5 +250,15 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.amount.eq(other.amount) &&
             this.clearedTimestamp.equals(other.clearedTimestamp) &&
             this.cleared == other.cleared;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.hashCode == 0) {
+            this.hashCode = Objects.hash(this.type, this.accountId, this.amount,
+                this.clearedTimestamp,
+                this.cleared);
+        }
+        return this.hashCode;
     }
 }

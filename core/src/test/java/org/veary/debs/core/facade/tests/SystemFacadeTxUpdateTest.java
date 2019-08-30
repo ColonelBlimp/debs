@@ -112,7 +112,7 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
     private static final LocalDate UPDATE_DATE = LocalDate.of(2019, 8, 20);
     private static final String UPDATE_NARRATIVE = "Updated Narrative"; //$NON-NLS-1$
     private static final String UPDATE_REFERENCE = "Updated Reference"; //$NON-NLS-1$
-    //    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456));
+    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456));
 
     /**
      * Change all the transaction's details except the amount and entries.
@@ -130,20 +130,40 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
 
         this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
             original.getToEntry());
-        /*
+
+        result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
+        Transaction fetched = result.get();
+
+        Assert.assertEquals(fetched.getDate(), UPDATE_DATE);
+        Assert.assertEquals(fetched.getNarrative(), UPDATE_NARRATIVE);
+        Assert.assertEquals(fetched.getReference(), UPDATE_REFERENCE);
+        Assert.assertTrue(fetched.getFromEntry().getAmount().eq(AMOUNT.negate()));
+        Assert.assertTrue(fetched.getToEntry().getAmount().eq(AMOUNT));
+
         Account fromAccount = this.accountDao
             .getAccountById(original.getFromEntry().getAccountId());
-        System.out.println("Original FROM Account: " + fromAccount);
-        
+        Assert.assertTrue(fromAccount.getBalance().eq(AMOUNT.negate()));
+
         Account toAccount = this.accountDao
             .getAccountById(original.getToEntry().getAccountId());
-        System.out.println("Original TO Account: " + toAccount);
-        */
-        /*
-        Account otherFromAccount = this.accountDao
-            .getAccountById(this.updatedFromAccount.getId());
-        System.out.println("Other FROM Account: " + otherFromAccount);
-        */
+        Assert.assertTrue(toAccount.getBalance().eq(AMOUNT));
+    }
+
+    /**
+     * Only change is the amount for the transaction.
+     */
+    @Test(dependsOnMethods = { "updateTxNoEntryChanges" })
+    public void updateTxAmountChanged() {
+        java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
+        Transaction original = result.get();
+
+        Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
+            original.getReference(), UPDATED_AMOUNT, false);
+
+        this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
+            original.getToEntry());
     }
 
     /* ****************************** PRIVATE ******************************* */
