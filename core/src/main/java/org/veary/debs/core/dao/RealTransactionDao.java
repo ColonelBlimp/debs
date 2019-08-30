@@ -86,11 +86,6 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         Objects.requireNonNull(object.getToEntry(),
             Messages.getString("RealTransactionDao.createTransaction.toEntry.null")); //$NON-NLS-1$
 
-        Money newFromBalance = getCurrentBalanceForAccount(object.getFromEntry().getAccountId());
-        newFromBalance = newFromBalance.plus(object.getFromEntry().getAmount());
-        Money newToBalance = getCurrentBalanceForAccount(object.getToEntry().getAccountId());
-        newToBalance = newToBalance.plus(object.getToEntry().getAmount());
-
         // This must happen AFTER the above due to ISOLATION LEVEL
         TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
@@ -108,8 +103,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         Long id = manager.persist(insertTx);
 
-        updateAccountBalance(manager, object.getFromEntry(), newFromBalance);
-        updateAccountBalance(manager, object.getToEntry(), newToBalance);
+        updateAccountBalance(manager, object.getFromEntry(), object.getFromEntry().getAmount());
+        updateAccountBalance(manager, object.getToEntry(), object.getToEntry().getAmount());
 
         manager.commit();
 
@@ -126,8 +121,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         TransactionEntity originalTxEntity = (TransactionEntity) original;
         TransactionEntity updatedTxEntity = (TransactionEntity) updated;
 
-        LOG.trace("\nTx Original: {}", originalTxEntity);
-        LOG.trace("\nTx Updated: {}", updatedTxEntity);
+        LOG.trace("Tx Original: {}", originalTxEntity);
+        LOG.trace("Tx Updated: {}", updatedTxEntity);
 
         boolean amountHasChanged = hasAmountChanged(originalTxEntity, updatedTxEntity);
         boolean fromAccHasChanged = hasFromAccountChanged(originalTxEntity, updatedTxEntity);
@@ -139,9 +134,14 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         if (amountHasChanged && !fromAccHasChanged && !toAccHasChanged) {
             LOG.trace("Update the transation's amount.");
             updateAccountBalance(manager, original.getFromEntry(),
-                original.getFromEntry().getAmount().negate());
+                original.getToEntry().getAmount());
             updateAccountBalance(manager, original.getToEntry(),
-                original.getToEntry().getAmount().negate());
+                original.getFromEntry().getAmount());
+
+            updateAccountBalance(manager, updated.getFromEntry(),
+                updated.getFromEntry().getAmount());
+            updateAccountBalance(manager, updated.getToEntry(),
+                updated.getToEntry().getAmount());
         }
 
         LOG.trace("Update the Transaction object");
@@ -156,12 +156,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateTx.setParameter(6, original.getId());
 
         manager.persist(updateTx);
-
         manager.commit();
-        //        Money newFromBalance = getCurrentBalanceForAccount(updated.getFromEntry().getAccountId());
-        //        newFromBalance = newFromBalance.plus(updated.getFromEntry().getAmount());
-        //        Money newToBalance = getCurrentBalanceForAccount(updated.getToEntry().getAccountId());
-        //        newToBalance = newToBalance.plus(updated.getToEntry().getAmount());
     }
 
     private boolean hasAmountChanged(TransactionEntity original, TransactionEntity updated) {

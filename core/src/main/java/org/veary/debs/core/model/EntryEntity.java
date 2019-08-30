@@ -132,6 +132,23 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         }
     }
 
+    /**
+     * Copy constructor.
+     *
+     * @param object {@code Entry} object to copy
+     */
+    public EntryEntity(Entry object) {
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+        setId(Objects.requireNonNull(object.getId()));
+        setDeleted(object.isDeleted());
+        setCreationTimestamp(Objects.requireNonNull(object.getCreationTimestamp()));
+        this.amount = Objects.requireNonNull(object.getAmount());
+        this.type = Objects.requireNonNull(object.getType());
+        this.accountId = Objects.requireNonNull(object.getAccountId());
+        this.cleared = object.isCleared();
+        this.clearedTimestamp = Objects.requireNonNull(object.getClearedTimestamp());
+    }
+
     @Override
     public Types getType() {
         return this.type;

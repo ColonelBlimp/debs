@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.facade.RealSystemFacade;
+import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
@@ -106,7 +107,7 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
         Assert.assertFalse(object.getFromEntry().isCleared());
         Assert.assertFalse(object.getToEntry().isCleared());
 
-        System.out.println(result.get());
+        //System.out.println(result.get());
     }
 
     private static final LocalDate UPDATE_DATE = LocalDate.of(2019, 8, 20);
@@ -117,7 +118,7 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
     /**
      * Change all the transaction's details except the amount and entries.
      */
-    @Test(dependsOnMethods = { "postTransactionMethod" })
+    @Test(dependsOnMethods = { "getTransactionByIdMethod" })
     public void updateTxNoEntryChanges() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
@@ -162,18 +163,16 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
         Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
             original.getReference(), UPDATED_AMOUNT, false);
 
-        this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
-            original.getToEntry());
+        this.systemFacade.updateTransaction(original, updated,
+            new EntryEntity(original.getFromEntry()),
+            new EntryEntity(original.getToEntry()));
 
         Account fromAccount = this.accountDao
             .getAccountById(original.getFromEntry().getAccountId());
-        //Assert.assertTrue(fromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
-        System.out.println("FROM account balance: " + fromAccount.getBalance());
-
+        Assert.assertTrue(fromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
         Account toAccount = this.accountDao
             .getAccountById(original.getToEntry().getAccountId());
-        //Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
-        System.out.println("TO account balance: " + toAccount.getBalance());
+        Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
     }
 
     /* ****************************** PRIVATE ******************************* */
