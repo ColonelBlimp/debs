@@ -133,14 +133,18 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         boolean fromAccHasChanged = hasFromAccountChanged(originalTxEntity, updatedTxEntity);
         boolean toAccHasChanged = hasToAccountChanged(originalTxEntity, updatedTxEntity);
 
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+
         if (amountHasChanged && !fromAccHasChanged && !toAccHasChanged) {
             LOG.trace("Update the transation's amount.");
+            updateAccountBalance(manager, original.getFromEntry(),
+                original.getFromEntry().getAmount().negate());
+            updateAccountBalance(manager, original.getToEntry(),
+                original.getToEntry().getAmount().negate());
         }
 
         LOG.trace("Update the Transaction object");
-
-        final TransactionManager manager = this.factory.createTransactionManager();
-        manager.begin();
 
         final SqlStatement updateTx = SqlStatement
             .newInstance(this.registry.getSql("updateTransaction")); //$NON-NLS-1$
@@ -215,14 +219,12 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         return manager.persist(insertTxEntry);
     }
 
-    private void updateAccountBalance(TransactionManager manager, Entry entry, Money newBalance) {
+    private void updateAccountBalance(TransactionManager manager, Entry entry, Money amount) {
         LOG.trace(LOG_CALLED);
-
-        LOG.trace("Account Id: {}, new balance: {}", entry.getAccountId(), newBalance); //$NON-NLS-1$
 
         final SqlStatement update = SqlStatement
             .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
-        update.setParameter(1, newBalance.getValue());
+        update.setParameter(1, amount.getValue());
         update.setParameter(2, entry.getAccountId());
         manager.persist(update);
     }

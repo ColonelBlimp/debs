@@ -164,6 +164,16 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
 
         this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
             original.getToEntry());
+
+        Account fromAccount = this.accountDao
+            .getAccountById(original.getFromEntry().getAccountId());
+        //Assert.assertTrue(fromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
+        System.out.println("FROM account balance: " + fromAccount.getBalance());
+
+        Account toAccount = this.accountDao
+            .getAccountById(original.getToEntry().getAccountId());
+        //Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
+        System.out.println("TO account balance: " + toAccount.getBalance());
     }
 
     /* ****************************** PRIVATE ******************************* */
