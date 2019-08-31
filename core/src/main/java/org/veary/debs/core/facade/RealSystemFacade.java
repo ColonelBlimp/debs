@@ -116,11 +116,20 @@ public final class RealSystemFacade implements SystemFacade {
     @Override
     public Optional<Transaction> getTransactionById(Long id) {
         LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
 
         try {
             return Optional.of(this.transactionDao.getTransactionById(id));
         } catch (NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void deleteTransaction(Transaction object) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        this.transactionDao.deleteTransaction(object);
     }
 }

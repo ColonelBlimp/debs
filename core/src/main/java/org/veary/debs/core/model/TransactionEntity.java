@@ -45,7 +45,7 @@ import org.veary.debs.model.Transaction;
  */
 public final class TransactionEntity extends PersistentObjectImpl implements Transaction {
 
-    private transient Money amount;
+    private Money amount;
 
     private LocalDate date;
     private String narrative;

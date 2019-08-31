@@ -149,6 +149,22 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     @Override
+    public void deleteTransaction(Transaction object) {
+        LOG.trace(LOG_CALLED);
+
+        final SqlStatement delete = SqlStatement
+            .newInstance(this.registry.getSql("deleteTransaction"));
+        delete.setParameter(1, object.getId());
+
+        TransactionManager manager = this.factory.createTransactionManager();
+
+        // The associated Entry object are marked as deleted by a trigger
+        manager.begin();
+        manager.persist(delete);
+        manager.commit();
+    }
+
+    @Override
     public Transaction getTransactionById(Long id) {
         LOG.trace(LOG_CALLED);
 

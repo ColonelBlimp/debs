@@ -56,6 +56,14 @@ public interface TransactionDao {
     void updateTransaction(Transaction original, Transaction updated);
 
     /**
+     * Deletes the referenced {@code Transaction} object and its associated {@code Entry} objects.
+     * Nothing actually removed from persistent storage, but simply <i>marked</i> as deleted.
+     *
+     * @param object {@code Transaction} object to marked as deleted
+     */
+    void deleteTransaction(Transaction object);
+
+    /**
      * Retrieve an {@code Transaction} matching the referenced unique identifier.
      *
      * <p><b>Note:</b> This will also return an {@code Transaction} which is marked as

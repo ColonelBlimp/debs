@@ -64,6 +64,14 @@ public interface SystemFacade {
         Entry updatedToEntry);
 
     /**
+     * Marks a {@code Transaction} and its accociated {@code Entry} objects as deleted. The actual
+     * entries are not deleted, but simply marked as such.
+     * 
+     * @param object {@code Transaction} to be marked as deleted
+     */
+    void deleteTransaction(Transaction object);
+
+    /**
      * Fetch a {@code Transaction} from persistent storage.
      *
      * @param id the unique identifier of the transaction to be retrieved
