@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.facade;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -114,6 +115,14 @@ public final class RealSystemFacade implements SystemFacade {
     }
 
     @Override
+    public void deleteTransaction(Transaction object) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        this.transactionDao.deleteTransaction(object);
+    }
+
+    @Override
     public Optional<Transaction> getTransactionById(Long id) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
@@ -126,10 +135,8 @@ public final class RealSystemFacade implements SystemFacade {
     }
 
     @Override
-    public void deleteTransaction(Transaction object) {
+    public List<Transaction> getAllTransactions(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
-        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-
-        this.transactionDao.deleteTransaction(object);
+        return this.transactionDao.getAllTransactions(includeDeleted);
     }
 }

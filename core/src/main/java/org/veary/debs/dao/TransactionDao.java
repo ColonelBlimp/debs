@@ -24,6 +24,8 @@
 
 package org.veary.debs.dao;
 
+import java.util.List;
+
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.exceptions.NoResultException;
@@ -56,8 +58,9 @@ public interface TransactionDao {
     void updateTransaction(Transaction original, Transaction updated);
 
     /**
-     * Deletes the referenced {@code Transaction} object and its associated {@code Entry} objects.
-     * Nothing actually removed from persistent storage, but simply <i>marked</i> as deleted.
+     * Deletes the referenced {@code Transaction} object and its associated {@code Entry}
+     * objects. Nothing actually removed from persistent storage, but simply <i>marked</i> as
+     * deleted.
      *
      * @param object {@code Transaction} object to marked as deleted
      */
@@ -74,4 +77,13 @@ public interface TransactionDao {
      * @throws NoResultException if there is no record matching the referenced unique identifer
      */
     Transaction getTransactionById(Long id);
+
+    /**
+     * Returns a {@code List} of all the {@code Transaction} objects in the system.
+     *
+     * @param includeDeleted {@code true} if deleted transactions should be included in the
+     *     list, otherwise {@code false}
+     * @return an unmodifiable {@code List}. Cannot be {@code null}.
+     */
+    List<Transaction> getAllTransactions(boolean includeDeleted);
 }

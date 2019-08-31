@@ -24,6 +24,7 @@
 
 package org.veary.debs.facade;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.veary.debs.model.Entry;
@@ -64,9 +65,9 @@ public interface SystemFacade {
         Entry updatedToEntry);
 
     /**
-     * Marks a {@code Transaction} and its accociated {@code Entry} objects as deleted. The actual
-     * entries are not deleted, but simply marked as such.
-     * 
+     * Marks a {@code Transaction} and its accociated {@code Entry} objects as deleted. The
+     * actual entries are not deleted, but simply marked as such.
+     *
      * @param object {@code Transaction} to be marked as deleted
      */
     void deleteTransaction(Transaction object);
@@ -78,4 +79,13 @@ public interface SystemFacade {
      * @return {@code Optional<Transaction>}
      */
     Optional<Transaction> getTransactionById(Long id);
+
+    /**
+     * Returns a {@code List} of all the {@code Transaction} objects in the system.
+     * 
+     * @param includeDeleted {@code true} if deleted transactions should be included in the
+     *     list, otherwise {@code false}
+     * @return an unmodifiable {@code List}. Cannot be {@code null}.
+     */
+    List<Transaction> getAllTransactions(boolean includeDeleted);
 }

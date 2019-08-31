@@ -24,6 +24,8 @@
 
 package org.veary.debs.core.dao;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -185,6 +187,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         query.execute();
 
         return new TransactionEntity((TransactionGetByIdEntity) query.getSingleResult());
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
+
+        return Collections.emptyList();
     }
 
     /**
