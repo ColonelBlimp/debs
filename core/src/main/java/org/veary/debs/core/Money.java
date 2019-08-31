@@ -24,8 +24,6 @@
 
 package org.veary.debs.core;
 
-import static java.math.BigDecimal.ZERO;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -73,7 +71,7 @@ public final class Money {
      * @return boolean
      */
     public boolean isPlus() {
-        return this.value.compareTo(ZERO) > 0;
+        return this.value.compareTo(BigDecimal.ZERO) > 0;
     }
 
     /**
@@ -82,7 +80,7 @@ public final class Money {
      * @return boolean
      */
     public boolean isMinus() {
-        return this.value.compareTo(ZERO) < 0;
+        return this.value.compareTo(BigDecimal.ZERO) < 0;
     }
 
     /**
@@ -91,7 +89,7 @@ public final class Money {
      * @return boolean
      */
     public boolean isZero() {
-        return this.value.compareTo(ZERO) == 0;
+        return this.value.compareTo(BigDecimal.ZERO) == 0;
     }
 
     /**

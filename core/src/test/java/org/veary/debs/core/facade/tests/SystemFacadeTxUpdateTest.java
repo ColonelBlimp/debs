@@ -127,8 +127,9 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
         Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
             UPDATE_REFERENCE, AMOUNT, false);
 
-        this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
-            original.getToEntry());
+        this.systemFacade.updateTransaction(original, updated,
+            new EntryEntity(original.getFromEntry()),
+            new EntryEntity(original.getToEntry()));
 
         result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
@@ -176,11 +177,29 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
     /**
      * Only change is the FROM account.
      */
-    @Test(dependsOnMethods = { "updateTxNoEntryChanges" })
+    @Test(dependsOnMethods = { "updateTxAmountChanged" })
     public void updateTxFromAccountChangeOnly() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
         Transaction original = result.get();
+
+        EntryEntity updatedToEntry = new EntryEntity(original.getToEntry());
+        EntryEntity updatedFromEntry = new EntryEntity(original.getFromEntry());
+        updatedFromEntry.setAccountId(this.updatedFromAccount.getId());
+        this.systemFacade.updateTransaction(original, original, updatedFromEntry, updatedToEntry);
+
+        Account toAccount = this.accountDao
+            .getAccountById(original.getToEntry().getAccountId());
+        Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
+
+        Account fromAccount = this.accountDao
+            .getAccountById(original.getFromEntry().getAccountId());
+        Assert.assertTrue(fromAccount.getBalance().eq(new Money(BigDecimal.ZERO)));
+
+        Account otherFromAccount = this.accountDao
+            .getAccountById(updatedFromEntry.getAccountId());
+        System.out.println("New FROM Account balance: " + otherFromAccount.getBalance());
+        //        Assert.assertTrue(otherFromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
     }
 
     /* ****************************** PRIVATE ******************************* */

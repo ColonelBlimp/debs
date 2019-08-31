@@ -93,6 +93,18 @@ public final class RealSystemFacade implements SystemFacade {
         Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(updatedToEntry, Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
 
+        // Compare identity not state
+        if (original.getFromEntry() == updatedFromEntry) {
+            throw new IllegalArgumentException(
+                Messages.getString("RealSystemFacade.updateTransaction.fromexception"));
+        }
+
+        // Compare identity not state
+        if (original.getToEntry() == updatedToEntry) {
+            throw new IllegalArgumentException(
+                Messages.getString("RealSystemFacade.updateTransaction.toexception"));
+        }
+
         TransactionEntity transactionEntity = (TransactionEntity) updated;
         transactionEntity.setEntries(updatedFromEntry, updatedToEntry);
 

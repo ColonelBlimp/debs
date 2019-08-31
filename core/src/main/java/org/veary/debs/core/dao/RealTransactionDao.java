@@ -127,20 +127,25 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
 
+        updateAccountBalance(manager, original.getFromEntry(), original.getToEntry().getAmount());
+        updateAccountBalance(manager, original.getToEntry(), original.getFromEntry().getAmount());
+
+        updateAccountBalance(manager, updated.getFromEntry(), updated.getFromEntry().getAmount());
+        updateAccountBalance(manager, updated.getToEntry(), updated.getToEntry().getAmount());
+        /*
+        // For Entries: Only the amount has changed
         if (amountHasChanged && !fromAccHasChanged && !toAccHasChanged) {
             LOG.trace("Update the transation's amount.");
             updateAccountBalance(manager, original.getFromEntry(),
                 original.getToEntry().getAmount());
             updateAccountBalance(manager, original.getToEntry(),
                 original.getFromEntry().getAmount());
-
-            updateAccountBalance(manager, updated.getFromEntry(),
-                updated.getFromEntry().getAmount());
-            updateAccountBalance(manager, updated.getToEntry(),
-                updated.getToEntry().getAmount());
-        } else {
-
+        
+        
+        } else if (fromAccHasChanged) {
+        
         }
+        */
 
         LOG.trace("Update the Transaction object");
 
@@ -159,19 +164,19 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
     private boolean hasAmountChanged(TransactionEntity original, TransactionEntity updated) {
         LOG.trace(LOG_CALLED);
-        return original.getAmount().eq(updated.getAmount()) ? false : true;
+        return !original.getAmount().eq(updated.getAmount());
     }
 
     private boolean hasFromAccountChanged(TransactionEntity original, TransactionEntity updated) {
         LOG.trace(LOG_CALLED);
-        return original.getFromEntry().getAccountId()
-            .equals(updated.getFromEntry().getAccountId()) ? false : true;
+        return !original.getFromEntry().getAccountId()
+            .equals(updated.getFromEntry().getAccountId());
     }
 
     private boolean hasToAccountChanged(TransactionEntity original, TransactionEntity updated) {
         LOG.trace(LOG_CALLED);
-        return original.getToEntry().getAccountId()
-            .equals(updated.getToEntry().getAccountId()) ? false : true;
+        return !original.getToEntry().getAccountId()
+            .equals(updated.getToEntry().getAccountId());
     }
 
     @Override
