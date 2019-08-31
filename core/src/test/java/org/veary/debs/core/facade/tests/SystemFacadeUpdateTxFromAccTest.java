@@ -35,6 +35,8 @@ import org.veary.debs.model.Transaction;
 
 public class SystemFacadeUpdateTxFromAccTest extends AbstractSystemFacadeTestBase {
 
+    //    private static final Logger LOG = LogManager.getLogger(SystemFacadeUpdateTxFromAccTest.class);
+
     /**
      * Updates the current FROM account to another account.
      */
@@ -65,21 +67,21 @@ public class SystemFacadeUpdateTxFromAccTest extends AbstractSystemFacadeTestBas
 
         Assert.assertEquals(fetched.getFromEntry().getAccountId(),
             this.otherFromAccount.getId());
-        Assert.assertEquals(original.getToEntry().getAccountId(),
+        Assert.assertEquals(fetched.getToEntry().getAccountId(),
             this.toAccount.getId());
 
         Account fromAccount = this.accountDao
             .getAccountById(fetched.getFromEntry().getAccountId());
         Assert.assertTrue(fromAccount.getBalance().eq(TX_AMOUNT.negate()));
 
-        Account oldFromAccount = this.accountDao
-            .getAccountById(original.getToEntry().getAccountId());
-        Assert.assertEquals(original.getToEntry().getAccountId(),
-            oldFromAccount.getId());
-        Assert.assertTrue(oldFromAccount.getBalance().eq(new Money(BigDecimal.ZERO)));
-
         Account toAccount = this.accountDao
             .getAccountById(original.getToEntry().getAccountId());
         Assert.assertTrue(toAccount.getBalance().eq(TX_AMOUNT));
+
+        Account oldFromAccount = this.accountDao
+            .getAccountById(original.getFromEntry().getAccountId());
+        Assert.assertEquals(original.getFromEntry().getAccountId(),
+            this.fromAccount.getId());
+        Assert.assertTrue(oldFromAccount.getBalance().eq(new Money(BigDecimal.ZERO)));
     }
 }

@@ -27,6 +27,7 @@ package org.veary.debs.core.facade.tests;
 import java.time.LocalDate;
 
 import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
@@ -48,7 +49,7 @@ public class SystemFacadeUpdateTxDetailsTest extends AbstractSystemFacadeTestBas
     /**
      * Updates the details of the transaction object. The Entries' details are left unchanged.
      */
-    //@Test
+    @Test
     public void updateTransactionObjectDetailsOnly() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());

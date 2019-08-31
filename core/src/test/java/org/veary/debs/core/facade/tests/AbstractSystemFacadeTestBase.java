@@ -27,6 +27,8 @@ package org.veary.debs.core.facade.tests;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -45,6 +47,8 @@ import org.veary.debs.tests.JndiTestBase;
  * @since 1.0
  */
 public class AbstractSystemFacadeTestBase extends JndiTestBase {
+
+    private static final Logger LOG = LogManager.getLogger(AbstractSystemFacadeTestBase.class);
 
     protected static final Long BALANCE_GROUP_ID = Long.valueOf(1);
     protected static final Long NETWORTH_GROUP_ID = Long.valueOf(2);
@@ -79,6 +83,7 @@ public class AbstractSystemFacadeTestBase extends JndiTestBase {
     @Override
     public void setUp() {
         super.setUp();
+        LOG.trace("called");
         createAccounts();
 
         Transaction transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
@@ -107,9 +112,11 @@ public class AbstractSystemFacadeTestBase extends JndiTestBase {
     @Override
     public void teardown() {
         super.teardown();
+        LOG.trace("called");
     }
 
     private void createAccounts() {
+        LOG.trace("called");
         if (this.fromAccount == null) {
             this.accountDao
                 .createAccount(Account.newInstance(CASH_ACC_NAME, CASH_ACC_DESC, ASSETS_GROUP_ID,
