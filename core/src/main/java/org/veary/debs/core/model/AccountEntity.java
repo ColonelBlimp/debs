@@ -104,11 +104,11 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
         setId(original.getId());
         setDeleted(original.isDeleted());
         setCreationTimestamp(original.getCreationTimestamp());
-        this.name = original.getName();
-        this.description = original.getDescription();
-        this.type = original.getType();
-        this.balance = original.getBalance();
-        this.parentId = original.getParentId();
+        this.name = Objects.requireNonNull(original.getName());
+        this.description = Objects.requireNonNull(original.getDescription());
+        this.type = Objects.requireNonNull(original.getType());
+        this.balance = Objects.requireNonNull(original.getBalance());
+        this.parentId = Objects.requireNonNull(original.getParentId());
     }
 
     @Override
@@ -186,11 +186,13 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
     @Override
     public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
+
         if (!(that instanceof AccountEntity)) {
             return false;
+        }
+
+        if (this == that) {
+            return true;
         }
 
         AccountEntity other = (AccountEntity) that;
@@ -205,7 +207,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     @Override
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(this.name, this.description, this.type, this.balance,
+            this.hashCode = Objects.hash(getId(), isDeleted(), getCreationTimestamp(), this.name,
+                this.description, this.type, this.balance,
                 this.parentId);
         }
         return this.hashCode;

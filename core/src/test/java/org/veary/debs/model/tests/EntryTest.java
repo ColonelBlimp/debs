@@ -105,6 +105,7 @@ public class EntryTest {
         ((EntryEntity) object).setClearedTimestamp(SET_CLEARED_TS);
         Assert.assertEquals(object.getClearedTimestamp(), SET_CLEARED_TS);
         Assert.assertTrue(object.isCleared());
+        object.toString();
     }
 
     @Test
@@ -175,5 +176,26 @@ public class EntryTest {
         expectedExceptionsMessageRegExp = "Unknown Entry Type: 20")
     public void TypesException() {
         Entry.Types.getType(Integer.valueOf(20));
+    }
+
+    @Test
+    public void getHashCode() {
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put(Fields.ID.toString(), REAL_ID);
+        dataMap.put(Fields.CREATED.toString(), REAL_CREATION);
+        dataMap.put(Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap.put(Fields.AMOUNT.toString(), AMOUNT.getValue());
+        dataMap.put(Fields.ETYPE.toString(), Entry.Types.TO.getId());
+        dataMap.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
+        dataMap.put(Fields.CLEARED.toString(), Boolean.TRUE);
+        dataMap.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
+
+        Entry object1 = Entry.newInstance(dataMap);
+        Entry object2 = Entry.newInstance(dataMap);
+
+        Assert.assertTrue(object1.equals(object2));
+        Assert.assertTrue(object1.equals(object1));
+        Assert.assertFalse(object1.equals(null));
+        Assert.assertTrue(object2.hashCode() != 0);
     }
 }

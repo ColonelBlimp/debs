@@ -253,11 +253,12 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
     @Override
     public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
+
         if (!(that instanceof EntryEntity)) {
             return false;
+        }
+        if (this == that) {
+            return true;
         }
 
         EntryEntity other = (EntryEntity) that;
@@ -272,7 +273,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     @Override
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(this.type, this.accountId, this.amount,
+            this.hashCode = Objects.hash(getId(), isDeleted(), getCreationTimestamp(), this.type,
+                this.accountId, this.amount,
                 this.clearedTimestamp,
                 this.cleared);
         }

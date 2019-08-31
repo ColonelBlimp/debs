@@ -47,7 +47,7 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
 
     private volatile int hashCode = 0;
 
-    private Money amount;
+    private transient Money amount;
 
     private LocalDate date;
     private String narrative;
@@ -194,34 +194,5 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         }
         sb.append("}"); //$NON-NLS-1$
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (!(that instanceof TransactionEntity)) {
-            return false;
-        }
-
-        TransactionEntity other = (TransactionEntity) that;
-
-        return this.amount.eq(other.amount) &&
-            this.date.equals(other.date) &&
-            this.narrative.equals(other.narrative) &&
-            this.reference.contentEquals(other.reference) &&
-            this.fromEntry.equals(other.fromEntry) &&
-            this.toEntry.equals(other.toEntry) &&
-            this.cleared == other.cleared;
-    }
-
-    @Override
-    public int hashCode() {
-        if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(this.amount, this.date, this.narrative, this.reference,
-                this.fromEntry, this.toEntry, this.cleared);
-        }
-        return this.hashCode;
     }
 }

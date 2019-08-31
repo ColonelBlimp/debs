@@ -105,6 +105,7 @@ public class AccountTest {
 
         Account object = Account.newInstance(dataMap);
         Assert.assertNotNull(object);
+        object.toString();
     }
 
     @Test
@@ -223,5 +224,26 @@ public class AccountTest {
         expectedExceptionsMessageRegExp = "Parameter 'type' cannot be null")
     public void createMethodNullTypeException() {
         Account.newInstance(REAL_NAME, REAL_DESC, REAL_PARENT_ID, null);
+    }
+
+    @Test
+    public void getHashCode() {
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+
+        Account object1 = Account.newInstance(dataMap);
+        Account object2 = Account.newInstance(dataMap);
+
+        Assert.assertTrue(object1.equals(object2));
+        Assert.assertTrue(object1.equals(object1));
+        Assert.assertFalse(object1.equals(null));
+        Assert.assertTrue(object2.hashCode() != 0);
     }
 }
