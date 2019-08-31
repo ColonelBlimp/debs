@@ -46,7 +46,7 @@ import org.veary.debs.tests.JndiTestBase;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class SystemFacadeTxUpdateTest extends JndiTestBase {
+public class SystemFacadeTxUpdateOld extends JndiTestBase {
 
     @Test
     public void instantiation() {

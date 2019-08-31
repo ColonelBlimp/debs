@@ -114,15 +114,11 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
         Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
 
-        TransactionEntity originalTxEntity = (TransactionEntity) original;
-        TransactionEntity updatedTxEntity = (TransactionEntity) updated;
+        //        TransactionEntity originalTxEntity = (TransactionEntity) original;
+        //        TransactionEntity updatedTxEntity = (TransactionEntity) updated;
 
-        LOG.trace("Tx Original: {}", originalTxEntity);
-        LOG.trace("Tx Updated: {}", updatedTxEntity);
-
-        boolean amountHasChanged = hasAmountChanged(originalTxEntity, updatedTxEntity);
-        boolean fromAccHasChanged = hasFromAccountChanged(originalTxEntity, updatedTxEntity);
-        boolean toAccHasChanged = hasToAccountChanged(originalTxEntity, updatedTxEntity);
+        //        LOG.trace("Tx Original: {}", originalTxEntity);
+        //        LOG.trace("Tx Updated: {}", updatedTxEntity);
 
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
@@ -130,22 +126,10 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateAccountBalance(manager, original.getFromEntry(), original.getToEntry().getAmount());
         updateAccountBalance(manager, original.getToEntry(), original.getFromEntry().getAmount());
 
+        LOG.debug("UPDATE FROM ENTRY AMOUNT: {}", updated.getFromEntry().getAmount());
+        LOG.debug("UPDATE TO ENTRY AMOUNT: {}", updated.getToEntry().getAmount());
         updateAccountBalance(manager, updated.getFromEntry(), updated.getFromEntry().getAmount());
         updateAccountBalance(manager, updated.getToEntry(), updated.getToEntry().getAmount());
-        /*
-        // For Entries: Only the amount has changed
-        if (amountHasChanged && !fromAccHasChanged && !toAccHasChanged) {
-            LOG.trace("Update the transation's amount.");
-            updateAccountBalance(manager, original.getFromEntry(),
-                original.getToEntry().getAmount());
-            updateAccountBalance(manager, original.getToEntry(),
-                original.getFromEntry().getAmount());
-        
-        
-        } else if (fromAccHasChanged) {
-        
-        }
-        */
 
         LOG.trace("Update the Transaction object");
 

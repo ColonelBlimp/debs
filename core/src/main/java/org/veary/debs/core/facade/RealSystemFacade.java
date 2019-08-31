@@ -88,6 +88,8 @@ public final class RealSystemFacade implements SystemFacade {
     @Override
     public void updateTransaction(Transaction original, Transaction updated,
         Entry updatedFromEntry, Entry updatedToEntry) {
+        LOG.trace(LOG_CALLED);
+
         Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
         Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
         Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$

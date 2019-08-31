@@ -24,11 +24,9 @@
 
 package org.veary.debs.core.facade.tests;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.testng.Assert;
-import org.testng.annotations.Test;
-import org.veary.debs.core.Money;
 import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
@@ -41,43 +39,44 @@ import org.veary.debs.model.Transaction;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class SystemFacadeUpdateAmountTest extends AbstractSystemFacadeTestBase {
+public class SystemFacadeUpdateTxDetailsTest extends AbstractSystemFacadeTestBase {
 
-    private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456L));
+    private static final LocalDate UPDATE_DATE = LocalDate.of(2019, 8, 20);
+    private static final String UPDATE_NARRATIVE = "Updated Narrative";
+    private static final String UPDATE_REFERENCE = "Updated Reference";
 
     /**
-     * Update the amount associated with this transaction. This should update the amount on both
-     * sides of the transaction and update the assocated accounts' balance.
+     * Updates the details of the transaction object. The Entries' details are left unchanged.
      */
-    @Test
-    public void updateTransactionAmountOnly() {
+    //@Test
+    public void updateTransactionObjectDetailsOnly() {
         java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
         Transaction original = result.get();
 
-        Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
-            original.getReference(), UPDATED_AMOUNT, false);
+        Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
+            UPDATE_REFERENCE, TX_AMOUNT, false);
 
         this.systemFacade.updateTransaction(original, updated,
-            new EntryEntity(original.getFromEntry()), new EntryEntity(original.getToEntry()));
+            new EntryEntity(original.getFromEntry()),
+            new EntryEntity(original.getToEntry()));
 
         result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
         Transaction fetched = result.get();
 
-        Assert.assertEquals(fetched.getDate(), TX_DATE);
-        Assert.assertEquals(fetched.getNarrative(), TX_NARRATIVE);
-        Assert.assertEquals(fetched.getReference(), TX_REFERENCE);
-        System.out.println("FROM AMOUNT: " + fetched.getFromEntry().getAmount());
-        Assert.assertTrue(fetched.getFromEntry().getAmount().eq(UPDATED_AMOUNT.negate()));
-        Assert.assertTrue(fetched.getToEntry().getAmount().eq(UPDATED_AMOUNT));
+        Assert.assertEquals(fetched.getDate(), UPDATE_DATE);
+        Assert.assertEquals(fetched.getNarrative(), UPDATE_NARRATIVE);
+        Assert.assertEquals(fetched.getReference(), UPDATE_REFERENCE);
+        Assert.assertTrue(fetched.getFromEntry().getAmount().eq(TX_AMOUNT.negate()));
+        Assert.assertTrue(fetched.getToEntry().getAmount().eq(TX_AMOUNT));
 
         Account fromAccount = this.accountDao
             .getAccountById(original.getFromEntry().getAccountId());
-        Assert.assertTrue(fromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
+        Assert.assertTrue(fromAccount.getBalance().eq(TX_AMOUNT.negate()));
 
         Account toAccount = this.accountDao
             .getAccountById(original.getToEntry().getAccountId());
-        Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
+        Assert.assertTrue(toAccount.getBalance().eq(TX_AMOUNT));
     }
 }
