@@ -26,6 +26,8 @@ package org.veary.debs.core.facade.tests;
 
 import java.math.BigDecimal;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
@@ -42,6 +44,8 @@ import org.veary.debs.model.Transaction;
  * @since 1.0
  */
 public class SystemFacadeUpdateAmountTest extends AbstractSystemFacadeTestBase {
+
+    private static final Logger LOG = LogManager.getLogger(SystemFacadeUpdateAmountTest.class);
 
     private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456L));
 
@@ -68,7 +72,6 @@ public class SystemFacadeUpdateAmountTest extends AbstractSystemFacadeTestBase {
         Assert.assertEquals(fetched.getDate(), TX_DATE);
         Assert.assertEquals(fetched.getNarrative(), TX_NARRATIVE);
         Assert.assertEquals(fetched.getReference(), TX_REFERENCE);
-        System.out.println("FROM AMOUNT: " + fetched.getFromEntry().getAmount());
         Assert.assertTrue(fetched.getFromEntry().getAmount().eq(UPDATED_AMOUNT.negate()));
         Assert.assertTrue(fetched.getToEntry().getAmount().eq(UPDATED_AMOUNT));
 

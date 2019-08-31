@@ -114,11 +114,12 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
         Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
 
-        //        TransactionEntity originalTxEntity = (TransactionEntity) original;
-        //        TransactionEntity updatedTxEntity = (TransactionEntity) updated;
-
-        //        LOG.trace("Tx Original: {}", originalTxEntity);
-        //        LOG.trace("Tx Updated: {}", updatedTxEntity);
+        if (LOG.isTraceEnabled()) {
+            TransactionEntity originalTxEntity = (TransactionEntity) original;
+            TransactionEntity updatedTxEntity = (TransactionEntity) updated;
+            LOG.trace("Tx Original: {}", originalTxEntity);
+            LOG.trace("Tx Updated: {}", updatedTxEntity);
+        }
 
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
@@ -126,13 +127,14 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateAccountBalance(manager, original.getFromEntry(), original.getToEntry().getAmount());
         updateAccountBalance(manager, original.getToEntry(), original.getFromEntry().getAmount());
 
-        LOG.debug("UPDATE FROM ENTRY AMOUNT: {}", updated.getFromEntry().getAmount());
-        LOG.debug("UPDATE TO ENTRY AMOUNT: {}", updated.getToEntry().getAmount());
         updateAccountBalance(manager, updated.getFromEntry(), updated.getFromEntry().getAmount());
         updateAccountBalance(manager, updated.getToEntry(), updated.getToEntry().getAmount());
 
-        LOG.trace("Update the Transaction object");
+        LOG.trace("Update the Transaction Entry objects");
+        updateTransactionEntry(manager, updated.getFromEntry());
+        updateTransactionEntry(manager, updated.getToEntry());
 
+        LOG.trace("Update the Transaction object");
         final SqlStatement updateTx = SqlStatement
             .newInstance(this.registry.getSql("updateTransaction")); //$NON-NLS-1$
         updateTx.setParameter(1, updated.getDate());
@@ -144,23 +146,6 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         manager.persist(updateTx);
         manager.commit();
-    }
-
-    private boolean hasAmountChanged(TransactionEntity original, TransactionEntity updated) {
-        LOG.trace(LOG_CALLED);
-        return !original.getAmount().eq(updated.getAmount());
-    }
-
-    private boolean hasFromAccountChanged(TransactionEntity original, TransactionEntity updated) {
-        LOG.trace(LOG_CALLED);
-        return !original.getFromEntry().getAccountId()
-            .equals(updated.getFromEntry().getAccountId());
-    }
-
-    private boolean hasToAccountChanged(TransactionEntity original, TransactionEntity updated) {
-        LOG.trace(LOG_CALLED);
-        return !original.getToEntry().getAccountId()
-            .equals(updated.getToEntry().getAccountId());
     }
 
     @Override
@@ -199,6 +184,21 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTxEntry.setParameter(5, object.getClearedTimestamp());
 
         return manager.persist(insertTxEntry);
+    }
+
+    private void updateTransactionEntry(TransactionManager manager, Entry object) {
+        LOG.trace(LOG_CALLED);
+
+        final SqlStatement updateTxEntry = SqlStatement
+            .newInstance(this.registry.getSql("updateTransactionEntry")); //$NON-NLS-1$
+        updateTxEntry.setParameter(1, object.getAmount().getValue());
+        updateTxEntry.setParameter(2, object.getType().getId());
+        updateTxEntry.setParameter(3, object.getAccountId());
+        updateTxEntry.setParameter(4, object.isCleared());
+        updateTxEntry.setParameter(5, object.getClearedTimestamp());
+        updateTxEntry.setParameter(6, object.getId());
+
+        manager.persist(updateTxEntry);
     }
 
     private void updateAccountBalance(TransactionManager manager, Entry entry, Money amount) {
