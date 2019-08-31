@@ -157,10 +157,16 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         delete.setParameter(1, object.getId());
 
         TransactionManager manager = this.factory.createTransactionManager();
-
-        // The associated Entry object are marked as deleted by a trigger
         manager.begin();
         manager.persist(delete);
+
+        deleteTransactionEntry(manager, object.getFromEntry());
+        deleteTransactionEntry(manager, object.getToEntry());
+
+        // Yes, they do SEEM to be in reverse!
+        updateAccountBalance(manager, object.getToEntry(), object.getFromEntry().getAmount());
+        updateAccountBalance(manager, object.getFromEntry(), object.getToEntry().getAmount());
+
         manager.commit();
     }
 
@@ -215,6 +221,15 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateTxEntry.setParameter(6, object.getId());
 
         manager.persist(updateTxEntry);
+    }
+
+    private void deleteTransactionEntry(TransactionManager manager, Entry object) {
+        LOG.trace(LOG_CALLED);
+
+        final SqlStatement deleteTxEntry = SqlStatement
+            .newInstance(this.registry.getSql("deleteTransactionEntry")); //$NON-NLS-1$
+        deleteTxEntry.setParameter(1, object.getId());
+        manager.persist(deleteTxEntry);
     }
 
     private void updateAccountBalance(TransactionManager manager, Entry entry, Money amount) {

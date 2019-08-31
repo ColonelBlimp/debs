@@ -24,12 +24,18 @@
 
 package org.veary.debs.core.facade.tests;
 
+import java.math.BigDecimal;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.veary.debs.core.Money;
+import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 
 public class SystemFacadeDeleteTxTest extends AbstractSystemFacadeTestBase {
     //    private static final Logger LOG = LogManager.getLogger(SystemFacadeDeleteTxTest.class);
+
+    private static final Money ZERO = new Money(BigDecimal.ZERO);
 
     @Test
     public void deleteMethod() {
@@ -38,5 +44,21 @@ public class SystemFacadeDeleteTxTest extends AbstractSystemFacadeTestBase {
         Transaction object = result.get();
 
         this.systemFacade.deleteTransaction(object);
+
+        result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
+        Transaction fetched = result.get();
+
+        Assert.assertTrue(fetched.isDeleted());
+        Assert.assertTrue(fetched.getFromEntry().isDeleted());
+        Assert.assertTrue(fetched.getToEntry().isDeleted());
+
+        Account fromAccount = this.accountDao
+            .getAccountById(fetched.getFromEntry().getAccountId());
+        Assert.assertTrue(fromAccount.getBalance().eq(ZERO));
+
+        Account toAccount = this.accountDao
+            .getAccountById(fetched.getToEntry().getAccountId());
+        Assert.assertTrue(toAccount.getBalance().eq(ZERO));
     }
 }
