@@ -112,7 +112,8 @@ public class TransactionTest {
         Assert.assertEquals(object.getToCreatedTimestamp(), CREATION);
         Assert.assertFalse(object.isToDeleted());
         Assert.assertEquals(object.getToId(), TO_ID);
-        System.out.println(object);
+        object.toString();
+        //        System.out.println(object);
 
         object.setFromCleared(true);
         Assert.assertFalse(

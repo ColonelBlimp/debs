@@ -45,8 +45,6 @@ import org.veary.debs.model.Transaction;
  */
 public final class TransactionEntity extends PersistentObjectImpl implements Transaction {
 
-    private volatile int hashCode = 0;
-
     private transient Money amount;
 
     private LocalDate date;
@@ -107,20 +105,6 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
      *
      * @param object the {@code Transaction} object to be copied.
      */
-    public TransactionEntity(Transaction object) {
-        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-
-        setId(Objects.requireNonNull(object.getId()));
-        setDeleted(object.isDeleted());
-        setCreationTimestamp(Objects.requireNonNull(object.getCreationTimestamp()));
-
-        this.date = Objects.requireNonNull(object.getDate()); //Do We need to copy this?
-        this.reference = Objects.requireNonNull(object.getReference());
-        this.narrative = Objects.requireNonNull(object.getNarrative());
-
-        this.fromEntry = new EntryEntity(object.getFromEntry());
-        this.toEntry = new EntryEntity(object.getToEntry());
-    }
 
     @Override
     public LocalDate getDate() {
