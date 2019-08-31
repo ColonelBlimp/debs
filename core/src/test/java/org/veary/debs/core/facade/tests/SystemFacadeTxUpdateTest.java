@@ -126,8 +126,6 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
 
         Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
             UPDATE_REFERENCE, AMOUNT, false);
-        //        Entry updatedFromEntry = Entry.newInstance(Entry.Types.FROM, this.updatedFromAccount);
-        //        Entry updatedToEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 
         this.systemFacade.updateTransaction(original, updated, original.getFromEntry(),
             original.getToEntry());
@@ -173,6 +171,16 @@ public class SystemFacadeTxUpdateTest extends JndiTestBase {
         Account toAccount = this.accountDao
             .getAccountById(original.getToEntry().getAccountId());
         Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
+    }
+
+    /**
+     * Only change is the FROM account.
+     */
+    @Test(dependsOnMethods = { "updateTxNoEntryChanges" })
+    public void updateTxFromAccountChangeOnly() {
+        java.util.Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
+        Assert.assertFalse(result.isEmpty());
+        Transaction original = result.get();
     }
 
     /* ****************************** PRIVATE ******************************* */

@@ -109,7 +109,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         this.type = type;
         if (type.equals(Types.FROM)) {
             setId(Objects.requireNonNull(object.getFromId()));
-            setDeleted(object.isDeleted());
+            setDeleted(object.isFromDeleted());
             setCreationTimestamp(Objects.requireNonNull(object.getFromCreatedTimestamp()));
 
             this.amount = Objects.requireNonNull(object.getFromAmount());
@@ -120,7 +120,7 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             this.clearedTimestamp = Objects.requireNonNull(object.getFromClearedTimestamp());
         } else {
             setId(Objects.requireNonNull(object.getToId()));
-            setDeleted(object.isDeleted());
+            setDeleted(object.isToDeleted());
             setCreationTimestamp(Objects.requireNonNull(object.getToCreatedTimestamp()));
 
             this.amount = Objects.requireNonNull(object.getToAmount());
