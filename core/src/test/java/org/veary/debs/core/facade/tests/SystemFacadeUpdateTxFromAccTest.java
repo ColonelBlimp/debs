@@ -33,7 +33,7 @@ import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 
-public class SystemFacadeUpdateTxFromAccText extends AbstractSystemFacadeTestBase {
+public class SystemFacadeUpdateTxFromAccTest extends AbstractSystemFacadeTestBase {
 
     /**
      * Updates the current FROM account to another account.
