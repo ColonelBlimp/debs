@@ -99,6 +99,29 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.toEntry = new EntryEntity(object, Entry.Types.TO);
     }
 
+    /**
+     * Copy constructor. Returns a new instance (state is equal, but identity is not).
+     *
+     * <p><b>Note:</b> Associated {@code Entry} objects are also copied (i.e. state is equal, but
+     * identity is not).
+     *
+     * @param object the {@code Transaction} object to be copied.
+     */
+    public TransactionEntity(Transaction object) {
+        Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
+
+        setId(Objects.requireNonNull(object.getId()));
+        setDeleted(object.isDeleted());
+        setCreationTimestamp(Objects.requireNonNull(object.getCreationTimestamp()));
+
+        this.date = Objects.requireNonNull(object.getDate()); //Do We need to copy this?
+        this.reference = Objects.requireNonNull(object.getReference());
+        this.narrative = Objects.requireNonNull(object.getNarrative());
+
+        this.fromEntry = new EntryEntity(object.getFromEntry());
+        this.toEntry = new EntryEntity(object.getToEntry());
+    }
+
     @Override
     public LocalDate getDate() {
         return this.date;
