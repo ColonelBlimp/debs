@@ -161,4 +161,15 @@ public final class RealSystemFacade implements SystemFacade {
 
         return this.transactionDao.getTransactionsForAccount(account, status);
     }
+
+    @Override
+    public List<Transaction> getTransactionsForAccountOverPeriod(YearMonth period,
+        Account account, Status status) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
+        Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+
+        return this.transactionDao.getTransactionsForAccountOverPeriod(period, account, status);
+    }
 }

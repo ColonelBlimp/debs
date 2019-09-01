@@ -293,6 +293,43 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         return transformTransactionResultList(query.getResultList());
     }
 
+    @Override
+    public List<Transaction> getTransactionsForAccountOverPeriod(YearMonth period,
+        Account account, Status status) {
+        LOG.trace(LOG_CALLED);
+
+        String sqlName = this.registry
+            .getSql("getTransactionsForAccountOverPeriodExcludeDeleted"); //$NON-NLS-1$
+
+        switch (status) {
+            case DELETED:
+                sqlName = this.registry.getSql("getTransactionsForAccountOverPeriodDeleted"); //$NON-NLS-1$
+                break;
+            case BOTH:
+                sqlName = this.registry.getSql("getTransactionsForAccountOverPeriodBoth"); //$NON-NLS-1$
+                break;
+            default:
+                // Do nothing
+        }
+
+        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        select.setParameter(1, account.getId());
+        select.setParameter(2, account.getId());
+        select.setParameter(3, Integer.valueOf(period.getYear()));
+        select.setParameter(4, Integer.valueOf(period.getMonthValue()));
+
+        QueryManager manager = this.factory.createQueryManager();
+        Query query = manager.createQuery(select, TransactionEntitySelect.class);
+
+        try {
+            query.execute();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+
+        return transformTransactionResultList(query.getResultList());
+    }
+
     /**
      * A separate call will need to be made to set this item as cleared!
      *
