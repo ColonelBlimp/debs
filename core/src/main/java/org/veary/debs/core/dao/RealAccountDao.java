@@ -72,7 +72,8 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     public RealAccountDao(Registry registry, PersistenceManagerFactory factory) {
         super(factory);
         LOG.trace(LOG_CALLED);
-        this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.registry = Objects.requireNonNull(registry,
+            Messages.getParameterIsNull("registry")); //$NON-NLS-1$
     }
 
     @Override

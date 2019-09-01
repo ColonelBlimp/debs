@@ -45,6 +45,10 @@ import org.veary.debs.model.Entry;
  */
 public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
+    /**
+     * A {@link LocalDateTime} instance used to indicate that an {@code Entry} object is
+     * <b>not</b> cleared.
+     */
     public static final LocalDateTime NOT_CLEARED_TIMESTAMP = LocalDateTime.of(1, 1, 1, 0, 0, 0);
 
     private volatile int hashCode = 0;
@@ -241,8 +245,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     /**
-     * Setting the cleared timestamp to anything other than {@link #} will also set the
-     * {@code cleared} flag to {@code true}. The reverse is also true.
+     * Setting the cleared timestamp to anything other than {@link #NOT_CLEARED_TIMESTAMP} will
+     * also set the {@code cleared} flag to {@code true}. The reverse is also true.
      *
      * @param clearedTimestamp {@link LocalDateTime}
      */

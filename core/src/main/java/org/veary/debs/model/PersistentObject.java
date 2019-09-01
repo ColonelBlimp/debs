@@ -42,7 +42,7 @@ public interface PersistentObject {
     Long getId();
 
     /**
-     * Has this object been marked as <i>deleted</i>?
+     * Has this object been marked as <i>deleted</i>.
      *
      * @return {@code true} if marked as deleted, otherwise {@code false}
      */

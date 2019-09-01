@@ -97,15 +97,6 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.toEntry = new EntryEntity(object, Entry.Types.TO);
     }
 
-    /**
-     * Copy constructor. Returns a new instance (state is equal, but identity is not).
-     *
-     * <p><b>Note:</b> Associated {@code Entry} objects are also copied (i.e. state is equal,
-     * but identity is not).
-     *
-     * @param object the {@code Transaction} object to be copied.
-     */
-
     @Override
     public LocalDate getDate() {
         return this.date;

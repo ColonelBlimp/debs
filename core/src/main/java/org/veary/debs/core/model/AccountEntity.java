@@ -36,9 +36,7 @@ import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Account;
 
 /**
- * <b>Purpose:</b>
- *
- * <b>Responsibility:</b>
+ * <b>Purpose:</b> Concrete implementation of the {@link Account} interface.
  *
  * @author Marc L. Veary
  * @since 1.0

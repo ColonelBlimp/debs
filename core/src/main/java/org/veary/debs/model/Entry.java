@@ -68,7 +68,8 @@ public interface Entry extends PersistentObject {
          * @param name the persistent storage field (column) name
          */
         Fields(String name) {
-            this.name = Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
+            this.name = Objects.requireNonNull(name,
+                Messages.getParameterIsNull("name")); //$NON-NLS-1$
         }
 
         @Override

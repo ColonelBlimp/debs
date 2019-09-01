@@ -25,15 +25,13 @@
 package org.veary.debs.facade;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Enum defining one of the search criteria use for retrieving objects from the
+ * system.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public enum Status {
-
     NON_DELETED,
     DELETED,
     BOTH;

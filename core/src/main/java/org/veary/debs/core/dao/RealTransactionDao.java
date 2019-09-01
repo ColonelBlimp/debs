@@ -203,20 +203,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getAllTransactions(Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry.getSql("getAllTransactionsExcludeDeleted"); //$NON-NLS-1$
+        final String[] keys = {
+            "getAllTransactionsExcludeDeleted",
+            "getAllTransactionsDeleted",
+            "getAllTransactionsBoth"
+        };
 
-        switch (status) {
-            case DELETED:
-                sqlName = this.registry.getSql("getAllTransactionsDeleted"); //$NON-NLS-1$
-                break;
-            case BOTH:
-                sqlName = this.registry.getSql("getAllTransactionsBoth"); //$NON-NLS-1$
-                break;
-            default:
-                // Do nothing
-        }
-
-        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
 
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionEntitySelect.class);
@@ -234,22 +227,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry
-            .getSql("getAllTransactionsOverPeriodExcludeDeleted"); //$NON-NLS-1$
+        final String[] keys = {
+            "getAllTransactionsOverPeriodExcludeDeleted",
+            "getAllTransactionsOverPeriodDeleted",
+            "getAllTransactionsOverPeriodBoth"
+        };
 
-        switch (status) {
-            case DELETED:
-                sqlName = this.registry
-                    .getSql("getAllTransactionsOverPeriodDeleted"); //$NON-NLS-1$
-                break;
-            case BOTH:
-                sqlName = this.registry.getSql("getAllTransactionsOverPeriodBoth"); //$NON-NLS-1$
-                break;
-            default:
-                // Do nothing
-        }
-
-        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
         select.setParameter(1, Integer.valueOf(period.getYear()));
         select.setParameter(2, Integer.valueOf(period.getMonthValue()));
 
@@ -269,21 +253,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getTransactionsForAccount(Account account, Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry
-            .getSql("getTransactionsForAccountExcludeDeleted"); //$NON-NLS-1$
+        final String[] keys = {
+            "getTransactionsForAccountExcludeDeleted",
+            "getTransactionsForAccountDeleted",
+            "getTransactionsForAccountBoth"
+        };
 
-        switch (status) {
-            case DELETED:
-                sqlName = this.registry.getSql("getTransactionsForAccountDeleted"); //$NON-NLS-1$
-                break;
-            case BOTH:
-                sqlName = this.registry.getSql("getTransactionsForAccountBoth"); //$NON-NLS-1$
-                break;
-            default:
-                // Do nothing
-        }
-
-        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
         select.setParameter(1, account.getId());
         select.setParameter(2, account.getId());
 
@@ -304,23 +280,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         Account account, Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry
-            .getSql("getTransactionsForAccountOverPeriodExcludeDeleted"); //$NON-NLS-1$
+        final String[] keys = {
+            "getTransactionsForAccountOverPeriodExcludeDeleted",
+            "getTransactionsForAccountOverPeriodDeleted",
+            "getTransactionsForAccountOverPeriodBoth"
+        };
 
-        switch (status) {
-            case DELETED:
-                sqlName = this.registry
-                    .getSql("getTransactionsForAccountOverPeriodDeleted"); //$NON-NLS-1$
-                break;
-            case BOTH:
-                sqlName = this.registry
-                    .getSql("getTransactionsForAccountOverPeriodBoth"); //$NON-NLS-1$
-                break;
-            default:
-                // Do nothing
-        }
-
-        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
         select.setParameter(1, account.getId());
         select.setParameter(2, account.getId());
         select.setParameter(3, Integer.valueOf(period.getYear()));
@@ -407,5 +373,27 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
             list.add(new TransactionEntity((TransactionEntitySelect) object));
         }
         return Collections.unmodifiableList(list);
+    }
+
+    private String getSqlForStatus(Status status, String... keys) {
+        LOG.trace(LOG_CALLED);
+
+        String sql = this.registry
+            .getSql(keys[0]); //$NON-NLS-1$
+
+        switch (status) {
+            case DELETED:
+                sql = this.registry
+                    .getSql(keys[1]); //$NON-NLS-1$
+                break;
+            case BOTH:
+                sql = this.registry
+                    .getSql(keys[2]); //$NON-NLS-1$
+                break;
+            default:
+                // Do nothing
+        }
+
+        return sql;
     }
 }

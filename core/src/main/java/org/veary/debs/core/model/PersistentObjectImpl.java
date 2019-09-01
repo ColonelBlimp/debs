@@ -31,9 +31,9 @@ import org.veary.debs.Messages;
 import org.veary.debs.model.PersistentObject;
 
 /**
- * <b>Purpose:</b>
+ * <b>Purpose:</b> Abstract class which must be extended by all Entity objects.
  *
- * <b>Responsibility:</b>
+ * <b>Responsibility:</b> Methods and fields common to all Entity objects.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -74,6 +74,7 @@ abstract class PersistentObjectImpl implements PersistentObject {
     }
 
     public void setCreationTimestamp(LocalDateTime created) {
-        this.created = Objects.requireNonNull(created, Messages.getParameterIsNull("created")); //$NON-NLS-1$
+        this.created = Objects.requireNonNull(created,
+            Messages.getParameterIsNull("created")); //$NON-NLS-1$
     }
 }

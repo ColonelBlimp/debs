@@ -38,7 +38,7 @@ import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Abstract class.
  *
  * <p><b>Responsibility:</b>
  *
@@ -58,7 +58,8 @@ abstract class AbstractDao<T> {
      * @param factory {@link PersistenceManagerFactory}
      */
     protected AbstractDao(PersistenceManagerFactory factory) {
-        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory")); //$NON-NLS-1$
+        this.factory = Objects.requireNonNull(factory,
+            Messages.getParameterIsNull("factory")); //$NON-NLS-1$
     }
 
     @SuppressWarnings("unchecked")

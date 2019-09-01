@@ -266,6 +266,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.fromAmount;
     }
 
+    /**
+     * Set the {@code Money} amount for the FROM {@code Entry} for this {@code Transaction}.
+     *
+     * @param fromAmount {@code Money}
+     */
     public void setFromAmount(Money fromAmount) {
         if (fromAmount.isPlus()) {
             throw new IllegalArgumentException(
@@ -283,6 +288,12 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.fromAccountId;
     }
 
+    /**
+     * Sets the FROM account unique identifier for the FROM {@code Entry} for this
+     * {@code Transaction}.
+     *
+     * @param fromAccountId {@code Long}
+     */
     public void setFromAccountId(Long fromAccountId) {
         this.fromAccountId = fromAccountId;
     }
@@ -304,6 +315,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.toId;
     }
 
+    /**
+     * Sets the unique identifier.
+     *
+     * @param toId {@code Long}
+     */
     public void setToId(Long toId) {
         this.toId = toId;
     }
@@ -332,7 +348,7 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
      * Sets the <i>cleared</i> timestamp. If the value given is anything other than
      * {@link EntryEntity#NOT_CLEARED_TIMESTAMP}, the {@code cleared} flag will also be set to
      * {@code true}. The reverse is also true.
-     * 
+     *
      * @param toClearedTimestamp
      */
     public void setToClearedTimestamp(LocalDateTime toClearedTimestamp) {

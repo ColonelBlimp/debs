@@ -30,9 +30,7 @@ import java.util.Objects;
 import org.veary.debs.Messages;
 
 /**
- * <b>Purpose:</b>
- *
- * <b>Responsibility:</b>
+ * <b>Purpose:</b> Various validator utilities.
  *
  * @author Marc L. Veary
  * @since 1.0
