@@ -34,32 +34,7 @@ package org.veary.debs.facade;
  */
 public enum Status {
 
-    NON_DELETED(1),
-    DELETED(2),
-    BOTH(3);
-
-    private final Integer id;
-
-    Status(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getValue() {
-        return this.id;
-    }
-
-    public Status toStatus(Integer id) {
-        Status status = NON_DELETED;
-        switch (id) {
-            case 2:
-                status = DELETED;
-                break;
-            case 3:
-                status = BOTH;
-                break;
-            default:
-                // do nothing
-        }
-        return status;
-    }
+    NON_DELETED,
+    DELETED,
+    BOTH;
 }
