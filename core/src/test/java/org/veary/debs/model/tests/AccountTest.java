@@ -247,4 +247,114 @@ public class AccountTest {
         Assert.assertTrue(object2.hashCode() != 0);
         Assert.assertTrue(object2.hashCode() != 0);
     }
+
+    @Test
+    public void equalsMethod() {
+        Map<String, Object> dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        Account object1 = Account.newInstance(dataMap1);
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), Long.valueOf(123));
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        Account object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), Timestamp.valueOf(LocalDateTime.now()));
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.TRUE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), BigDecimal.ONE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), UPDATED_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), UPDATED_DESCRIPTION);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), UPDATED_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+
+        dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), DEFAULT_BALANCE);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.LIABILITY.getId());
+        object2 = Account.newInstance(dataMap1);
+        Assert.assertFalse(object1.equals(object2));
+    }
 }
