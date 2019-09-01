@@ -245,5 +245,6 @@ public class AccountTest {
         Assert.assertTrue(object1.equals(object1));
         Assert.assertFalse(object1.equals(null));
         Assert.assertTrue(object2.hashCode() != 0);
+        Assert.assertTrue(object2.hashCode() != 0);
     }
 }

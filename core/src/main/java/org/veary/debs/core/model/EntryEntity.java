@@ -263,7 +263,10 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
         EntryEntity other = (EntryEntity) that;
 
-        return this.type.equals(other.type) &&
+        return getId().equals(other.getId()) &&
+            isDeleted() == other.isDeleted() &&
+            getCreationTimestamp().equals(other.getCreationTimestamp()) &&
+            this.type.equals(other.type) &&
             this.accountId.equals(other.accountId) &&
             this.amount.eq(other.amount) &&
             this.clearedTimestamp.equals(other.clearedTimestamp) &&
