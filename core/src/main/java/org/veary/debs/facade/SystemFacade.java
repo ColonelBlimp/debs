@@ -24,6 +24,7 @@
 
 package org.veary.debs.facade;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +91,16 @@ public interface SystemFacade {
     List<Transaction> getAllTransactions(Status status);
 
     /**
+     * Returns a {@code List} of all the {@link Transaction} objects posted during the
+     * referenced {@link YearMonth}.
+     *
+     * @param period {@link YearMonth} defining the year and month
+     * @param status indicates which records to include in the results
+     * @return an unmodifiable {@code List}. Cannot be {@code null}.
+     */
+    List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status);
+
+    /**
      * Returns a {@code List} of all the {@code Transaction} objects relating to the referenced
      * {@code Account}.
      *
@@ -97,4 +108,7 @@ public interface SystemFacade {
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
     List<Transaction> getTransactionsForAccount(Account account, Status status);
+
+    //    List<Transaction> getTransactionsForAccountOverPeriod(Account account, YearMonth period,
+    //        Status status);
 }

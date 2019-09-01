@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.dao;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +103,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTx.setParameter(3, object.getNarrative());
         insertTx.setParameter(4, fromId);
         insertTx.setParameter(5, toId);
+
+        LOG.trace("TX DATE: {}", object.getDate());
 
         Long id = manager.persist(insertTx);
 
@@ -211,6 +214,39 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         }
 
         final SqlStatement select = SqlStatement.newInstance(sqlName);
+
+        QueryManager manager = this.factory.createQueryManager();
+        Query query = manager.createQuery(select, TransactionEntitySelect.class);
+
+        try {
+            query.execute();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+
+        return transformTransactionResultList(query.getResultList());
+    }
+
+    @Override
+    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
+        LOG.trace(LOG_CALLED);
+
+        String sqlName = this.registry.getSql("getAllTransactionsOverPeriodExcludeDeleted"); //$NON-NLS-1$
+
+        switch (status) {
+            case DELETED:
+                sqlName = this.registry.getSql("getAllTransactionsOverPeriodDeleted"); //$NON-NLS-1$
+                break;
+            case BOTH:
+                sqlName = this.registry.getSql("getAllTransactionsOverPeriodBoth"); //$NON-NLS-1$
+                break;
+            default:
+                // Do nothing
+        }
+
+        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        select.setParameter(1, Integer.valueOf(period.getYear()));
+        select.setParameter(2, Integer.valueOf(period.getMonthValue()));
 
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionEntitySelect.class);

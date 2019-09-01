@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.facade;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -141,6 +142,15 @@ public final class RealSystemFacade implements SystemFacade {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
         return this.transactionDao.getAllTransactions(status);
+    }
+
+    @Override
+    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+
+        return this.transactionDao.getAllTransactionsOverPeriod(period, status);
     }
 
     @Override
