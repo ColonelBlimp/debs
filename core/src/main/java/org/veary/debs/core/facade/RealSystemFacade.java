@@ -38,6 +38,7 @@ import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.Status;
 import org.veary.debs.facade.SystemFacade;
+import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.exceptions.NoResultException;
@@ -140,5 +141,14 @@ public final class RealSystemFacade implements SystemFacade {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
         return this.transactionDao.getAllTransactions(status);
+    }
+
+    @Override
+    public List<Transaction> getTransactionsForAccount(Account account, Status status) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+
+        return this.transactionDao.getTransactionsForAccount(account, status);
     }
 }

@@ -43,7 +43,7 @@ import org.veary.debs.model.Transaction;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class SystemFacadeAllTxMethodTest extends AbstractSystemFacadeTestBase {
+public class SystemFacadeGetAllTxTest extends AbstractSystemFacadeTestBase {
     //private static final Logger LOG = LogManager.getLogger(SystemFacadeAllTxMethodTest.class);
 
     private static final Money AMOUNT_ONE = new Money(BigDecimal.valueOf(100000L));
@@ -51,7 +51,7 @@ public class SystemFacadeAllTxMethodTest extends AbstractSystemFacadeTestBase {
     private static final Money AMOUNT_THREE = new Money(BigDecimal.valueOf(300000L));
 
     @Test
-    public void deletedStatus() {
+    public void getAll() {
         Transaction transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
             AMOUNT_ONE, false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);

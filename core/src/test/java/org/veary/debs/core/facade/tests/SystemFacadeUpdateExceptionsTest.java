@@ -31,7 +31,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.EntryEntity;
-import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 
 /**
@@ -42,16 +41,14 @@ import org.veary.debs.model.Transaction;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class SystemFacadeUpdateTxAmountTest extends AbstractSystemFacadeTestBase {
+public class SystemFacadeUpdateExceptionsTest extends AbstractSystemFacadeTestBase {
+    //private static final Logger LOG = LogManager.getLogger(SystemFacadeUpdateExceptionsTest.class);
 
     private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(123456L));
 
-    /**
-     * Update the amount associated with this transaction. This should update the amount on both
-     * sides of the transaction and update the assocated accounts' balance.
-     */
-    @Test
-    public void updateTransactionAmountOnly() {
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "The original 'FROM' entry must not be the same instance as the updated 'FROM' entry. Use the EntryEntity copy constructor.")
+    public void fromEntityIdentityException() {
         Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
         Transaction original = result.get();
@@ -60,26 +57,20 @@ public class SystemFacadeUpdateTxAmountTest extends AbstractSystemFacadeTestBase
             original.getReference(), UPDATED_AMOUNT, false);
 
         this.systemFacade.updateTransaction(original, updated,
-            new EntryEntity(original.getFromEntry()), new EntryEntity(original.getToEntry()));
+            original.getFromEntry(), new EntryEntity(original.getToEntry()));
+    }
 
-        result = this.systemFacade.getTransactionById(this.txId);
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "The original 'TO' entry must not be the same instance as the updated 'TO' entry. Use the EntryEntity copy constructor.")
+    public void toEntityIdentityException() {
+        Optional<Transaction> result = this.systemFacade.getTransactionById(this.txId);
         Assert.assertFalse(result.isEmpty());
-        Transaction fetched = result.get();
+        Transaction original = result.get();
 
-        Assert.assertEquals(fetched.getDate(), TX_DATE);
-        Assert.assertEquals(fetched.getNarrative(), TX_NARRATIVE);
-        Assert.assertEquals(fetched.getReference(), TX_REFERENCE);
-        Assert.assertTrue(fetched.getFromEntry().getAmount().eq(UPDATED_AMOUNT.negate()));
-        Assert.assertTrue(fetched.getToEntry().getAmount().eq(UPDATED_AMOUNT));
+        Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
+            original.getReference(), UPDATED_AMOUNT, false);
 
-        Account fromAccount = this.accountDao
-            .getAccountById(original.getFromEntry().getAccountId());
-        Assert.assertEquals(fetched.getFromEntry().getAccountId(), this.fromAccount.getId());
-        Assert.assertTrue(fromAccount.getBalance().eq(UPDATED_AMOUNT.negate()));
-
-        Account toAccount = this.accountDao
-            .getAccountById(original.getToEntry().getAccountId());
-        Assert.assertEquals(fetched.getToEntry().getAccountId(), this.toAccount.getId());
-        Assert.assertTrue(toAccount.getBalance().eq(UPDATED_AMOUNT));
+        this.systemFacade.updateTransaction(original, updated,
+            new EntryEntity(original.getFromEntry()), original.getToEntry());
     }
 }

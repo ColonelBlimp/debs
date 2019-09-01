@@ -40,6 +40,7 @@ import org.veary.debs.core.model.TransactionEntitySelect;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.Status;
+import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.PersistenceManagerFactory;
@@ -210,6 +211,39 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         }
 
         final SqlStatement select = SqlStatement.newInstance(sqlName);
+
+        QueryManager manager = this.factory.createQueryManager();
+        Query query = manager.createQuery(select, TransactionEntitySelect.class);
+
+        try {
+            query.execute();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+
+        return transformTransactionResultList(query.getResultList());
+    }
+
+    @Override
+    public List<Transaction> getTransactionsForAccount(Account account, Status status) {
+        LOG.trace(LOG_CALLED);
+
+        String sqlName = this.registry.getSql("getTransactionsForAccountExcludeDeleted"); //$NON-NLS-1$
+
+        switch (status) {
+            case DELETED:
+                sqlName = this.registry.getSql("getTransactionsForAccountDeleted"); //$NON-NLS-1$
+                break;
+            case BOTH:
+                sqlName = this.registry.getSql("getTransactionsForAccountBoth"); //$NON-NLS-1$
+                break;
+            default:
+                // Do nothing
+        }
+
+        final SqlStatement select = SqlStatement.newInstance(sqlName);
+        select.setParameter(1, account.getId());
+        select.setParameter(2, account.getId());
 
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionEntitySelect.class);
