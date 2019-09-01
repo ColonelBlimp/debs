@@ -37,12 +37,13 @@ import org.veary.debs.core.Money;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Types;
+import org.veary.debs.model.Transaction;
 
 /**
- * <b>Purpose:</b> A system entity bean for {@link Transaction}
+ * <b>Purpose:</b> A system entity bean for {@link Transaction}.
  *
- * <p><b>Responsibility:</b> All SQL {@code SELECT} statements relating to {@code Transaction}s
- * pass this class into the {@code org.veary.persist} library.
+ * <p><b>Responsibility:</b> All SQL {@code SELECT} statements relating to Transactions pass
+ * this class into the {@code org.veary.persist} library.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -328,6 +329,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.toAmount;
     }
 
+    /**
+     * Set the {@code Money} amount for the TO {@code Entry} for this {@code Transaction}.
+     *
+     * @param toAmount {@code Money}
+     */
     public void setToAmount(Money toAmount) {
         if (toAmount.isMinus()) {
             throw new IllegalArgumentException(
@@ -349,7 +355,7 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
      * {@link EntryEntity#NOT_CLEARED_TIMESTAMP}, the {@code cleared} flag will also be set to
      * {@code true}. The reverse is also true.
      *
-     * @param toClearedTimestamp
+     * @param toClearedTimestamp {@code LocalDateTime}
      */
     public void setToClearedTimestamp(LocalDateTime toClearedTimestamp) {
         this.toClearedTimestamp = toClearedTimestamp;

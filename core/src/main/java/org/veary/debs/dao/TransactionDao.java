@@ -103,6 +103,7 @@ public interface TransactionDao {
      * Returns a {@code List} of all the {@code Transaction} objects relating to the referenced
      * {@code Account}.
      *
+     * @param account {@code Account}
      * @param status indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
