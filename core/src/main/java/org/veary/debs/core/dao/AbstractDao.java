@@ -84,5 +84,4 @@ abstract class AbstractDao<T> {
 
         return Collections.unmodifiableList(list);
     }
-
 }

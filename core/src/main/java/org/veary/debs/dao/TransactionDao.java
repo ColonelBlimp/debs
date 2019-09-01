@@ -26,6 +26,7 @@ package org.veary.debs.dao;
 
 import java.util.List;
 
+import org.veary.debs.facade.Status;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.exceptions.NoResultException;
@@ -81,9 +82,8 @@ public interface TransactionDao {
     /**
      * Returns a {@code List} of all the {@code Transaction} objects in the system.
      *
-     * @param includeDeleted {@code true} if deleted transactions should be included in the
-     *     list, otherwise {@code false}
+     * @param status indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
-    List<Transaction> getAllTransactions(boolean includeDeleted);
+    List<Transaction> getAllTransactions(Status status);
 }

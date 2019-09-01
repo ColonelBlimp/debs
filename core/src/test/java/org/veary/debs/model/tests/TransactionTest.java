@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
-import org.veary.debs.core.model.TransactionGetByIdEntity;
+import org.veary.debs.core.model.TransactionEntitySelect;
 import org.veary.debs.model.Transaction;
 
 /**
@@ -74,7 +74,7 @@ public class TransactionTest {
 
     @Test
     public void transactionGetByIdMethod() {
-        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        TransactionEntitySelect object = new TransactionEntitySelect();
         object.setCreationTimestamp(CREATION);
         object.setDate(DATE);
         object.setDeleted(true);
@@ -126,7 +126,7 @@ public class TransactionTest {
 
     @Test
     public void setClearedTimestamp() {
-        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        TransactionEntitySelect object = new TransactionEntitySelect();
         object.setFromCleared(false);
         Assert.assertFalse(object.isFromCleared());
         Assert.assertEquals(object.getFromClearedTimestamp(), EntryEntity.NOT_CLEARED_TIMESTAMP);
@@ -146,14 +146,14 @@ public class TransactionTest {
     @Test(expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "The amount for the 'FROM' account must be a minus. Value: 123456.00")
     public void setFromMoneyException() {
-        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        TransactionEntitySelect object = new TransactionEntitySelect();
         object.setFromAmount(AMOUNT);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "The amount for the 'TO' account must be plus. Value: -123456.00")
     public void setToMoneyException() {
-        TransactionGetByIdEntity object = new TransactionGetByIdEntity();
+        TransactionEntitySelect object = new TransactionEntitySelect();
         object.setToAmount(AMOUNT.negate());
     }
 }

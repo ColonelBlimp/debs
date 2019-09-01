@@ -24,7 +24,15 @@
 
 package org.veary.debs.core.facade.tests;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.veary.debs.core.Money;
+import org.veary.debs.facade.Status;
+import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
 /**
@@ -38,9 +46,47 @@ import org.veary.debs.model.Transaction;
 public class SystemFacadeAllTxMethodTest extends AbstractSystemFacadeTestBase {
     //private static final Logger LOG = LogManager.getLogger(SystemFacadeAllTxMethodTest.class);
 
+    private static final Money AMOUNT_ONE = new Money(BigDecimal.valueOf(100000L));
+    private static final Money AMOUNT_TWO = new Money(BigDecimal.valueOf(200000L));
+    private static final Money AMOUNT_THREE = new Money(BigDecimal.valueOf(300000L));
+
     @Test
-    public void noDeleted() {
+    public void deletedStatus() {
         Transaction transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
-            TX_AMOUNT, false);
+            AMOUNT_ONE, false);
+        Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
+        Entry toEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
+
+        this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
+
+        transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
+            AMOUNT_TWO, false);
+
+        this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
+
+        transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
+            AMOUNT_THREE, false);
+
+        Long id = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
+        Optional<Transaction> result = this.systemFacade.getTransactionById(id);
+        Assert.assertFalse(result.isEmpty());
+
+        this.systemFacade.deleteTransaction(result.get());
+
+        List<Transaction> listNonDeleted = this.systemFacade
+            .getAllTransactions(Status.NON_DELETED);
+        Assert.assertNotNull(listNonDeleted);
+        Assert.assertFalse(listNonDeleted.isEmpty());
+        Assert.assertTrue(listNonDeleted.size() == 3);
+
+        List<Transaction> listDeleted = this.systemFacade.getAllTransactions(Status.DELETED);
+        Assert.assertNotNull(listDeleted);
+        Assert.assertFalse(listDeleted.isEmpty());
+        Assert.assertTrue(listDeleted.size() == 1);
+
+        List<Transaction> listBoth = this.systemFacade.getAllTransactions(Status.BOTH);
+        Assert.assertNotNull(listBoth);
+        Assert.assertFalse(listBoth.isEmpty());
+        Assert.assertTrue(listBoth.size() == 4);
     }
 }

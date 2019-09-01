@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
+import org.veary.debs.facade.Status;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
@@ -135,8 +136,9 @@ public final class RealSystemFacade implements SystemFacade {
     }
 
     @Override
-    public List<Transaction> getAllTransactions(boolean includeDeleted) {
+    public List<Transaction> getAllTransactions(Status status) {
         LOG.trace(LOG_CALLED);
-        return this.transactionDao.getAllTransactions(includeDeleted);
+        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+        return this.transactionDao.getAllTransactions(status);
     }
 }

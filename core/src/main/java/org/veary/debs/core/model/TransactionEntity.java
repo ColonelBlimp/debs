@@ -79,9 +79,9 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     /**
      * Special Constructor.
      *
-     * @param object {@link TransactionGetByIdEntity}
+     * @param object {@link TransactionEntitySelect}
      */
-    public TransactionEntity(TransactionGetByIdEntity object) {
+    public TransactionEntity(TransactionEntitySelect object) {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
 
         setId(Objects.requireNonNull(object.getId()));

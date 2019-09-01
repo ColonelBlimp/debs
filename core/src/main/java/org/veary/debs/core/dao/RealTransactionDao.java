@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -35,9 +36,10 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
-import org.veary.debs.core.model.TransactionGetByIdEntity;
+import org.veary.debs.core.model.TransactionEntitySelect;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
+import org.veary.debs.facade.Status;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.persist.PersistenceManagerFactory;
@@ -45,6 +47,7 @@ import org.veary.persist.Query;
 import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
+import org.veary.persist.exceptions.NoResultException;
 
 /**
  * <b>Purpose:</b> ?
@@ -183,17 +186,41 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         select.setParameter(1, id);
 
         QueryManager manager = this.factory.createQueryManager();
-        Query query = manager.createQuery(select, TransactionGetByIdEntity.class);
+        Query query = manager.createQuery(select, TransactionEntitySelect.class);
         query.execute();
 
-        return new TransactionEntity((TransactionGetByIdEntity) query.getSingleResult());
+        return new TransactionEntity((TransactionEntitySelect) query.getSingleResult());
     }
 
     @Override
-    public List<Transaction> getAllTransactions(boolean includeDeleted) {
+    public List<Transaction> getAllTransactions(Status status) {
         LOG.trace(LOG_CALLED);
 
-        return Collections.emptyList();
+        String sqlName = this.registry.getSql("getAllTransactionsExcludeDeleted"); //$NON-NLS-1$
+
+        switch (status) {
+            case DELETED:
+                sqlName = this.registry.getSql("getAllTransactionsDeleted"); //$NON-NLS-1$
+                break;
+            case BOTH:
+                sqlName = this.registry.getSql("getAllTransactionsBoth"); //$NON-NLS-1$
+                break;
+            default:
+                // Do nothing
+        }
+
+        final SqlStatement select = SqlStatement.newInstance(sqlName);
+
+        QueryManager manager = this.factory.createQueryManager();
+        Query query = manager.createQuery(select, TransactionEntitySelect.class);
+
+        try {
+            query.execute();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+
+        return transformTransactionResultList(query.getResultList());
     }
 
     /**
@@ -249,5 +276,21 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         update.setParameter(1, amount.getValue());
         update.setParameter(2, entry.getAccountId());
         manager.persist(update);
+    }
+
+    /**
+     * Transforms a {@code List<Object>} to a {@code List<Transaction>}.
+     *
+     * @param resultList {@code List<Object>}
+     * @return {@code List<Transaction>}
+     */
+    private List<Transaction> transformTransactionResultList(List<Object> resultList) {
+        LOG.trace(LOG_CALLED);
+
+        final List<Transaction> list = new ArrayList<>(resultList.size());
+        for (Object object : resultList) {
+            list.add(new TransactionEntity((TransactionEntitySelect) object));
+        }
+        return Collections.unmodifiableList(list);
     }
 }

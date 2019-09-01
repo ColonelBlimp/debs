@@ -99,10 +99,10 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     /**
      * Special constructor.
      *
-     * @param object {@link TransactionGetByIdEntity}
+     * @param object {@link TransactionEntitySelect}
      * @param type {@code Entry.Types}
      */
-    public EntryEntity(TransactionGetByIdEntity object, Types type) {
+    public EntryEntity(TransactionEntitySelect object, Types type) {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
         Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
 

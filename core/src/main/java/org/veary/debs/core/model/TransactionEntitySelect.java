@@ -39,16 +39,17 @@ import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Types;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> A system entity bean for {@link Transaction}
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> All SQL {@code SELECT} statements relating to {@code Transaction}s
+ * pass this class into the {@code org.veary.persist} library.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
-public class TransactionGetByIdEntity extends PersistentObjectImpl {
+public class TransactionEntitySelect extends PersistentObjectImpl {
 
-    enum Fields {
+    public enum Fields {
         ID("ID"), //$NON-NLS-1$
         CREATED("CREATED"), //$NON-NLS-1$
         DELETED("DELETED"), //$NON-NLS-1$
@@ -112,7 +113,7 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
      * Default Constructor.
      *
      */
-    public TransactionGetByIdEntity() {
+    public TransactionEntitySelect() {
     }
 
     /**
@@ -120,9 +121,9 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
      *
      * @param dataMap {@code Map}
      */
-    public TransactionGetByIdEntity(Map<String, Object> dataMap) {
+    public TransactionEntitySelect(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,
-            Validator.getEnumValuesAsStringArray(TransactionGetByIdEntity.Fields.class));
+            Validator.getEnumValuesAsStringArray(TransactionEntitySelect.Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
@@ -186,10 +187,10 @@ public class TransactionGetByIdEntity extends PersistentObjectImpl {
      * Static method for creating a new {@code TransactionGetByIdEntity} object.
      *
      * @param dataMap {@code Map<String, Object>} as returned by {@code org.veary.persist}
-     * @return {@link TransactionGetByIdEntity}
+     * @return {@link TransactionEntitySelect}
      */
-    public static final TransactionGetByIdEntity newInstance(Map<String, Object> dataMap) {
-        return new TransactionGetByIdEntity(dataMap);
+    public static final TransactionEntitySelect newInstance(Map<String, Object> dataMap) {
+        return new TransactionEntitySelect(dataMap);
     }
 
     /**
