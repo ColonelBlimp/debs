@@ -197,14 +197,14 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
         AccountEntity other = (AccountEntity) that;
 
-        return getId().equals(other.getId()) &&
-            isDeleted() == other.isDeleted() &&
-            getCreationTimestamp().equals(other.getCreationTimestamp()) &&
-            this.name.equals(other.name) &&
-            this.description.equals(other.description) &&
-            this.type.equals(other.type) &&
-            this.balance.eq(other.balance) &&
-            this.parentId.equals(other.parentId);
+        return getId().equals(other.getId())
+            && isDeleted() == other.isDeleted()
+            && getCreationTimestamp().equals(other.getCreationTimestamp())
+            && this.name.equals(other.name)
+            && this.description.equals(other.description)
+            && this.type.equals(other.type)
+            && this.balance.eq(other.balance)
+            && this.parentId.equals(other.parentId);
     }
 
     @Override

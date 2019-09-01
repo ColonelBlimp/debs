@@ -328,6 +328,13 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.toClearedTimestamp;
     }
 
+    /**
+     * Sets the <i>cleared</i> timestamp. If the value given is anything other than
+     * {@link EntryEntity#NOT_CLEARED_TIMESTAMP}, the {@code cleared} flag will also be set to
+     * {@code true}. The reverse is also true.
+     * 
+     * @param toClearedTimestamp
+     */
     public void setToClearedTimestamp(LocalDateTime toClearedTimestamp) {
         this.toClearedTimestamp = toClearedTimestamp;
         if (toClearedTimestamp.equals(EntryEntity.NOT_CLEARED_TIMESTAMP)) {

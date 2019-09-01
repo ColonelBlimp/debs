@@ -60,6 +60,7 @@ public final class RealSystemFacade implements SystemFacade {
 
     private static final Logger LOG = LogManager.getLogger(RealSystemFacade.class);
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
+    private static final String STATUS_PARAM = "status";
 
     private final TransactionDao transactionDao;
 
@@ -142,7 +143,7 @@ public final class RealSystemFacade implements SystemFacade {
     @Override
     public List<Transaction> getAllTransactions(Status status) {
         LOG.trace(LOG_CALLED);
-        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
         return this.transactionDao.getAllTransactions(status);
     }
 
@@ -150,7 +151,7 @@ public final class RealSystemFacade implements SystemFacade {
     public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
         return this.transactionDao.getAllTransactionsOverPeriod(period, status);
     }
@@ -159,7 +160,7 @@ public final class RealSystemFacade implements SystemFacade {
     public List<Transaction> getTransactionsForAccount(Account account, Status status) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
         return this.transactionDao.getTransactionsForAccount(account, status);
     }
@@ -170,7 +171,7 @@ public final class RealSystemFacade implements SystemFacade {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
         Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull("status"));
+        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
         return this.transactionDao.getTransactionsForAccountOverPeriod(period, account, status);
     }

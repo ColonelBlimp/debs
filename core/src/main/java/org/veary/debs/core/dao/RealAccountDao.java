@@ -46,9 +46,9 @@ import org.veary.persist.exceptions.NoResultException;
 /**
  * <b>Purpose:</b> Concrete implementation of the {@code AccountDao} interface.
  *
- * <p> <b>Responsibility:</b> Handling all CRUD actions for {@link Account} object.
+ * <p><b>Responsibility:</b> Handling all CRUD actions for {@link Account} object.
  *
- * <p> <b>Note:</b> Annotated for JSR330.
+ * <p><b>Note:</b> Annotated for JSR330.
  *
  * @author Marc L. Veary
  * @since 1.0

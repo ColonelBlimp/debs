@@ -47,9 +47,9 @@ import org.veary.tree.TreeNode;
 /**
  * <b>Purpose:</b> Concrete implementation of the {@code AccountFacade} interface.
  *
- * <p> <b>Responsibility:</b>
+ * <p><b>Responsibility:</b>
  *
- * <p> <b>Notes:</b> annotated for JSR330
+ * <p><b>Notes:</b> annotated for JSR330
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -117,7 +117,8 @@ public final class RealAccountFacade implements AccountFacade {
         for (String builtIn : Validator.getEnumValuesAsStringArray(BuiltInAccounts.class)) {
             if (builtIn.equals(name)) {
                 throw new IllegalArgumentException(
-                    Messages.getString("RealAccountFacade.update.error.builtin", name)); //$NON-NLS-1$
+                    Messages.getString("RealAccountFacade.update.error.builtin",
+                        name)); //$NON-NLS-1$
             }
         }
 
@@ -213,7 +214,8 @@ public final class RealAccountFacade implements AccountFacade {
 
         if (object.getParentId().longValue() <= DEFAULT_ID.longValue()) {
             throw new IllegalStateException(
-                Messages.getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
+                Messages
+                    .getString("RealAccountFacade.create.validateInput.noparentid")); //$NON-NLS-1$
         }
 
         return object;
@@ -247,7 +249,8 @@ public final class RealAccountFacade implements AccountFacade {
                 result.get().addChild(account);
             } else {
                 throw new AssertionError(Messages.getString(
-                    "RealAccountFacade.chart.assert.unknownparent", account.getName())); //$NON-NLS-1$
+                    "RealAccountFacade.chart.assert.unknownparent",
+                    account.getName())); //$NON-NLS-1$
             }
         }
 

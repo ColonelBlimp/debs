@@ -25,14 +25,18 @@
 package org.veary.debs.dao;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Contract for the SQL Registry.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public interface Registry {
 
+    /**
+     * Returns the SQL for the given {@code key}.
+     *
+     * @param key the key to look up
+     * @return {@code String}
+     */
     String getSql(String key);
 }

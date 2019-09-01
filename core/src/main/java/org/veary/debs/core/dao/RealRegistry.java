@@ -54,9 +54,7 @@ import org.veary.debs.exceptions.DebsException;
 public final class RealRegistry implements Registry {
 
     /**
-     * <b>Purpose:</b> ?
-     *
-     * <p><b>Responsibility:</b>
+     * <b>Purpose:</b> Function interface.
      *
      * @author Marc L. Veary
      * @since 1.0

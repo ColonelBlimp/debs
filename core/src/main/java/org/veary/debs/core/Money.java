@@ -42,6 +42,7 @@ public final class Money {
 
     private static final RoundingMode ROUNDING = RoundingMode.HALF_EVEN;
     private static final int SCALE = 2;
+    private static final String THAT_PARAM = "that"; //$NON-NLS-1$
 
     private final BigDecimal value;
 
@@ -110,7 +111,7 @@ public final class Money {
     public Money plus(Money that) {
         return new Money(
             this.value.add(
-                Objects.requireNonNull(that, Messages.getParameterIsNull("that")).value)); //$NON-NLS-1$
+                Objects.requireNonNull(that, Messages.getParameterIsNull(THAT_PARAM)).value));
     }
 
     /**
@@ -122,7 +123,7 @@ public final class Money {
     public Money minus(Money that) {
         return new Money(
             this.value.subtract(
-                Objects.requireNonNull(that, Messages.getParameterIsNull("that")).value)); //$NON-NLS-1$
+                Objects.requireNonNull(that, Messages.getParameterIsNull(THAT_PARAM)).value));
     }
 
     /**
@@ -145,7 +146,7 @@ public final class Money {
      */
     public boolean eq(Money that) {
         return this.value.equals(
-            Objects.requireNonNull(that, Messages.getParameterIsNull("that")).value); //$NON-NLS-1$
+            Objects.requireNonNull(that, Messages.getParameterIsNull(THAT_PARAM)).value);
     }
 
     @Override

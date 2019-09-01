@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,13 +53,16 @@ import org.veary.persist.TransactionManager;
 import org.veary.persist.exceptions.NoResultException;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Concrete implementation of the {@code TransactionDao} interface.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> handles all CRUD functions for Transaction objects.
+ *
+ * <p><b>Note:</b> Annotated for JSR330.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
+@Singleton
 public final class RealTransactionDao extends AbstractDao<Transaction> implements TransactionDao {
 
     private static final Logger LOG = LogManager.getLogger(RealTransactionDao.class);
@@ -76,7 +80,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public RealTransactionDao(Registry registry, PersistenceManagerFactory factory) {
         super(factory);
         LOG.trace(LOG_CALLED);
-        this.registry = Objects.requireNonNull(registry, Messages.getParameterIsNull("registry")); //$NON-NLS-1$
+        this.registry = Objects.requireNonNull(registry,
+            Messages.getParameterIsNull("registry")); //$NON-NLS-1$
     }
 
     @Override
@@ -85,7 +90,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
         Objects.requireNonNull(object.getFromEntry(),
-            Messages.getString("RealTransactionDao.createTransaction.fromEntry.null")); //$NON-NLS-1$
+            Messages.getString("RealTransactionDao.createTransaction.fromEntry.null"));//$NON-NLS-1$
         Objects.requireNonNull(object.getToEntry(),
             Messages.getString("RealTransactionDao.createTransaction.toEntry.null")); //$NON-NLS-1$
 
@@ -93,8 +98,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
 
-        Long fromId = createTransactionEntry(manager, object.getFromEntry());
-        Long toId = createTransactionEntry(manager, object.getToEntry());
+        final Long fromId = createTransactionEntry(manager, object.getFromEntry());
+        final Long toId = createTransactionEntry(manager, object.getToEntry());
 
         final SqlStatement insertTx = SqlStatement
             .newInstance(this.registry.getSql("createTransaction")); //$NON-NLS-1$
@@ -104,9 +109,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTx.setParameter(4, fromId);
         insertTx.setParameter(5, toId);
 
-        LOG.trace("TX DATE: {}", object.getDate());
-
-        Long id = manager.persist(insertTx);
+        final Long id = manager.persist(insertTx);
 
         updateAccountBalance(manager, object.getFromEntry(), object.getFromEntry().getAmount());
         updateAccountBalance(manager, object.getToEntry(), object.getToEntry().getAmount());
@@ -231,11 +234,13 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry.getSql("getAllTransactionsOverPeriodExcludeDeleted"); //$NON-NLS-1$
+        String sqlName = this.registry
+            .getSql("getAllTransactionsOverPeriodExcludeDeleted"); //$NON-NLS-1$
 
         switch (status) {
             case DELETED:
-                sqlName = this.registry.getSql("getAllTransactionsOverPeriodDeleted"); //$NON-NLS-1$
+                sqlName = this.registry
+                    .getSql("getAllTransactionsOverPeriodDeleted"); //$NON-NLS-1$
                 break;
             case BOTH:
                 sqlName = this.registry.getSql("getAllTransactionsOverPeriodBoth"); //$NON-NLS-1$
@@ -264,7 +269,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getTransactionsForAccount(Account account, Status status) {
         LOG.trace(LOG_CALLED);
 
-        String sqlName = this.registry.getSql("getTransactionsForAccountExcludeDeleted"); //$NON-NLS-1$
+        String sqlName = this.registry
+            .getSql("getTransactionsForAccountExcludeDeleted"); //$NON-NLS-1$
 
         switch (status) {
             case DELETED:
@@ -303,10 +309,12 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
         switch (status) {
             case DELETED:
-                sqlName = this.registry.getSql("getTransactionsForAccountOverPeriodDeleted"); //$NON-NLS-1$
+                sqlName = this.registry
+                    .getSql("getTransactionsForAccountOverPeriodDeleted"); //$NON-NLS-1$
                 break;
             case BOTH:
-                sqlName = this.registry.getSql("getTransactionsForAccountOverPeriodBoth"); //$NON-NLS-1$
+                sqlName = this.registry
+                    .getSql("getTransactionsForAccountOverPeriodBoth"); //$NON-NLS-1$
                 break;
             default:
                 // Do nothing

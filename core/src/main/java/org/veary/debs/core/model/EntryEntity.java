@@ -38,9 +38,7 @@ import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Entity bean for {@code Entry} objects.
  *
  * @author Marc L. Veary
  * @since 1.0

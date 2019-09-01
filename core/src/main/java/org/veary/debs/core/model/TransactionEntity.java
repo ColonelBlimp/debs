@@ -100,8 +100,8 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     /**
      * Copy constructor. Returns a new instance (state is equal, but identity is not).
      *
-     * <p><b>Note:</b> Associated {@code Entry} objects are also copied (i.e. state is equal, but
-     * identity is not).
+     * <p><b>Note:</b> Associated {@code Entry} objects are also copied (i.e. state is equal,
+     * but identity is not).
      *
      * @param object the {@code Transaction} object to be copied.
      */
@@ -139,6 +139,12 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         return this.cleared;
     }
 
+    /**
+     * Sets the <b>TO</b> and <b>FROM</b> Entry objects for this Transaction object.
+     *
+     * @param fromEntry {@code Entry}
+     * @param toEntry {@code Entry}
+     */
     public void setEntries(Entry fromEntry, Entry toEntry) {
         Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
