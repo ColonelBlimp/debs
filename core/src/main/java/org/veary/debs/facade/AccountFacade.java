@@ -34,7 +34,7 @@ import org.veary.tree.TreeNode;
 /**
  * <b>Purpose:</b> Encapsulates the account subsystem in a simple interface.
  *
- * <p> <b>Responsibility:</b> Hides the complexity of the subsystem making it easier to use.
+ * <p><b>Responsibility:</b> Hides the complexity of the subsystem making it easier to use.
  *
  * @author Marc L. Veary
  * @since 1.0

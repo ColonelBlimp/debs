@@ -25,9 +25,7 @@
 package org.veary.debs.exceptions;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> General purpose <i>unchecked exception</i>.
  *
  * @author Marc L. Veary
  * @since 1.0

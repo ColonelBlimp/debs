@@ -64,9 +64,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
      * @param account the associated {@link Account}
      */
     public EntryEntity(Types type, Account account) {
-        this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
-        this.accountId = (Objects.requireNonNull(account, Messages.getParameterIsNull("account"))) //$NON-NLS-1$
-            .getId();
+        this.type = Objects.requireNonNull(type,
+            Messages.getParameterIsNull("type")); //$NON-NLS-1$
+        this.accountId = (Objects.requireNonNull(account,
+            Messages.getParameterIsNull("account"))) //$NON-NLS-1$
+                .getId();
         this.amount = new Money(BigDecimal.ZERO);
         setCleared(false);
     }
@@ -175,7 +177,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     public void setType(Types type) {
-        this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
+        this.type = Objects.requireNonNull(type,
+            Messages.getParameterIsNull("type")); //$NON-NLS-1$
         validateInput();
     }
 
@@ -185,7 +188,8 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     }
 
     public void setAmount(Money amount) {
-        this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
+        this.amount = Objects.requireNonNull(amount,
+            Messages.getParameterIsNull("amount")); //$NON-NLS-1$
         validateInput();
     }
 
@@ -201,11 +205,13 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     private void validateInput() {
         if (this.amount.isPlus() && this.type.equals(Entry.Types.FROM)) {
             throw new IllegalStateException(
-                Messages.getString("EntryEntry.validateInput.amount.fromexception", this.amount)); //$NON-NLS-1$
+                Messages.getString("EntryEntry.validateInput.amount.fromexception",
+                    this.amount)); //$NON-NLS-1$
         }
         if (this.amount.isMinus() && this.type.equals(Entry.Types.TO)) {
             throw new IllegalStateException(
-                Messages.getString("EntryEntry.validateInput.amount.toexception", this.amount)); //$NON-NLS-1$
+                Messages.getString("EntryEntry.validateInput.amount.toexception",
+                    this.amount)); //$NON-NLS-1$
         }
     }
 
@@ -263,14 +269,14 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
 
         EntryEntity other = (EntryEntity) that;
 
-        return getId().equals(other.getId()) &&
-            isDeleted() == other.isDeleted() &&
-            getCreationTimestamp().equals(other.getCreationTimestamp()) &&
-            this.type.equals(other.type) &&
-            this.accountId.equals(other.accountId) &&
-            this.amount.eq(other.amount) &&
-            this.clearedTimestamp.equals(other.clearedTimestamp) &&
-            this.cleared == other.cleared;
+        return getId().equals(other.getId())
+            && isDeleted() == other.isDeleted()
+            && getCreationTimestamp().equals(other.getCreationTimestamp())
+            && this.type.equals(other.type)
+            && this.accountId.equals(other.accountId)
+            && this.amount.eq(other.amount)
+            && this.clearedTimestamp.equals(other.clearedTimestamp)
+            && this.cleared == other.cleared;
     }
 
     @Override

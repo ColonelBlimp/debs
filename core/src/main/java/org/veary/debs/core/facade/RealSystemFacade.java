@@ -96,8 +96,10 @@ public final class RealSystemFacade implements SystemFacade {
 
         Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
         Objects.requireNonNull(updated, Messages.getParameterIsNull("updated")); //$NON-NLS-1$
-        Objects.requireNonNull(updatedFromEntry, Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
-        Objects.requireNonNull(updatedToEntry, Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
+        Objects.requireNonNull(updatedFromEntry,
+            Messages.getParameterIsNull("updatedFromEntry")); //$NON-NLS-1$
+        Objects.requireNonNull(updatedToEntry,
+            Messages.getParameterIsNull("updatedToEntry")); //$NON-NLS-1$
 
         // Compare identity not state
         if (original.getFromEntry() == updatedFromEntry) {
