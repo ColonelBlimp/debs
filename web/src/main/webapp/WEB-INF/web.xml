@@ -27,6 +27,11 @@
     <res-type>javax.sql.DataSource</res-type>
   </resource-ref>
 
+  <mime-mapping>
+    <extension>html</extension>
+    <mime-type>text/html;charset=UTF-8</mime-type>
+  </mime-mapping>
+
   <!-- error-page>
     <error-code>404</error-code>
     <location>/static/404.html</location>

@@ -42,6 +42,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.veary.debs.core.GuiceDebsCoreModule;
+import org.veary.debs.web.struts2.PageBean;
+import org.veary.debs.web.struts2.actions.beans.RealPageBean;
 
 /**
  * <p> Purpose:</b> Extension of {@link GuiceServletContextListener} for integration with Tomcat
@@ -84,7 +86,7 @@ public final class GuiceContextListener extends GuiceServletContextListener {
                     bind(DataSource.class)
                         .toProvider(JndiIntegration.fromJndi(DataSource.class,
                             "java:/comp/env/jdbc/debs"));
-                    //                    bind(PageBean.class).to(RealPageBean.class);
+                    bind(PageBean.class).to(RealPageBean.class);
                     //                    bind(DocumentGenerator.class).to(PdfDocumentGenerator.class);
                 }
             },
