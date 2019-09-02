@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "https://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+  <constant name="struts.devMode" value="true"/>
+  <constant name="struts.ui.theme" value="simple"/>
+  <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+  <constant name="struts.custom.i18n.resources" value="debs"/>
+  <constant name="struts.serve.static" value="false" />
+
+  <package name="debs-base" extends="struts-default">
+    <default-interceptor-ref name="defaultStack"/>
+    <default-action-ref name="home"/>
+    <global-results>
+      <result name="error" type="redirect">/static/error.html</result>
+    </global-results>
+    <!-- global-exception-mappings>
+      <exception-mapping result="error" exception="java.lang.Exception"/>
+      <exception-mapping result="error" exception="java.lang.RuntimeException"/>
+    </global-exception-mappings -->
+  </package>
+
+  <package name="default" namespace="/" extends="debs-base">
+    <action name="home" class="org.veary.debs.web.struts2.actions.tree.TreeHomeAction">
+       <result type="freemarker" name="success">/WEB-INF/templates/tree/home.ftl</result>
+       <result type="chain" name="download">
+         <param name="actionName">download</param>
+         <param name="namespace">/transactions</param>
+       </result>
+    </action>
+  </package>
+
+  <package name="transactions" namespace="/transactions" extends="debs-base">
+  	<action name="list" class="org.veary.debs.web.struts2.actions.workbook.WorkbookListAction">
+  	  <result type="freemarker" name="success">/WEB-INF/templates/workbook/list.ftl</result>
+  	</action>
+  	<action name="add" class="org.veary.debs.web.struts2.actions.workbook.WorkbookAddEntryAction">
+  		<result type="freemarker" name="input">/WEB-INF/templates/workbook/add.ftl</result>
+  		<result type="redirect" name="success">list</result>
+  	</action>
+  	<action name="edit" class="org.veary.debs.web.struts2.actions.workbook.WorkbookEditEntryAction">
+  	  <result type="freemarker" name="input">/WEB-INF/templates/workbook/edit.ftl</result>
+  	  <result type="redirect" name="success">list</result>
+  	</action>
+    <action name="delete" class="org.veary.debs.web.struts2.actions.workbook.WorkbookDeleteEntryAction">
+      <result type="freemarker" name="input">/WEB-INF/templates/workbook/delete.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
+    <action name="viewselect">
+      <result type="redirect" name="success">list</result>
+    </action>
+    <action name="view" class="org.veary.debs.web.struts2.actions.workbook.WorkbookForAccountAction">
+      <result type="freemarker" name="success">/WEB-INF/templates/workbook/view.ftl</result>
+      <result type="chain" name="download">download</result>
+    </action>
+    <action name="download" class="org.veary.debs.web.struts2.actions.workbook.WorkbookVoucherDownloadAction">
+      <result type="stream" name="success">
+        <param name="contentType">application/pdf</param>
+        <param name="inputName">fileInputStream</param>
+        <param name="contentDisposition">attachment;filename="${voucherName}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+  </package>
+
+  <package name="accounts" namespace="/accounts" extends="debs-base">
+    <action name="list" class="org.veary.debs.web.struts2.actions.account.AccountListAction">
+      <result type="freemarker" name="success">/WEB-INF/templates/accounts/list.ftl</result>
+    </action>
+    <action name="add" class="org.veary.debs.web.struts2.actions.account.AccountAddAction">
+  		<result type="freemarker" name="input">/WEB-INF/templates/accounts/add.ftl</result>
+  		<result type="redirect" name="success">list</result>
+    </action>
+    <action name="edit" class="org.veary.debs.web.struts2.actions.account.AccountEditAction">
+      <result type="freemarker" name="input">/WEB-INF/templates/accounts/edit.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
+    <action name="delete" class="org.veary.debs.web.struts2.actions.account.AccountDeleteAction">
+      <result type="freemarker" name="input">/WEB-INF/templates/accounts/delete.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
+  </package>
+
+  <package name="admin" namespace="/admin" extends="debs-base">
+      <action name="landing" class="org.veary.debs.web.struts2.actions.admin.AdminLandingAction">
+        <result type="freemarker" name="success">/WEB-INF/templates/admin/landing.ftl</result>
+      </action>
+  </package>
+
+  <package name="wages" namespace="/wages" extends="debs-base">
+    <action name="home" class="org.veary.debs.web.struts2.actions.wages.WagesHomeAction">
+      <param name="wagesSystem">true</param>
+      <result type="freemarker" name="success">/WEB-INF/templates/wages/home.ftl</result>
+    </action>
+  </package>
+
+  <!-- package name="groups" namespace="/groups" extends="debs-base">
+    <action name="list" class="org.veary.debs.web.struts2.actions.group.GroupListAction">
+      <result type="freemarker" name="success">/WEB-INF/templates/groups/list.ftl</result>
+    </action>
+    <action name="tree" class="org.veary.debs.web.struts2.actions.group.GroupTreeAction">
+      <result type="freemarker" name="success">/WEB-INF/templates/groups/tree.ftl</result>
+    </action>
+  </package -->
+
+</struts>

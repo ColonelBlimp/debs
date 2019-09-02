@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Context>
+  <Resource name="jdbc/debs" 
+            auth="Container" 
+            type="javax.sql.DataSource" 
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:${DB_PATH}/debs"
+            username="sa"
+            password=""
+            factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory">
+  </Resource>
+  <Loader delegate="true" />
+</Context>
