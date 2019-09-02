@@ -140,7 +140,8 @@ public final class RealRegistry implements Registry {
 
     private void parseMethodNode(Map<String, String> map, Node node) {
         final String methodName = node.valueOf(XPATH_ATTRIB_NAME);
-        final String cdata = node.getText().replaceAll("\\r|\\n", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        final String cdata = node.getText()
+            .replaceAll("\\r|\\n", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         map.put(methodName, cdata);
     }
 }

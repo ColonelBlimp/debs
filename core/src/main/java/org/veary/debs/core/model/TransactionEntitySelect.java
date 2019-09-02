@@ -336,8 +336,9 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
      */
     public void setToAmount(Money toAmount) {
         if (toAmount.isMinus()) {
-            throw new IllegalArgumentException(
-                Messages.getString("TransactionGetByIdEntity.setToAmount.wrongsign", toAmount)); //$NON-NLS-1$
+            throw new IllegalArgumentException(Messages
+                .getString("TransactionGetByIdEntity.setToAmount.wrongsign",
+                    toAmount)); //$NON-NLS-1$
         }
         this.toAmount = toAmount;
     }

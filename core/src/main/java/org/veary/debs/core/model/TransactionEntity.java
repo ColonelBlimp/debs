@@ -72,7 +72,8 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
             Messages.getParameterIsNull("narrative")); //$NON-NLS-1$
         this.reference = Objects.requireNonNull(reference,
             Messages.getParameterIsNull("reference")); //$NON-NLS-1$
-        this.amount = Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
+        this.amount = Objects.requireNonNull(amount,
+            Messages.getParameterIsNull("amount")); //$NON-NLS-1$
         this.cleared = cleared;
     }
 

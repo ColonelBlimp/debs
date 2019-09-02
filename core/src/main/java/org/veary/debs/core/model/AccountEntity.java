@@ -64,7 +64,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
         this.name = Objects.requireNonNull(name, Messages.getParameterIsNull("name")); //$NON-NLS-1$
         this.description = Objects.requireNonNull(description,
             Messages.getParameterIsNull("description")); //$NON-NLS-1$
-        this.parentId = Objects.requireNonNull(parentId, Messages.getParameterIsNull("parentId")); //$NON-NLS-1$
+        this.parentId = Objects.requireNonNull(parentId,
+            Messages.getParameterIsNull("parentId")); //$NON-NLS-1$
         this.type = Objects.requireNonNull(type, Messages.getParameterIsNull("type")); //$NON-NLS-1$
         this.balance = new Money(BigDecimal.ZERO);
     }
@@ -143,7 +144,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     }
 
     public void setBalance(Money balance) {
-        this.balance = Objects.requireNonNull(balance, Messages.getParameterIsNull("balance")); //$NON-NLS-1$
+        this.balance = Objects.requireNonNull(balance,
+            Messages.getParameterIsNull("balance")); //$NON-NLS-1$
     }
 
     @Override
@@ -152,7 +154,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     }
 
     public void setParentId(Long parentId) {
-        this.parentId = Objects.requireNonNull(parentId, Messages.getParameterIsNull("parentId")); //$NON-NLS-1$
+        this.parentId = Objects.requireNonNull(parentId,
+            Messages.getParameterIsNull("parentId")); //$NON-NLS-1$
     }
 
     /**

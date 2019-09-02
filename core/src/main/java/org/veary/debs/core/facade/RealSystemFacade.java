@@ -80,7 +80,8 @@ public final class RealSystemFacade implements SystemFacade {
     public Long postTransaction(Transaction transaction, Entry fromEntry, Entry toEntry) {
         LOG.trace(LOG_CALLED);
 
-        Objects.requireNonNull(transaction, Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
+        Objects.requireNonNull(transaction,
+            Messages.getParameterIsNull("transaction")); //$NON-NLS-1$
         Objects.requireNonNull(fromEntry, Messages.getParameterIsNull("fromEntry")); //$NON-NLS-1$
         Objects.requireNonNull(toEntry, Messages.getParameterIsNull("toEntry")); //$NON-NLS-1$
 

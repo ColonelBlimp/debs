@@ -52,8 +52,8 @@ public final class Validator {
         Objects.requireNonNull(fields, Messages.getParameterIsNull("fields")); //$NON-NLS-1$
 
         if (dataMap.size() != fields.length) {
-            throw new IllegalStateException(
-                Messages.getString("Validator.validateDataMap.entrycount", fields.length)); //$NON-NLS-1$
+            throw new IllegalStateException(Messages
+                .getString("Validator.validateDataMap.entrycount", fields.length)); //$NON-NLS-1$
         }
 
         for (String fieldName : fields) {
