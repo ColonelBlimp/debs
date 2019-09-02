@@ -28,8 +28,11 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> ?
@@ -44,14 +47,21 @@ public final class HomePageAction extends BaseAction {
     private static final Logger LOG = LogManager.getLogger(HomePageAction.class);
     private static final String LOG_CALLED = "called";
 
+    private final AccountFacade accountFacade;
+    private final TreeNode<Account> chart;
+
     /**
      * Constructor.
      *
      * @param pageBean
      */
     @Inject
-    public HomePageAction(PageBean pageBean) {
+    public HomePageAction(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean);
+        LOG.trace(LOG_CALLED);
+
+        this.accountFacade = accountFacade;
+        this.chart = this.accountFacade.getChartOfAccounts();
         this.pageBean.setPageTitle("DEBS :: Chart");
     }
 
@@ -60,5 +70,9 @@ public final class HomePageAction extends BaseAction {
         LOG.trace(LOG_CALLED);
 
         return BaseAction.SUCCESS;
+    }
+
+    public TreeNode<Account> getChart() {
+        return this.chart;
     }
 }
