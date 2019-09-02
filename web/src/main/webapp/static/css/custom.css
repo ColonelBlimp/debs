@@ -1,0 +1,36 @@
+.folder-bg {
+	background: url(../img/icon-folder.svg) no-repeat left;
+	background-size: 16px 16px;
+}
+.account-bg {
+	background: url(../img/icon-file.svg) no-repeat left;
+	background-size: 16px 16px;
+}
+.level-0 {
+	margin-left: 0.5rem;
+	padding-left: 1.5rem;
+}
+.level-1 {
+	margin-left: 2rem;
+	padding-left: 1.5rem;
+}
+.level-2 {
+	margin-left: 3.5rem;
+	padding-left: 1.5rem;
+}
+.level-3 {
+	margin-left: 5rem;
+	padding-left: 1.5rem;
+}
+.level-4 {
+	margin-left: 6.5rem;
+	padding-left: 1.5rem;
+}
+.level-5 {
+  margin-left: 8rem;
+  padding-left: 1.5rem;
+}
+.level-6 {
+  margin-left: 9.5rem;
+  padding-left: 1.5rem;
+}

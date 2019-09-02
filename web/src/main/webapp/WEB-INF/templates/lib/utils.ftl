@@ -7,6 +7,7 @@
     <title>${pageBean.pageTitle}</title>
     <base href="${pageBean.siteUrl}"/>
     <link rel="stylesheet" href="static/css/main.css"/>
+    <link rel="stylesheet" href="static/css/custom.css"/>
   </head>
   <body>
     <div class="flex fixed top-0 inset-x-0 z-100 h-12 items-center pl-4 bg-purple-600 text-white">
