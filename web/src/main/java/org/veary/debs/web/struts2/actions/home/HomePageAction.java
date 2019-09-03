@@ -24,12 +24,16 @@
 
 package org.veary.debs.web.struts2.actions.home;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
+import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.tree.TreeNode;
@@ -51,6 +55,17 @@ public final class HomePageAction extends BaseAction {
     private final TreeNode<Account> chart;
 
     /**
+     * The home page has two views: chart of accounts plus balances (default), or chart of
+     * accounts and the transaction for a selected account. This variable is used in the
+     * {@code home.ftl} to control which of these two views is displayed.
+     *
+     * <p><b>Default:</b> {@code true}
+     */
+    private boolean showChartBalance;
+
+    private List<Transaction> accountTransactions;
+
+    /**
      * Constructor.
      *
      * @param pageBean
@@ -63,6 +78,8 @@ public final class HomePageAction extends BaseAction {
         this.accountFacade = accountFacade;
         this.chart = this.accountFacade.getChartOfAccounts();
         this.pageBean.setPageTitle("DEBS :: Chart");
+        this.showChartBalance = false;
+        this.accountTransactions = Collections.emptyList();
     }
 
     @Override
@@ -74,5 +91,17 @@ public final class HomePageAction extends BaseAction {
 
     public TreeNode<Account> getChart() {
         return this.chart;
+    }
+
+    public boolean isShowChartBalance() {
+        return this.showChartBalance;
+    }
+
+    public void setShowChartBalance(boolean showChartBalance) {
+        this.showChartBalance = showChartBalance;
+    }
+
+    public List<Transaction> getAccountTransactions() {
+        return this.accountTransactions;
     }
 }
