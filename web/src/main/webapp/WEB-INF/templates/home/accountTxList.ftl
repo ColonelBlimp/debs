@@ -13,7 +13,7 @@
 <@s.else>
         <tr>
 </@s.else>
-          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><@s.property value="data.name"/></span></td>
+          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><a href="#"<@s.property value="data.name"/></a></span></td>
         </tr>
 </@s.iterator>
       </tbody>

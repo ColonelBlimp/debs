@@ -78,7 +78,7 @@ public final class HomePageAction extends BaseAction {
         this.accountFacade = accountFacade;
         this.chart = this.accountFacade.getChartOfAccounts();
         this.pageBean.setPageTitle("DEBS :: Chart");
-        this.showChartBalance = false;
+        this.showChartBalance = true;
         this.accountTransactions = Collections.emptyList();
     }
 
