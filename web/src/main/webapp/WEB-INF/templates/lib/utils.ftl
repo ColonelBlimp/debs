@@ -19,7 +19,7 @@
         </ul>
       </nav>
     </div>
-    <div class="container mt-12">
+    <div class="container border border-white mt-12">
 <#nested>
     </div>
   </body>
@@ -27,7 +27,7 @@
 </#macro>
 
 <#macro contentHeader>
-<div class="w-full h-12 bg-purple-200 mt-4">
+<div class="w-full h-12 bg-purple-300 mt-4">
 <#nested>
 </div>
 </#macro>

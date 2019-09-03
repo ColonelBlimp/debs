@@ -19,5 +19,5 @@ Don't forget to make the profile active.
 
 [Tailwindcss](https://tailwindcss.com)
 
-[Entypo](http://entypo.com)
+[Heroicons](https://github.com/sschoger/heroicons-ui)
 
