@@ -22,7 +22,7 @@
 <@s.else>
       <tr>
 </@s.else>
-        <td><span class="block text-left pl-2"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/accounts',<@s.property value="id"/>)"/></span></td>
+        <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/accounts',<@s.property value="id"/>)"/></span></td>
         <td><span class="block truncate text-left"><a href="#"><@s.property value="name"/></a></span></td>
         <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="type"/></span></td>
