@@ -1,8 +1,9 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
-<div class="float-left w-1/2"><h1>${pageBean.mainHeadingText}</h1></div>
-<div class="float-left w-1/2"><@f.addEditDelete/></div>
+<div class="float-left w-1/2 pt-3">
+<span>Viewing: </span><@f.accountListSelect/></div>
+<div class="float-right w-1/2 pt-3"><@f.addEditDelete/></div>
 </@f.contentHeader>
 <div>
   <table class="table-fixed w-full">

@@ -50,3 +50,10 @@
       </svg>
     </span></a>
 </#macro>
+
+<#macro accountListSelect>
+<@s.form>
+<@s.hidden id="id" name="id"/>
+<@s.select name="listType" list={"accounts":"Actual Accounts","groups":"Group Accounts","accAll":"All Accounts"} listKey="key" listValue="value" onchange="this.form.submit();"/>
+</@s.form>
+</#macro>
