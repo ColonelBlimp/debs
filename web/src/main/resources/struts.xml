@@ -22,4 +22,10 @@
     </action>
   </package>
 
+  <package name="accounts" namespace="/accounts" extends="debs-base">
+    <action name="list" class="org.veary.debs.web.struts2.actions.accounts.AccountList">
+      <result type="freemarker" name="success">/WEB-INF/templates/accounts/list.ftl</result>
+    </action>
+  </package>
+
 </struts>

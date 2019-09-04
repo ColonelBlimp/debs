@@ -8,6 +8,7 @@
     <base href="${pageBean.siteUrl}"/>
     <link rel="stylesheet" href="static/css/main.css"/>
     <link rel="stylesheet" href="static/css/custom.css"/>
+    <script src="static/js/utils.js"></script>
   </head>
   <body>
     <div class="flex fixed top-0 inset-x-0 z-100 h-12 items-center pl-4 bg-purple-600 text-white">
@@ -15,7 +16,7 @@
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="#" title="Accounts">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="/accounts/list" title="Accounts">Accounts</a></li>
         </ul>
       </nav>
     </div>
