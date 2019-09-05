@@ -38,9 +38,7 @@ import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/list.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -55,36 +53,47 @@ public class AccountList extends BaseAction {
     private static final String LOG_CALLED = "called";
 
     private final AccountFacade accountFacade;
-    private final List<Account> accounts;
     private final Map<String, String> viewMap;
 
+    private List<Account> accounts;
     private boolean includeDeleted;
     private String listView;
 
     /**
      * Constructor.
      *
-     * @param pageBean
+     * @param pageBean instance of {@link PageBean}
+     * @param accountFacade instance of {@link AccountFacade}
      */
     @Inject
     public AccountList(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean);
         this.accountFacade = accountFacade;
-        this.accounts = this.accountFacade.getActualAccounts(this.includeDeleted);
         this.viewMap = new HashMap<>();
 
-        this.viewMap.put(LIST_VIEW_ACTUAL, "Actual Accounts");
-        this.viewMap.put(LIST_VIEW_GROUP, "Group Accounts");
-        this.viewMap.put(LIST_VIEW_ALL, "All Accounts");
+        this.viewMap.put(LIST_VIEW_ACTUAL, getText("AccountList.listView.actual"));
+        this.viewMap.put(LIST_VIEW_GROUP, getText("AccountList.listView.group"));
+        this.viewMap.put(LIST_VIEW_ALL, getText("AccountList.listView.all"));
         this.listView = LIST_VIEW_ACTUAL;
 
-        this.pageBean.setPageTitle("DEBS :: Account List");
-        this.pageBean.setMainHeadingText("Account List");
+        this.pageBean.setPageTitle(getText("AccountList.pageTitle"));
+        this.pageBean.setMainHeadingText(getText("AccountList.mainHeader"));
     }
 
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
+
+        switch (this.listView) {
+            case LIST_VIEW_ALL:
+                this.accounts = this.accountFacade.getAllAccounts(this.includeDeleted);
+                break;
+            case LIST_VIEW_GROUP:
+                this.accounts = this.accountFacade.getGroupAccounts(this.includeDeleted);
+                break;
+            default:
+                this.accounts = this.accountFacade.getActualAccounts(this.includeDeleted);
+        }
 
         return BaseAction.SUCCESS;
     }

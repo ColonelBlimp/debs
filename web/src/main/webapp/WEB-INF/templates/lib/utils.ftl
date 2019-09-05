@@ -17,7 +17,7 @@
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="accounts/list"/>" title="Accounts">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="list" namespace="accounts"/>" title="Accounts">Accounts</a></li>
         </ul>
       </nav>
     </div>

@@ -12,7 +12,7 @@
       <tr>
         <th class="w-6"><span class="block text-left">&nbsp;</span></th>
         <th class="w-56"><span class="block text-left pl-1">Name</span></th>
-        <th class="w-56><span class="block text-left">Description</span></th>
+        <th class="w-56"><span class="block text-left">Description</span></th>
         <th class="w-56"><span class="block text-left">Type</span></th>
         <th class="w-56"><span class="block text-left">Group</span></th>
         <th><span class="block text-left">Balance</span></th>
