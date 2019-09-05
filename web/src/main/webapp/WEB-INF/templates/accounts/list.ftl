@@ -29,8 +29,8 @@
         <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/accounts',<@s.property value="id"/>)"/></span></td>
         <td><span class="block truncate text-left"><a href="#"><@s.property value="name"/></a></span></td>
         <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
-        <td><span class="block truncate text-left"><@s.property value="type"/></span></td>
-        <td><span class="block truncate text-left">?</span></td>
+        <td><span class="block truncate text-left"><@s.property value="typeName"/></span></td>
+        <td><span class="block truncate text-left"><@s.property value="parentName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="balance"/></span></td>
       </tr>
 </@s.iterator>

@@ -24,9 +24,12 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -36,6 +39,7 @@ import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.beans.AccountBean;
 
 /**
  * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/list.ftl}
@@ -55,7 +59,7 @@ public class AccountList extends BaseAction {
     private final AccountFacade accountFacade;
     private final Map<String, String> viewMap;
 
-    private List<Account> accounts;
+    private List<AccountBean> accounts;
     private boolean includeDeleted;
     private String listView;
 
@@ -68,6 +72,8 @@ public class AccountList extends BaseAction {
     @Inject
     public AccountList(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean);
+        LOG.trace(LOG_CALLED);
+
         this.accountFacade = accountFacade;
         this.viewMap = new HashMap<>();
 
@@ -86,19 +92,22 @@ public class AccountList extends BaseAction {
 
         switch (this.listView) {
             case LIST_VIEW_ALL:
-                this.accounts = this.accountFacade.getAllAccounts(this.includeDeleted);
+                this.accounts = convertAccountsToBeans(
+                    this.accountFacade.getAllAccounts(this.includeDeleted));
                 break;
             case LIST_VIEW_GROUP:
-                this.accounts = this.accountFacade.getGroupAccounts(this.includeDeleted);
+                this.accounts = convertAccountsToBeans(
+                    this.accountFacade.getGroupAccounts(this.includeDeleted));
                 break;
             default:
-                this.accounts = this.accountFacade.getActualAccounts(this.includeDeleted);
+                this.accounts = convertAccountsToBeans(
+                    this.accountFacade.getActualAccounts(this.includeDeleted));
         }
 
         return BaseAction.SUCCESS;
     }
 
-    public List<Account> getAccounts() {
+    public List<AccountBean> getAccounts() {
         return this.accounts;
     }
 
@@ -112,5 +121,26 @@ public class AccountList extends BaseAction {
 
     public String getListView() {
         return this.listView;
+    }
+
+    private List<AccountBean> convertAccountsToBeans(List<Account> accounts) {
+        LOG.trace(LOG_CALLED);
+
+        List<AccountBean> list = new ArrayList<>(accounts.size());
+
+        for (Account acc : accounts) {
+            AccountBean bean = new AccountBean(acc);
+
+            Optional<Account> parent = this.accountFacade.getById(acc.getParentId());
+            if (parent.isEmpty()) {
+                bean.setParentName("-");
+            } else {
+                bean.setParentName(parent.get().getName());
+            }
+
+            list.add(bean);
+        }
+
+        return Collections.unmodifiableList(list);
     }
 }
