@@ -23,12 +23,14 @@
 <div class="float-left w-1/2 p-3 inline-block">
 <div class="float-left pr-2 font-bold">Viewing:</div>
 <div class="float-left"><form id="list" name="list" action="/accounts/list.action" method="post">
-<input type="hidden" name="id" value="" id="id"/>
+<input type="hidden" name="id" id="id"/>
 <select name="viewing" id="list_viewing" onchange="this.form.submit();">
     <option value="all">All Accounts</option>
     <option value="actual">Actual Accounts</option>
     <option value="group">Group Accounts</option>
 </select>
+<input type="checkbox" id="includeDeleted" name="includeDeleted" onchange="this.form.submit();">
+<label for="includeDeleted">Include Deleted</label>
 </form>
 </div>
 </div>

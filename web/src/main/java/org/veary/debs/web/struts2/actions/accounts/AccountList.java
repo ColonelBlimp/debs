@@ -60,8 +60,8 @@ public class AccountList extends BaseAction {
     private final Map<String, String> viewMap;
 
     private List<AccountBean> accounts;
-    private boolean includeDeleted;
     private String listView;
+    private Boolean includeDeleted;
 
     /**
      * Constructor.
@@ -74,6 +74,7 @@ public class AccountList extends BaseAction {
         super(pageBean);
         LOG.trace(LOG_CALLED);
 
+        this.includeDeleted = Boolean.FALSE;
         this.accountFacade = accountFacade;
         this.viewMap = new HashMap<>();
 
@@ -93,15 +94,15 @@ public class AccountList extends BaseAction {
         switch (this.listView) {
             case LIST_VIEW_ALL:
                 this.accounts = convertAccountsToBeans(
-                    this.accountFacade.getAllAccounts(this.includeDeleted));
+                    this.accountFacade.getAllAccounts(isIncludeDeleted()));
                 break;
             case LIST_VIEW_GROUP:
                 this.accounts = convertAccountsToBeans(
-                    this.accountFacade.getGroupAccounts(this.includeDeleted));
+                    this.accountFacade.getGroupAccounts(isIncludeDeleted()));
                 break;
             default:
                 this.accounts = convertAccountsToBeans(
-                    this.accountFacade.getActualAccounts(this.includeDeleted));
+                    this.accountFacade.getActualAccounts(isIncludeDeleted()));
         }
 
         return BaseAction.SUCCESS;
@@ -142,5 +143,13 @@ public class AccountList extends BaseAction {
         }
 
         return Collections.unmodifiableList(list);
+    }
+
+    public Boolean isIncludeDeleted() {
+        return this.includeDeleted;
+    }
+
+    public void setIncludeDeleted(Boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
     }
 }

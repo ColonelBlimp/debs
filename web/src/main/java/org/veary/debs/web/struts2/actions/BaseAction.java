@@ -169,9 +169,9 @@ public class BaseAction extends ValidationAwareImpl implements Action, Validatea
     }
 
     /**
-     * Called when {@code this.submitType} class variable equals {@code null}. This variable will
-     * generally equal {@code null} when this class is activated from a HTTP REQUEST which was
-     * <b>NOT</b> produced by a 'submit' button in a HTML 'form' element.
+     * Called when {@code this.submitType} class variable equals {@code null}. This variable
+     * will generally equal {@code null} when this class is activated from a HTTP REQUEST which
+     * was <b>NOT</b> produced by a 'submit' button in a HTML 'form' element.
      *
      * <p> Generally, this method should be <i>Overriden</i> and used to populate the class with
      * data required by the view.

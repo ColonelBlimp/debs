@@ -178,6 +178,7 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     @Override
     public List<Account> getAllAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
+        LOG.debug("Include deleted: {}", includeDeleted);
 
         String key = "getAllAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
@@ -190,6 +191,7 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     @Override
     public List<Account> getGroupAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
+        LOG.debug("Include deleted: {}", includeDeleted);
 
         String key = "getGroupAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
@@ -202,6 +204,7 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     @Override
     public List<Account> getActualAccounts(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
+        LOG.debug("Include deleted: {}", includeDeleted);
 
         String key = "getActualAccounts"; //$NON-NLS-1$
         if (includeDeleted) {
