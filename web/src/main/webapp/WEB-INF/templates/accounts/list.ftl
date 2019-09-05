@@ -1,9 +1,10 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
-<div class="float-left w-1/2 pt-3">
-<span>Viewing: </span><@f.accountListSelect/></div>
-<div class="float-right w-1/2 pt-3"><@f.addEditDelete/></div>
+<div class="float-left w-1/2 p-3">
+<div class="float-left pr-2 font-bold">Viewing:</div><div class="float-left"><@f.accountListSelect/></div>
+</div>
+<div class="float-right w-1/2 p-3"><@f.addEditDelete/></div>
 </@f.contentHeader>
 <div>
   <table class="table-fixed w-full">

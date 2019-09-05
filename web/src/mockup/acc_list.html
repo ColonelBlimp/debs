@@ -20,7 +20,18 @@
     </div>
     <div class="container border border-white mt-12">
 <div class="w-full h-12 bg-purple-300 mt-4">
-<div class="float-left w-1/2"></div>
+<div class="float-left w-1/2 p-3 inline-block">
+<div class="float-left pr-2 font-bold">Viewing:</div>
+<div class="float-left"><form id="list" name="list" action="/accounts/list.action" method="post">
+<input type="hidden" name="id" value="" id="id"/>
+<select name="viewing" id="list_viewing" onchange="this.form.submit();">
+    <option value="all">All Accounts</option>
+    <option value="actual">Actual Accounts</option>
+    <option value="group">Group Accounts</option>
+</select>
+</form>
+</div>
+</div>
 <div class="float-right w-1/2 pt-3">
     <a href="#" id="delete" title="Delete" class="pointer-events-none"><span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">

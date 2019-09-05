@@ -24,7 +24,9 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -45,13 +47,19 @@ import org.veary.debs.web.struts2.actions.BaseAction;
  */
 public class AccountList extends BaseAction {
 
+    private static final String LIST_VIEW_ACTUAL = "actual";
+    private static final String LIST_VIEW_GROUP = "group";
+    private static final String LIST_VIEW_ALL = "all";
+
     private static final Logger LOG = LogManager.getLogger(AccountList.class);
     private static final String LOG_CALLED = "called";
 
     private final AccountFacade accountFacade;
     private final List<Account> accounts;
+    private final Map<String, String> viewMap;
 
     private boolean includeDeleted;
+    private String listView;
 
     /**
      * Constructor.
@@ -63,6 +71,12 @@ public class AccountList extends BaseAction {
         super(pageBean);
         this.accountFacade = accountFacade;
         this.accounts = this.accountFacade.getActualAccounts(this.includeDeleted);
+        this.viewMap = new HashMap<>();
+
+        this.viewMap.put(LIST_VIEW_ACTUAL, "Actual Accounts");
+        this.viewMap.put(LIST_VIEW_GROUP, "Group Accounts");
+        this.viewMap.put(LIST_VIEW_ALL, "All Accounts");
+        this.listView = LIST_VIEW_ACTUAL;
 
         this.pageBean.setPageTitle("DEBS :: Account List");
         this.pageBean.setMainHeadingText("Account List");
@@ -77,5 +91,17 @@ public class AccountList extends BaseAction {
 
     public List<Account> getAccounts() {
         return this.accounts;
+    }
+
+    public Map<String, String> getViewMap() {
+        return this.viewMap;
+    }
+
+    public void setListView(String listView) {
+        this.listView = listView;
+    }
+
+    public String getListView() {
+        return this.listView;
     }
 }

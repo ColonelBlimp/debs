@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>${pageBean.pageTitle}</title>
     <base href="${pageBean.siteUrl}"/>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico"/>
     <link rel="stylesheet" href="static/css/main.css"/>
     <link rel="stylesheet" href="static/css/custom.css"/>
     <script src="static/js/utils.js"></script>
@@ -16,7 +17,7 @@
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="/accounts/list" title="Accounts">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="accounts/list"/>" title="Accounts">Accounts</a></li>
         </ul>
       </nav>
     </div>
@@ -54,6 +55,6 @@
 <#macro accountListSelect>
 <@s.form>
 <@s.hidden id="id" name="id"/>
-<@s.select name="listType" list={"accounts":"Actual Accounts","groups":"Group Accounts","accAll":"All Accounts"} listKey="key" listValue="value" onchange="this.form.submit();"/>
+<@s.select name="listView" list="viewMap" listKey="key" listValue="value" listCssClass="bg-purple-100" cssClass="bg-purple-300" onchange="this.form.submit();"/>
 </@s.form>
 </#macro>
