@@ -48,7 +48,7 @@ abstract class TextProviderImpl implements TextProvider, LocaleProvider {
     private TextProvider textProvider;
     private LocaleProvider localeProvider;
 
-    private Container container;
+    protected Container container;
 
     @Override
     public boolean hasKey(String key) {
