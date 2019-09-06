@@ -120,7 +120,7 @@ public final class AccountAdd extends AccountBaseAction {
 
         Optional<Account> result = this.accountFacade.getByName(this.bean.getName());
         if (result.isPresent()) {
-            addFieldError("name", "Account name must be unique");
+            addFieldError("name", getText("AccountAdd.account.name.notunique"));
         }
     }
 

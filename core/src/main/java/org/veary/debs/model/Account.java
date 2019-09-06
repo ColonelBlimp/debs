@@ -104,8 +104,8 @@ public interface Account extends PersistentObject {
          *
          * @param id Type's unique identifier
          */
-        Types(Integer id) {
-            this.id = id;
+        Types(int id) {
+            this.id = Integer.valueOf(id);
         }
 
         /**

@@ -82,7 +82,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
             Validator.getEnumValuesAsStringArray(Account.Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
-        setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
+        setDeleted(((Boolean) dataMap.get(Fields.DELETED.toString())).booleanValue());
         setCreationTimestamp(
             ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
@@ -211,7 +211,8 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     @Override
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(getId(), isDeleted(), getCreationTimestamp(), this.name,
+            this.hashCode = Objects.hash(getId(), Boolean.valueOf(isDeleted()),
+                getCreationTimestamp(), this.name,
                 this.description, this.type, this.balance,
                 this.parentId);
         }

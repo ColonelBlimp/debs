@@ -94,15 +94,15 @@ public class AccountList extends BaseAction {
         switch (this.listView) {
             case LIST_VIEW_ALL:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getAllAccounts(isIncludeDeleted()));
+                    this.accountFacade.getAllAccounts(isIncludeDeleted().booleanValue()));
                 break;
             case LIST_VIEW_GROUP:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getGroupAccounts(isIncludeDeleted()));
+                    this.accountFacade.getGroupAccounts(isIncludeDeleted().booleanValue()));
                 break;
             default:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getActualAccounts(isIncludeDeleted()));
+                    this.accountFacade.getActualAccounts(isIncludeDeleted().booleanValue()));
         }
 
         return BaseAction.SUCCESS;

@@ -319,7 +319,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         insertTxEntry.setParameter(1, object.getAmount().getValue());
         insertTxEntry.setParameter(2, object.getType().getId());
         insertTxEntry.setParameter(3, object.getAccountId());
-        insertTxEntry.setParameter(4, object.isCleared());
+        insertTxEntry.setParameter(4, Boolean.valueOf(object.isCleared()));
         insertTxEntry.setParameter(5, object.getClearedTimestamp());
 
         return manager.persist(insertTxEntry);
@@ -333,7 +333,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateTxEntry.setParameter(1, object.getAmount().getValue());
         updateTxEntry.setParameter(2, object.getType().getId());
         updateTxEntry.setParameter(3, object.getAccountId());
-        updateTxEntry.setParameter(4, object.isCleared());
+        updateTxEntry.setParameter(4, Boolean.valueOf(object.isCleared()));
         updateTxEntry.setParameter(5, object.getClearedTimestamp());
         updateTxEntry.setParameter(6, object.getId());
 

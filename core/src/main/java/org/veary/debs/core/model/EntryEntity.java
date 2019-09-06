@@ -87,14 +87,14 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             Validator.getEnumValuesAsStringArray(Entry.Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
-        setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
+        setDeleted(((Boolean) dataMap.get(Fields.DELETED.toString())).booleanValue());
         setCreationTimestamp(
             ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
         this.type = Entry.Types.getType((Integer) dataMap.get(Fields.ETYPE.toString()));
         this.accountId = (Long) dataMap.get(Fields.ACCOUNT_ID.toString());
         this.amount = new Money((BigDecimal) dataMap.get(Fields.AMOUNT.toString()));
-        setCleared((boolean) dataMap.get(Fields.CLEARED.toString()));
+        setCleared(((Boolean) dataMap.get(Fields.CLEARED.toString())).booleanValue());
         setClearedTimestamp(
             ((Timestamp) dataMap.get(Fields.CLEARED_TS.toString())).toLocalDateTime());
         validateInput();
@@ -284,10 +284,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     @Override
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(getId(), isDeleted(), getCreationTimestamp(), this.type,
+            this.hashCode = Objects.hash(getId(), Boolean.valueOf(isDeleted()),
+                getCreationTimestamp(), this.type,
                 this.accountId, this.amount,
                 this.clearedTimestamp,
-                this.cleared);
+                Boolean.valueOf(this.cleared));
         }
         return this.hashCode;
     }

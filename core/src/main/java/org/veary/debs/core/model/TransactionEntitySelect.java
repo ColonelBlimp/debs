@@ -127,7 +127,7 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
             Validator.getEnumValuesAsStringArray(TransactionEntitySelect.Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
-        setDeleted((Boolean) dataMap.get(Fields.DELETED.toString()));
+        setDeleted(((Boolean) dataMap.get(Fields.DELETED.toString())).booleanValue());
         setCreationTimestamp(
             ((Timestamp) dataMap.get(Fields.CREATED.toString())).toLocalDateTime());
 
@@ -138,24 +138,24 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         this.fromId = (Long) dataMap.get(Fields.FROM_ID.toString());
         this.fromCreatedTimestamp = ((Timestamp) dataMap.get(Fields.FROM_CREATED.toString()))
             .toLocalDateTime();
-        this.fromDeleted = (boolean) dataMap.get(Fields.FROM_DELETED.toString());
+        this.fromDeleted = ((Boolean) dataMap.get(Fields.FROM_DELETED.toString())).booleanValue();
         setFromAmount(new Money((BigDecimal) dataMap.get(Fields.FROM_AMOUNT.toString())));
         this.fromType = Types.getType((Integer) dataMap.get(Fields.FROM_ETYPE.toString()));
         this.fromAccountId = (Long) dataMap.get(Fields.FROM_ACCOUNT_ID.toString());
 
-        setFromCleared((boolean) dataMap.get(Fields.FROM_CLEARED.toString()));
+        setFromCleared(((Boolean) dataMap.get(Fields.FROM_CLEARED.toString())).booleanValue());
         setFromClearedTimestamp(
             ((Timestamp) dataMap.get(Fields.FROM_CLEARED_TS.toString())).toLocalDateTime());
 
         this.toId = (Long) dataMap.get(Fields.TO_ID.toString());
         this.toCreatedTimestamp = ((Timestamp) dataMap.get(Fields.TO_CREATED.toString()))
             .toLocalDateTime();
-        this.toDeleted = (boolean) dataMap.get(Fields.TO_DELETED.toString());
+        this.toDeleted = ((Boolean) dataMap.get(Fields.TO_DELETED.toString())).booleanValue();
         setToAmount(new Money((BigDecimal) dataMap.get(Fields.TO_AMOUNT.toString())));
         this.toType = Types.getType((Integer) dataMap.get(Fields.TO_ETYPE.toString()));
         this.toAccountId = (Long) dataMap.get(Fields.TO_ACCOUNT_ID.toString());
 
-        setToCleared((boolean) dataMap.get(Fields.TO_CLEARED.toString()));
+        setToCleared(((Boolean) dataMap.get(Fields.TO_CLEARED.toString())).booleanValue());
         setToClearedTimestamp(
             ((Timestamp) dataMap.get(Fields.TO_CLEARED_TS.toString())).toLocalDateTime());
     }

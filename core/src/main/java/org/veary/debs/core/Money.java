@@ -151,6 +151,6 @@ public final class Money {
 
     @Override
     public String toString() {
-        return String.format("%.2f", this.value.doubleValue()); //$NON-NLS-1$
+        return String.format("%.2f", this.value); //$NON-NLS-1$
     }
 }

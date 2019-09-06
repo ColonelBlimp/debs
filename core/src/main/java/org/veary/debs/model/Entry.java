@@ -96,8 +96,8 @@ public interface Entry extends PersistentObject {
 
         private final Integer id;
 
-        Types(Integer id) {
-            this.id = id;
+        Types(int id) {
+            this.id = Integer.valueOf(id);
         }
 
         public Integer getId() {

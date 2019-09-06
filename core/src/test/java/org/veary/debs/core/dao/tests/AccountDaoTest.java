@@ -88,7 +88,7 @@ public class AccountDaoTest extends JndiTestBase {
         LocalDateTime updatedCreation = LocalDateTime.now();
         updated.setId(Long.valueOf(1000));
         updated.setBalance(UPDATED_BALANCE);
-        updated.setDeleted(Boolean.TRUE);
+        updated.setDeleted(Boolean.TRUE.booleanValue());
         updated.setCreationTimestamp(updatedCreation);
 
         this.accountDao.updateAccount(original, updated);
