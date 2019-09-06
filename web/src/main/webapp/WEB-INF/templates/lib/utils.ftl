@@ -54,7 +54,6 @@
 
 <#macro accountListSelect>
 <@s.form>
-<@s.hidden id="id" name="id"/>
 <@s.select name="listView" list="viewMap" listKey="key" listValue="value" cssClass="bg-purple-300" onchange="this.form.submit();"/>
 <input type="checkbox" name="includeDeleted" value="true" onchange="this.form.submit();" <@s.if test="includeDeleted">checked</@s.if>>
 <label for="includeDeleted">Include Deleted</label>

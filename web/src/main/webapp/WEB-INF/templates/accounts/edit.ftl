@@ -3,6 +3,7 @@
 <@f.contentHeader>
 </@f.contentHeader>
 <@s.form autocomplete="off">
+  <@s.hidden name="bean.id" id="id"/>
   <div class="flex mt-6 mb-2 items-center">
     <div class="w-32">
 <@s.label for="name" value="Name:" class="inline-block font-bold"/>
@@ -26,7 +27,7 @@
 <@s.label for="type" value="Type:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.typeId" id="type" list="typeMap" value="2" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@s.select name="bean.typeId" id="type" list="typeMap" value="bean.typeId" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6"></div>
   </div>
@@ -35,7 +36,7 @@
 <@s.label for="parent" value="Group:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.parentId" id="parent" list="parentMap" value="7" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@s.select name="bean.parentId" id="parent" list="parentMap" value="bean.parentId" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6"></div>
   </div>
