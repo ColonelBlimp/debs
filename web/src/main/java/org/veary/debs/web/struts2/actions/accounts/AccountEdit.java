@@ -30,23 +30,26 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
-import org.veary.persist.exceptions.PersistenceException;
+import org.veary.debs.web.struts2.actions.beans.AccountBean;
 
 /**
- * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/add.ftl}
+ * <b>Purpose:</b> ?
+ *
+ * <p><b>Responsibility:</b>
  *
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class AccountAdd extends AccountBaseAction {
-
-    private static final Logger LOG = LogManager.getLogger(AccountAdd.class);
+public final class AccountEdit extends AccountBaseAction {
+    private static final Logger LOG = LogManager.getLogger(AccountEdit.class);
     private static final String LOG_CALLED = "called";
+
+    private Account account;
+    private Long id;
 
     /**
      * Constructor.
@@ -54,50 +57,63 @@ public final class AccountAdd extends AccountBaseAction {
      * @param pageBean
      */
     @Inject
-    public AccountAdd(PageBean pageBean, AccountFacade accountFacade) {
+    public AccountEdit(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean, accountFacade);
         LOG.trace(LOG_CALLED);
 
-        this.pageBean.setPageTitle(getText("AccountAdd.pageTitle"));
-        this.pageBean.setMainHeadingText(getText("AccountAdd.mainHeader"));
+        this.pageBean.setPageTitle(getText("AccountEdit.pageTitle"));
+        this.pageBean.setMainHeadingText(getText("AccountEdit.mainHeader"));
     }
 
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
+        if (this.id == null) {
+            LOG.error("The account ID has not been set");
+            return BaseAction.ERROR;
+        }
+
+        Optional<Account> result = this.accountFacade.getById(this.id);
+        if (result.isEmpty()) {
+            LOG.error("Unknown account with ID: {}", this.id);
+            return BaseAction.ERROR;
+        }
+
+        this.account = result.get();
+        this.bean = new AccountBean(this.account);
+
         return BaseAction.INPUT;
     }
 
     @Override
-    protected String executeSubmitCreate() {
+    protected String executeSubmitUpdate() {
         LOG.trace(LOG_CALLED);
-
-        Account account = Account.newInstance(
-            this.bean.getName(),
-            this.bean.getDescription(),
-            Long.valueOf(this.bean.getParentId()),
-            Account.Types.getType(Integer.valueOf(this.bean.getTypeId())));
-
-        try {
-            this.accountFacade.create(account);
-        } catch (PersistenceException e) {
-            throw new DebsException(e);
-        }
 
         return BaseAction.SUCCESS;
     }
 
     @Override
-    protected void validateSubmitCreate() {
+    protected void validateSubmitUpdate() {
         LOG.trace(LOG_CALLED);
+
         if (!validateAccountBeanStringFields(this.bean)) {
             return;
         }
 
-        Optional<Account> result = this.accountFacade.getByName(this.bean.getName());
-        if (result.isPresent()) {
-            addFieldError("name", getText("AccountAdd.account.name.notunique"));
+        if (!this.account.getName().equals(this.bean.getName())) {
+            Optional<Account> result = this.accountFacade.getByName(this.bean.getName());
+            if (result.isPresent()) {
+                addFieldError("name", getText("AccountEdit.account.name.notunique"));
+            }
         }
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

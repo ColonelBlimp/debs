@@ -24,9 +24,14 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.core.utils.Validator;
+import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.AccountBean;
@@ -44,13 +49,34 @@ public abstract class AccountBaseAction extends BaseAction {
     private static final Logger LOG = LogManager.getLogger(AccountBaseAction.class);
     private static final String LOG_CALLED = "called";
 
+    private final Map<Integer, String> typeMap;
+    private final Map<Long, String> parentMap;
+
+    protected final AccountFacade accountFacade;
+    protected AccountBean bean;
+
     /**
      * Constructor.
      *
      * @param pageBean
      */
-    public AccountBaseAction(PageBean pageBean) {
+    public AccountBaseAction(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean);
+        LOG.trace(LOG_CALLED);
+
+        this.accountFacade = accountFacade;
+
+        this.typeMap = new HashMap<>();
+        for (Account.Types type : Account.Types.values()) {
+            this.typeMap.put(type.getId(), type.toString());
+        }
+
+        this.parentMap = new HashMap<>();
+        for (Account parent : this.accountFacade.getGroupAccounts(false)) {
+            this.parentMap.put(parent.getId(), parent.getName());
+        }
+
+        this.bean = new AccountBean();
     }
 
     protected boolean validateAccountBeanStringFields(AccountBean bean) {
@@ -75,5 +101,21 @@ public abstract class AccountBaseAction extends BaseAction {
         }
 
         return true;
+    }
+
+    public AccountBean getBean() {
+        return this.bean;
+    }
+
+    public void setBean(AccountBean bean) {
+        this.bean = bean;
+    }
+
+    public Map<Integer, String> getTypeMap() {
+        return this.typeMap;
+    }
+
+    public Map<Long, String> getParentMap() {
+        return this.parentMap;
     }
 }

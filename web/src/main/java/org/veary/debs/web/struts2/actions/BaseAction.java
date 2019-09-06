@@ -54,11 +54,6 @@ public class BaseAction extends ValidationAwareImpl implements Action, Validatea
     private static final String LOG_CALLED = "called";
 
     /**
-     * Captures this parameter from a query string.
-     */
-    private String id;
-
-    /**
      * The methods on this bean are used by Freemarker macros.
      */
     protected final PageBean pageBean;
@@ -150,14 +145,6 @@ public class BaseAction extends ValidationAwareImpl implements Action, Validatea
 
     public final void setSubmitType(String submitType) {
         this.submitType = submitType;
-    }
-
-    public final String getId() {
-        return this.id;
-    }
-
-    public final void setId(String id) {
-        this.id = id;
     }
 
     public boolean isShowTransactionsSelector() {
