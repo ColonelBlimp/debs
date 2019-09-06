@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white antialiased w-full">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>DEBS :: Add Account</title>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico"/>
+    <link rel="stylesheet" href="static/css/main.css"/>
+    <link rel="stylesheet" href="static/css/custom.css"/>
+    <script src="static/js/utils.js"></script>
+  </head>
+  <body>
+    <div class="flex fixed top-0 inset-x-0 z-100 h-12 items-center pl-4 bg-purple-600 text-white">
+      <nav>
+        <ul>
+          <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="accounts/list.action" title="Accounts">Accounts</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container border border-white mt-12">
+<div class="w-full h-12 bg-purple-300 mt-4">
+</div>
+<form id="add" name="add" action="/accounts/add.action" method="post" autocomplete="off">
+  <div class="flex mt-6 mb-2 items-center">
+    <div class="w-32">
+      <label class="inline-block font-bold" for="name">Name:</label>
+    </div>
+    <div class="w-56">
+    <input type="text" name="bean.name" maxlength="20" placeholder="Required" id="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off" autofocus="autofocus"/>
+    </div>
+    <div class="w-72 pl-6 font-bold text-red-700 italic">Error</div>
+  </div>
+  <div class="flex mb-2 items-center">
+    <div class="w-32">
+      <label class="inline-block font-bold" for="note">Description:</label>
+    </div>
+    <div class="w-56">
+      <input type="text" name="bean.note" maxlength="100" value="" id="note" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off"/>
+    </div>
+    <div class="w-72 pl-6 font-bold text-red-700 italic">Error</div>
+  </div>
+  <div class="flex mb-2 items-center">
+    <div class="w-32">
+      <label class="inline-block font-bold" for="type">Type:</label>
+    </div>
+    <div class="w-56">
+	<select name="bean.typeId" id="type" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500">
+    	<option value="1">ASSET</option>
+    	<option value="2" selected="selected">EXPENSE</option>
+    	<option value="3">LIABILITY</option>
+    	<option value="4">INCOME</option>
+    	<option value="5">EQUITY</option>
+    	<option value="6">RETAINED_EARNINGS</option>
+    	<option value="7">CONTROL</option>
+    	<option value="8">GROUP</option>
+	</select>
+    </div>
+  </div>
+  <div class="flex mb-4 items-center">
+    <div class="w-32">
+      <label class="inline-block font-bold w-32" for="parent">Group:</label>
+    </div>
+    <div class="w-56">
+		<select name="bean.parentId" id="parent" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500">
+    		<option value="1">Balance</option>
+    		<option value="2">Net Worth</option>
+    		<option value="3">Assets</option>
+    		<option value="4">Liabilities</option>
+    		<option value="5">Income &amp; Expenses</option>
+    		<option value="6">Income</option>
+    		<option value="7" selected="selected">Expenses</option>
+		</select>
+    </div>
+  </div>
+  <div class="flex mb-2 items-center">
+    <div class="w-32"></div>
+    <div class="w-56">
+      <input type="submit" value="Create" id="create" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
+      <input type="submit" value="Cancel" id="cancel" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
+    </div>
+  </div>
+</form>
+    </div>
+  </body>
+</html>

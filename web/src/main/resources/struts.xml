@@ -28,6 +28,7 @@
     </action>
     <action name="add" class="org.veary.debs.web.struts2.actions.accounts.AccountAdd">
       <result type="freemarker" name="input">/WEB-INF/templates/accounts/add.ftl</result>
+      <result type="redirect" name="success">list</result>
     </action>
   </package>
 

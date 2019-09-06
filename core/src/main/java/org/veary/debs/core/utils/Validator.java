@@ -24,6 +24,9 @@
 
 package org.veary.debs.core.utils;
 
+import java.text.StringCharacterIterator;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,6 +39,11 @@ import org.veary.debs.Messages;
  * @since 1.0
  */
 public final class Validator {
+
+    private static final List<Character> acceptedChars = Arrays.asList(
+        Character.valueOf('('),
+        Character.valueOf(')'),
+        Character.valueOf('-'));
 
     /**
      * Validate the state of the given {@code Map}.
@@ -53,7 +61,8 @@ public final class Validator {
 
         if (dataMap.size() != fields.length) {
             throw new IllegalStateException(Messages
-                .getString("Validator.validateDataMap.entrycount", fields.length)); //$NON-NLS-1$
+                .getString("Validator.validateDataMap.entrycount", //$NON-NLS-1$
+                    Integer.valueOf(fields.length)));
         }
 
         for (String fieldName : fields) {
@@ -83,6 +92,38 @@ public final class Validator {
             fields[index++] = entry.toString();
         }
         return fields;
+    }
+
+    /**
+     * Checks the given string is not {@code null} and is non-empty.
+     *
+     * @param str the {@code String} to be checked
+     * @return {@code String}
+     */
+    public static String requireNonEmpty(String str, String message) {
+        Objects.requireNonNull(str, message);
+        if (str.equals("")) {
+            throw new IllegalArgumentException(message);
+        }
+        return str;
+    }
+
+    public static String validateTextField(String str) {
+        final StringCharacterIterator iterator = new StringCharacterIterator(
+            requireNonEmpty(str, "A text field cannot be be null or empty"));
+        char ch = iterator.current();
+        while (ch != StringCharacterIterator.DONE) {
+            final boolean validChar = (Character.isLetterOrDigit(ch)
+                || Character.isSpaceChar(ch)
+                || acceptedChars.contains(Character.valueOf(ch)));
+
+            if (!validChar) {
+                throw new IllegalArgumentException(
+                    "A text field can contain only: a-zA-Z0-9 ()-");
+            }
+            ch = iterator.next();
+        }
+        return str;
     }
 
     /**

@@ -24,12 +24,21 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.exceptions.DebsException;
+import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.beans.AccountBean;
+import org.veary.persist.exceptions.PersistenceException;
 
 /**
  * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/add.ftl}
@@ -37,10 +46,16 @@ import org.veary.debs.web.struts2.actions.BaseAction;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class AccountAdd extends BaseAction {
+public final class AccountAdd extends AccountBaseAction {
 
     private static final Logger LOG = LogManager.getLogger(AccountAdd.class);
     private static final String LOG_CALLED = "called";
+
+    private final AccountFacade accountFacade;
+    private final Map<Integer, String> typeMap;
+    private final Map<Long, String> parentMap;
+
+    private AccountBean bean;
 
     /**
      * Constructor.
@@ -48,9 +63,23 @@ public final class AccountAdd extends BaseAction {
      * @param pageBean
      */
     @Inject
-    public AccountAdd(PageBean pageBean) {
+    public AccountAdd(PageBean pageBean, AccountFacade accountFacade) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
+
+        this.accountFacade = accountFacade;
+
+        this.typeMap = new HashMap<>();
+        for (Account.Types type : Account.Types.values()) {
+            this.typeMap.put(type.getId(), type.toString());
+        }
+
+        this.parentMap = new HashMap<>();
+        for (Account parent : this.accountFacade.getGroupAccounts(false)) {
+            this.parentMap.put(parent.getId(), parent.getName());
+        }
+
+        this.bean = new AccountBean();
 
         this.pageBean.setPageTitle(getText("AccountAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountAdd.mainHeader"));
@@ -61,5 +90,53 @@ public final class AccountAdd extends BaseAction {
         LOG.trace(LOG_CALLED);
 
         return BaseAction.INPUT;
+    }
+
+    @Override
+    protected String executeSubmitCreate() {
+        LOG.trace(LOG_CALLED);
+
+        Account account = Account.newInstance(
+            this.bean.getName(),
+            this.bean.getDescription(),
+            Long.valueOf(this.bean.getParentId()),
+            Account.Types.getType(Integer.valueOf(this.bean.getTypeId())));
+
+        try {
+            this.accountFacade.create(account);
+        } catch (PersistenceException e) {
+            throw new DebsException(e);
+        }
+
+        return BaseAction.SUCCESS;
+    }
+
+    @Override
+    protected void validateSubmitCreate() {
+        LOG.trace(LOG_CALLED);
+        if (!validateAccountBeanStringFields(this.bean)) {
+            return;
+        }
+
+        Optional<Account> result = this.accountFacade.getByName(this.bean.getName());
+        if (result.isPresent()) {
+            addFieldError("name", "Account name must be unique");
+        }
+    }
+
+    public AccountBean getBean() {
+        return this.bean;
+    }
+
+    public void setBean(AccountBean bean) {
+        this.bean = bean;
+    }
+
+    public Map<Integer, String> getTypeMap() {
+        return this.typeMap;
+    }
+
+    public Map<Long, String> getParentMap() {
+        return this.parentMap;
     }
 }
