@@ -63,12 +63,12 @@ public interface AccountDao {
     void updateAccount(Account original, Account updated);
 
     /**
-     * Updates the referenced {@code Account}'s balance with the new referenced {@code balance}.
+     * Updates the referenced {@code Account}'s balance by adding the referenced {@code amount}.
      *
      * @param object {@link Account}
-     * @param newBalance the new balance to be written to the account record
+     * @param amount the value to update (add) to the account's current balance
      */
-    void updateAccountBalance(Account object, Money newBalance);
+    void updateAccountBalance(Account object, Money amount);
 
     /**
      * Deletes the referened {@code Account}.
@@ -82,8 +82,7 @@ public interface AccountDao {
     /**
      * Retrieve an {@code Account} matching the referenced unique identifier.
      *
-     * <p><b>Note:</b> This will also return an {@code Account} which is marked as
-     * <b>deleted</b>.
+     * <p><b>Note:</b> This will also return an {@code Account} which is marked as <b>deleted</b>.
      *
      * @param id the unique identifier
      * @return {@code Account}. Non-{@code null}.

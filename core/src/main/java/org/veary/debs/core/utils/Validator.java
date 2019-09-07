@@ -43,14 +43,16 @@ public final class Validator {
     private static final List<Character> acceptedChars = Arrays.asList(
         Character.valueOf('('),
         Character.valueOf(')'),
-        Character.valueOf('-'));
+        Character.valueOf('-'),
+        Character.valueOf(','),
+        Character.valueOf('.'));
 
     /**
      * Validate the state of the given {@code Map}.
      *
      * <p>This method ensures that the given {@code Map} is not {@code null} or {@code empty},
-     * contains the right number of elements and all the required keys are present. It also
-     * checks that the map contains no {@code null} values.
+     * contains the right number of elements and all the required keys are present. It also checks
+     * that the map contains no {@code null} values.
      *
      * @param dataMap the {@code Map} object
      * @param fields an String array of map keys

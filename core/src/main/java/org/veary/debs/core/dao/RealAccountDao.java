@@ -119,15 +119,15 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     }
 
     @Override
-    public void updateAccountBalance(Account object, Money newBalance) {
+    public void updateAccountBalance(Account object, Money amount) {
         LOG.trace(LOG_CALLED);
 
         Objects.requireNonNull(object, Messages.getParameterIsNull(PARAM_OBJECT));
-        Objects.requireNonNull(newBalance, Messages.getParameterIsNull("newBalance")); //$NON-NLS-1$
+        Objects.requireNonNull(amount, Messages.getParameterIsNull("amount")); //$NON-NLS-1$
 
         final SqlStatement update = SqlStatement
             .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
-        update.setParameter(1, newBalance.getValue());
+        update.setParameter(1, amount.getValue());
         update.setParameter(2, object.getId());
 
         final TransactionManager manager = this.factory.createTransactionManager();

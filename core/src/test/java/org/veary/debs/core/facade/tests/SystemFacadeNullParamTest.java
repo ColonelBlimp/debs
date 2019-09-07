@@ -40,7 +40,7 @@ public class SystemFacadeNullParamTest extends JndiTestBase {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void constructorParam() {
-        new RealSystemFacade(null);
+        new RealSystemFacade(null, null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)

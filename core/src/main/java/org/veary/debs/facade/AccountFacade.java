@@ -57,8 +57,8 @@ public interface AccountFacade {
      * @param original the {@code Account} to be updated
      * @param name a new unique name, or {@code null} if this field is not to be updated
      * @param description a new description, or {@code null} if this field is not to be updated
-     * @param parentId a new unique parent identifier, or {@code null} if this field is not to
-     *     be updated
+     * @param parentId a new unique parent identifier, or {@code null} if this field is not to be
+     *     updated
      * @param type a different type, or {@code null} if this field is not to be updated
      */
     void update(Account original, String name, String description, Long parentId,
@@ -68,9 +68,9 @@ public interface AccountFacade {
      * Update the referenced {@code Account} with the given {@code Money}'s value.
      *
      * @param object {@code Account}
-     * @param balance {@code Money}
+     * @param ammount {@code Money}
      */
-    void updateBalance(Account object, Money balance);
+    void updateBalance(Account object, Money amount);
 
     /**
      * Deletes the referenced {@code Account}.
@@ -98,8 +98,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all the accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getAllAccounts(boolean includeDeleted);
@@ -107,8 +106,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all Actual accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getActualAccounts(boolean includeDeleted);
@@ -116,8 +114,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all Group accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getGroupAccounts(boolean includeDeleted);

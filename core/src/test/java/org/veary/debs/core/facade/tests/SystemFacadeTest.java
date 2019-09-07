@@ -41,7 +41,7 @@ public class SystemFacadeTest extends JndiTestBase {
 
     @Test
     public void instantiation() {
-        Assert.assertNotNull(new RealSystemFacade(this.transactionDao));
+        Assert.assertNotNull(new RealSystemFacade(this.transactionDao, this.accountFacade));
     }
 
     @Test

@@ -35,8 +35,10 @@ import javax.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
+import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
+import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.Status;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
@@ -63,6 +65,7 @@ public final class RealSystemFacade implements SystemFacade {
     private static final String STATUS_PARAM = "status";
 
     private final TransactionDao transactionDao;
+    private final AccountFacade accountFacade;
 
     /**
      * Constructor.
@@ -70,10 +73,12 @@ public final class RealSystemFacade implements SystemFacade {
      * @param transactionDao {@link TransactionDao}
      */
     @Inject
-    public RealSystemFacade(TransactionDao transactionDao) {
+    public RealSystemFacade(TransactionDao transactionDao, AccountFacade accountFacade) {
         this.transactionDao = Objects.requireNonNull(
             transactionDao,
             Messages.getParameterIsNull("transactionDao")); //$NON-NLS-1$
+        this.accountFacade = Objects.requireNonNull(accountFacade,
+            Messages.getParameterIsNull("accountFacade"));
     }
 
     @Override
@@ -88,7 +93,13 @@ public final class RealSystemFacade implements SystemFacade {
         TransactionEntity transactionEntity = (TransactionEntity) transaction;
         transactionEntity.setEntries(fromEntry, toEntry);
 
-        return this.transactionDao.createTransaction(transactionEntity);
+        Long id = this.transactionDao.createTransaction(transactionEntity);
+
+        // Update the parent hierarchy balances
+        updateParentBalance(fromEntry.getAccountId(), fromEntry.getAmount());
+        updateParentBalance(toEntry.getAccountId(), toEntry.getAmount());
+
+        return id;
     }
 
     @Override
@@ -175,5 +186,25 @@ public final class RealSystemFacade implements SystemFacade {
         Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
         return this.transactionDao.getTransactionsForAccountOverPeriod(period, account, status);
+    }
+
+    private void updateParentBalance(Long accountId, final Money amount) {
+        LOG.trace(LOG_CALLED);
+
+        Optional<Account> result = this.accountFacade.getById(accountId);
+        if (result.isEmpty()) {
+            throw new AssertionError("Unable to fetch account with ID: " + accountId);
+        }
+
+        Account account = result.get();
+        Long parentId = account.getParentId();
+        if (!parentId.equals(Long.valueOf(0))) {
+            updateParentBalance(parentId, amount);
+        }
+
+        if (account.getType().equals(Account.Types.GROUP)) {
+            LOG.trace("Update Balance for Account: {}", account.getName());
+            this.accountFacade.updateBalance(account, amount);
+        }
     }
 }
