@@ -195,6 +195,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         validateInput();
     }
 
+    /**
+     * Set the {@code cleared} flag for this Entry object.
+     *
+     * @param cleared boolean
+     */
     public void setCleared(boolean cleared) {
         this.cleared = cleared;
         if (cleared) {

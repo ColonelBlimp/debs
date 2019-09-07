@@ -108,6 +108,16 @@ public final class Validator {
         return str;
     }
 
+    /**
+     * Checks the given string is not {@code null} or {@code empty} and has only allowed
+     * characters.
+     *
+     * @param str the {@code String} to be checked.
+     * @return the validated string
+     * @throws IllegalArgumentException is the string contains unauthorized characters or is
+     *     {@code empty}
+     * @throws NullPointerException if the string is {@code null}
+     */
     public static String validateTextField(String str) {
         final StringCharacterIterator iterator = new StringCharacterIterator(
             requireNonEmpty(str, "A text field cannot be be null or empty"));

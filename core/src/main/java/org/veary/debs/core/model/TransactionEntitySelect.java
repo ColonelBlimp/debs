@@ -233,6 +233,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.fromCleared;
     }
 
+    /**
+     * Set the {@code cleared} flag for the FROM {@code Entry}.
+     *
+     * @param fromCleared boolean
+     */
     public void setFromCleared(boolean fromCleared) {
         this.fromCleared = fromCleared;
         if (fromCleared) {
@@ -246,6 +251,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.toCleared;
     }
 
+    /**
+     * Set the {@code cleared} flag for the TO {@code Entry}.
+     *
+     * @param fromCleared boolean
+     */
     public void setToCleared(boolean toCleared) {
         this.toCleared = toCleared;
         if (toCleared) {

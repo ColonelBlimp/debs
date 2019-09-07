@@ -305,7 +305,7 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     /**
-     * A separate call will need to be made to set this item as cleared!
+     * A separate call will need to be made to set this item as cleared.
      *
      * @param manager {@code TransactionManager}
      * @param object {@code Entry}
