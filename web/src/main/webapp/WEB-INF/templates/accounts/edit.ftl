@@ -40,6 +40,15 @@
     </div>
     <div class="w-96 pl-6"></div>
   </div>
+  <div class="flex mb-4 items-center">
+    <div class="w-32">
+<@s.label for="deleted" value="Deleted:" class="inline-block font-bold"/>
+    </div>
+    <div class="w-56">
+<input type="checkbox" name="bean.deleted" value="true" <@s.if test="bean.deleted">checked</@s.if>>
+    </div>
+    <div class="w-96 pl-6"></div>
+  </div>
   <div class="flex items-center">
     <div class="w-32">
     </div>

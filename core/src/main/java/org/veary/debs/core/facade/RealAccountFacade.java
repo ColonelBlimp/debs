@@ -110,7 +110,7 @@ public final class RealAccountFacade implements AccountFacade {
 
     @Override
     public void update(Account original, String name, String description, Long parentId,
-        Types type) {
+        Types type, boolean isDeleted) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(original, Messages.getParameterIsNull("original")); //$NON-NLS-1$
 
@@ -137,6 +137,8 @@ public final class RealAccountFacade implements AccountFacade {
             updated.setType(type);
         }
 
+        updated.setDeleted(isDeleted);
+
         this.dao.updateAccount(original, updated);
     }
 
@@ -145,12 +147,6 @@ public final class RealAccountFacade implements AccountFacade {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
         Objects.requireNonNull(balance, Messages.getParameterIsNull("balance")); //$NON-NLS-1$
         this.dao.updateAccountBalance(object, balance);
-    }
-
-    @Override
-    public void delete(Account object) {
-        LOG.trace(LOG_CALLED);
-        this.dao.deleteAccount(validateInput(object));
     }
 
     @Override

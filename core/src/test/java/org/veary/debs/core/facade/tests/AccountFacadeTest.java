@@ -105,7 +105,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertFalse(result.isEmpty());
         Account original = result.get();
 
-        facade.update(original, NEW_NAME, null, null, null);
+        facade.update(original, NEW_NAME, null, null, null, false);
 
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());
@@ -125,7 +125,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertFalse(result.isEmpty());
         Account original = result.get();
 
-        facade.update(original, null, NEW_DESC, null, null);
+        facade.update(original, null, NEW_DESC, null, null, false);
 
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());
@@ -145,7 +145,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertFalse(result.isEmpty());
         Account original = result.get();
 
-        facade.update(original, null, null, NEW_PARENT_ID, null);
+        facade.update(original, null, null, NEW_PARENT_ID, null, false);
 
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());
@@ -165,7 +165,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertFalse(result.isEmpty());
         Account original = result.get();
 
-        facade.update(original, null, null, null, Types.GROUP);
+        facade.update(original, null, null, null, Types.GROUP, false);
 
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());

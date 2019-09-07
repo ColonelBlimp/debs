@@ -71,6 +71,33 @@
 
   <build>
     <finalName>ROOT</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <exec
+                  dir="${project.basedir}\src\mockup\static\css"
+                  executable="npx.cmd">
+                  <arg line="tailwind build styles.css -o main.css"/>
+                </exec>
+                <copy
+                  file="${project.basedir}\src\mockup\static\css\main.css"
+                  todir="${project.basedir}\src\main\webapp\static\css">
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

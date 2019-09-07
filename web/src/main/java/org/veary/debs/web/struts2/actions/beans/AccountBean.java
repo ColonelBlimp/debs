@@ -45,6 +45,7 @@ public final class AccountBean {
     private String parentId;
     private String parentName;
     private String balance;
+    private boolean deleted;
 
     public AccountBean() {
     }
@@ -57,6 +58,15 @@ public final class AccountBean {
         this.description = object.getDescription();
         this.parentId = object.getParentId().toString();
         this.balance = object.getBalance().toString();
+        this.deleted = object.isDeleted();
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getId() {

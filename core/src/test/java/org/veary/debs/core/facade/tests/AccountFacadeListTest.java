@@ -38,7 +38,7 @@ public final class AccountFacadeListTest extends JndiTestBase {
 
         Optional<Account> result = this.accountFacade.getByName("Group A-B"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.delete(result.get());
+        this.accountFacade.update(result.get(), null, null, null, null, true);
 
         list = this.accountFacade.getAllAccounts(false);
         Assert.assertFalse(list.isEmpty());
@@ -64,7 +64,7 @@ public final class AccountFacadeListTest extends JndiTestBase {
 
         Optional<Account> result = this.accountFacade.getById(id);
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.delete(result.get());
+        this.accountFacade.update(result.get(), null, null, null, null, true);
 
         list = this.accountFacade.getActualAccounts(false);
         Assert.assertFalse(list.isEmpty());

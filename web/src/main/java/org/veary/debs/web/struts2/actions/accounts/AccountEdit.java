@@ -95,7 +95,8 @@ public final class AccountEdit extends AccountBaseAction {
                 this.original,
                 this.bean.getName(),
                 this.bean.getDescription(), Long.valueOf(this.bean.getParentId()),
-                Account.Types.getType(Integer.valueOf(this.bean.getTypeId())));
+                Account.Types.getType(Integer.valueOf(this.bean.getTypeId())),
+                this.bean.isDeleted());
         } catch (PersistenceException e) {
             return BaseAction.ERROR;
         }

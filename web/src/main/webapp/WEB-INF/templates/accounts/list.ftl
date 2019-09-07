@@ -4,7 +4,7 @@
 <div class="float-left w-1/2 p-3">
 <div class="float-left pr-2 font-bold">Viewing:</div><div class="float-left"><@f.listSelect/></div>
 </div>
-<div class="float-right w-1/2 p-3"><@f.addEditDelete/></div>
+<div class="float-right w-1/2 p-3"><@f.addEditLinks/></div>
 </@f.contentHeader>
 <div>
   <table class="table-fixed w-full">
@@ -12,10 +12,11 @@
       <tr>
         <th class="w-6"><span class="block text-left">&nbsp;</span></th>
         <th class="w-56"><span class="block text-left pl-1">Name</span></th>
-        <th class="w-56"><span class="block text-left">Description</span></th>
-        <th class="w-56"><span class="block text-left">Type</span></th>
-        <th class="w-56"><span class="block text-left">Group</span></th>
-        <th><span class="block text-left">Balance</span></th>
+        <th class="w-56"><span class="block truncate text-left">Description</span></th>
+        <th class="w-48"><span class="block text-left">Type</span></th>
+        <th class="w-48"><span class="block text-left">Group</span></th>
+        <th class="w-32"><span class="block text-left">Balance</span></th>
+        <th class="w-6"><span class="block text-left">X</span></th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
         <td><span class="block truncate text-left"><@s.property value="typeName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="parentName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="balance"/></span></td>
+        <td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled="true"></span></td>
       </tr>
 </@s.iterator>
     </tbody>

@@ -97,7 +97,7 @@ public class AccountDaoTest extends JndiTestBase {
         Assert.assertNotNull(fetched);
         Assert.assertFalse(fetched.getId().equals(Long.valueOf(1000)));
         Assert.assertFalse(fetched.getBalance().eq(UPDATED_BALANCE));
-        Assert.assertFalse(fetched.isDeleted());
+        Assert.assertTrue(fetched.isDeleted());
         Assert.assertFalse(fetched.getCreationTimestamp().equals(updatedCreation));
     }
 
@@ -111,12 +111,5 @@ public class AccountDaoTest extends JndiTestBase {
         Account updated = this.accountDao.getAccountById(account.getId());
         Assert.assertNotNull(updated);
         Assert.assertTrue(updated.getBalance().eq(UPDATED_BALANCE));
-    }
-
-    @Test(dependsOnMethods = { "updateBalanceMethod" })
-    public void deleteAccount() {
-        Account account = this.accountDao.getAccountByName(UPDATED_NAME);
-        Assert.assertNotNull(account);
-        this.accountDao.deleteAccount(account);
     }
 }

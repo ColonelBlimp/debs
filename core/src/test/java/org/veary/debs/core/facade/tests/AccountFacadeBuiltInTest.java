@@ -38,7 +38,7 @@ public class AccountFacadeBuiltInTest extends JndiTestBase {
     public void deleteBuildIn_Balance() {
         Optional<Account> result = this.accountFacade.getByName("Balance"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.update(result.get(), "Balance", null, null, null); //$NON-NLS-1$
+        this.accountFacade.update(result.get(), "Balance", null, null, null, false); //$NON-NLS-1$
     }
 
     @Test(expectedExceptions = { IllegalArgumentException.class },
@@ -46,6 +46,6 @@ public class AccountFacadeBuiltInTest extends JndiTestBase {
     public void deleteBuildIn_OpeningBalance() {
         Optional<Account> result = this.accountFacade.getByName("Opening Balance"); //$NON-NLS-1$
         Assert.assertFalse(result.isEmpty());
-        this.accountFacade.update(result.get(), "Opening Balance", null, null, null); //$NON-NLS-1$
+        this.accountFacade.update(result.get(), "Opening Balance", null, null, null, false); //$NON-NLS-1$
     }
 }

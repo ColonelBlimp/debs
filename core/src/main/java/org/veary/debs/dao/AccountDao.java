@@ -54,8 +54,8 @@ public interface AccountDao {
      * Updates the referenced <b>original</b> {@code Account} with the values from the
      * <b>update</b> {@code Account}.
      *
-     * <p><b>Note:</b> The <i>CREATION</i>, <i>ID</i>, <i>BALANCE</i> and <i>DELETED</i> fields
-     * (columns) of the <b>original</b> are <b>not</b> modified by this method.
+     * <p><b>Note:</b> The <i>CREATION</i>, <i>ID</i> and <i>BALANCE</i> fields (columns) of the
+     * <b>original</b> are <b>not</b> modified by this method.
      *
      * @param original {@code Account} to be updated
      * @param updated {@code Account} holding the new values
@@ -71,18 +71,10 @@ public interface AccountDao {
     void updateAccountBalance(Account object, Money amount);
 
     /**
-     * Deletes the referened {@code Account}.
-     *
-     * <p><b>Note:</b> An account can only be deleted if it has not transactions assigned to it.
-     *
-     * @param object {@code Account} object to be deleted
-     */
-    void deleteAccount(Account object);
-
-    /**
      * Retrieve an {@code Account} matching the referenced unique identifier.
      *
-     * <p><b>Note:</b> This will also return an {@code Account} which is marked as <b>deleted</b>.
+     * <p><b>Note:</b> This will also return an {@code Account} which is marked as
+     * <b>deleted</b>.
      *
      * @param id the unique identifier
      * @return {@code Account}. Non-{@code null}.

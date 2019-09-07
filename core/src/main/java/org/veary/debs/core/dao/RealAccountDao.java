@@ -110,7 +110,8 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
         update.setParameter(2, updated.getDescription());
         update.setParameter(3, updated.getParentId());
         update.setParameter(4, updated.getType().getId());
-        update.setParameter(5, original.getId());
+        update.setParameter(5, Boolean.valueOf(updated.isDeleted()));
+        update.setParameter(6, original.getId());
 
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
@@ -129,21 +130,6 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
             .newInstance(this.registry.getSql("updateAccountBalance")); //$NON-NLS-1$
         update.setParameter(1, amount.getValue());
         update.setParameter(2, object.getId());
-
-        final TransactionManager manager = this.factory.createTransactionManager();
-        manager.begin();
-        manager.persist(update);
-        manager.commit();
-    }
-
-    @Override
-    public void deleteAccount(Account object) {
-        LOG.trace(LOG_CALLED);
-
-        Objects.requireNonNull(object, Messages.getParameterIsNull(PARAM_OBJECT));
-        final SqlStatement update = SqlStatement
-            .newInstance(this.registry.getSql("deleteAccount")); //$NON-NLS-1$
-        update.setParameter(1, object.getId());
 
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
