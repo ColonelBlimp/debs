@@ -29,8 +29,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Account;
 
 /**
@@ -88,5 +90,46 @@ public class ValidatorTest {
         dataMap.put(Account.Fields.PARENT_ID.toString(), Long.valueOf(1));
         dataMap.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET);
         Account.newInstance(dataMap);
+    }
+
+    @Test(
+        expectedExceptions = NullPointerException.class,
+        expectedExceptionsMessageRegExp = "Test Message Null")
+    public void requireNonEmptyNull() {
+        Validator.requireNonEmpty(null, "Test Message Null");
+    }
+
+    @Test(
+        expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "Test Message Empty")
+    public void requireNonEmptyEmpty() {
+        Validator.requireNonEmpty("", "Test Message Empty");
+    }
+
+    @Test
+    public void requireNonEmptyMethod() {
+        Assert.assertEquals(Validator.requireNonEmpty("Test", "Error"), "Test");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void validateTextFieldIllegalChar() {
+        Validator.validateTextField("#");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        expectedExceptionsMessageRegExp = "A text field cannot be be null or empty")
+    public void validateTextFieldNull() {
+        Validator.validateTextField(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "A text field cannot be be null or empty")
+    public void validateTextFieldEmpty() {
+        Validator.validateTextField("");
+    }
+
+    @Test
+    public void validateTextField() {
+        Assert.assertEquals(Validator.validateTextField("Test1 ()-"), "Test1 ()-");
     }
 }
