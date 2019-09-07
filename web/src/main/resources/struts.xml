@@ -43,4 +43,10 @@
     </action>
   </package>
 
+  <package name="transactions" namespace="/transactions" extends="debs-base">
+    <action name="list" class="org.veary.debs.web.struts2.actions.transactions.TransactionList">
+      <result type="freemarker" name="success">/WEB-INF/templates/transactions/list.ftl</result>
+    </action>
+  </package>
+
 </struts>

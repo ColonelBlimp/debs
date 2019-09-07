@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -75,7 +76,7 @@ public class AccountList extends BaseAction {
         LOG.trace(LOG_CALLED);
 
         this.includeDeleted = Boolean.FALSE;
-        this.accountFacade = accountFacade;
+        this.accountFacade = Objects.requireNonNull(accountFacade);
         this.viewMap = new HashMap<>();
 
         this.viewMap.put(LIST_VIEW_ACTUAL, getText("AccountList.listView.actual"));
