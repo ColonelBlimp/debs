@@ -41,7 +41,6 @@ import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.core.model.TransactionEntitySelect;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
-import org.veary.debs.facade.Status;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
@@ -200,16 +199,19 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     @Override
-    public List<Transaction> getAllTransactions(Status status) {
+    public List<Transaction> getAllTransactions(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
+        if (includeDeleted) {
+
+        }
         final String[] keys = {
             "getAllTransactionsExcludeDeleted",
-            "getAllTransactionsDeleted",
             "getAllTransactionsBoth"
         };
 
-        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
+        final SqlStatement select = SqlStatement
+            .newInstance(getSqlForStatus(includeDeleted, keys));
 
         QueryManager manager = this.factory.createQueryManager();
         Query query = manager.createQuery(select, TransactionEntitySelect.class);
@@ -224,16 +226,17 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     @Override
-    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
+    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period,
+        boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
         final String[] keys = {
             "getAllTransactionsOverPeriodExcludeDeleted",
-            "getAllTransactionsOverPeriodDeleted",
             "getAllTransactionsOverPeriodBoth"
         };
 
-        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
+        final SqlStatement select = SqlStatement
+            .newInstance(getSqlForStatus(includeDeleted, keys));
         select.setParameter(1, Integer.valueOf(period.getYear()));
         select.setParameter(2, Integer.valueOf(period.getMonthValue()));
 
@@ -250,16 +253,16 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     }
 
     @Override
-    public List<Transaction> getTransactionsForAccount(Account account, Status status) {
+    public List<Transaction> getTransactionsForAccount(Account account, boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
         final String[] keys = {
             "getTransactionsForAccountExcludeDeleted",
-            "getTransactionsForAccountDeleted",
             "getTransactionsForAccountBoth"
         };
 
-        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
+        final SqlStatement select = SqlStatement
+            .newInstance(getSqlForStatus(includeDeleted, keys));
         select.setParameter(1, account.getId());
         select.setParameter(2, account.getId());
 
@@ -277,16 +280,16 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
 
     @Override
     public List<Transaction> getTransactionsForAccountOverPeriod(YearMonth period,
-        Account account, Status status) {
+        Account account, boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
         final String[] keys = {
             "getTransactionsForAccountOverPeriodExcludeDeleted",
-            "getTransactionsForAccountOverPeriodDeleted",
             "getTransactionsForAccountOverPeriodBoth"
         };
 
-        final SqlStatement select = SqlStatement.newInstance(getSqlForStatus(status, keys));
+        final SqlStatement select = SqlStatement
+            .newInstance(getSqlForStatus(includeDeleted, keys));
         select.setParameter(1, account.getId());
         select.setParameter(2, account.getId());
         select.setParameter(3, Integer.valueOf(period.getYear()));
@@ -375,25 +378,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         return Collections.unmodifiableList(list);
     }
 
-    private String getSqlForStatus(Status status, String... keys) {
+    private String getSqlForStatus(boolean includeDeleted, String... keys) {
         LOG.trace(LOG_CALLED);
-
-        String sql = this.registry
-            .getSql(keys[0]); //$NON-NLS-1$
-
-        switch (status) {
-            case DELETED:
-                sql = this.registry
-                    .getSql(keys[1]); //$NON-NLS-1$
-                break;
-            case BOTH:
-                sql = this.registry
-                    .getSql(keys[2]); //$NON-NLS-1$
-                break;
-            default:
-                // Do nothing
-        }
-
-        return sql;
+        return this.registry.getSql(keys[includeDeleted ? 1 : 0]);
     }
 }

@@ -34,7 +34,6 @@ import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
-import org.veary.debs.facade.Status;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
@@ -84,32 +83,34 @@ public class SystemFacadeGetAllTxPeriodTest extends AbstractSystemFacadeTestBase
         this.systemFacade.deleteTransaction(result.get());
 
         List<Transaction> listNonDeleted = this.systemFacade
-            .getAllTransactionsOverPeriod(PERIOD, Status.NON_DELETED);
+            .getAllTransactionsOverPeriod(PERIOD, false);
         Assert.assertNotNull(listNonDeleted);
         Assert.assertFalse(listNonDeleted.isEmpty());
         Assert.assertTrue(listNonDeleted.size() == 2);
-
+        /*
         List<Transaction> listDeleted = this.systemFacade.getAllTransactionsOverPeriod(PERIOD,
-            Status.DELETED);
+            true);
         Assert.assertNotNull(listDeleted);
         Assert.assertTrue(listDeleted.isEmpty());
-
-        listDeleted = this.systemFacade.getAllTransactionsOverPeriod(PERIOD_PAST,
-            Status.DELETED);
+        */
+        List<Transaction> listDeleted = this.systemFacade.getAllTransactionsOverPeriod(
+            PERIOD_PAST,
+            true);
         Assert.assertNotNull(listDeleted);
         Assert.assertFalse(listDeleted.isEmpty());
-        Assert.assertTrue(listDeleted.size() == 1);
-
+        Assert.assertTrue(listDeleted.size() == 2);
+        /*
         List<Transaction> listBoth = this.systemFacade.getAllTransactionsOverPeriod(PERIOD_PAST,
-            Status.BOTH);
+            DeletedStatus.BOTH);
         Assert.assertNotNull(listBoth);
         Assert.assertFalse(listBoth.isEmpty());
         Assert.assertTrue(listBoth.size() == 2);
 
         listBoth = this.systemFacade.getAllTransactionsOverPeriod(PERIOD,
-            Status.BOTH);
+            DeletedStatus.BOTH);
         Assert.assertNotNull(listBoth);
         Assert.assertFalse(listBoth.isEmpty());
         Assert.assertTrue(listBoth.size() == 2);
+        */
     }
 }

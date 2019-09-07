@@ -39,7 +39,6 @@ import org.veary.debs.core.Money;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
-import org.veary.debs.facade.Status;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
@@ -62,7 +61,6 @@ public final class RealSystemFacade implements SystemFacade {
 
     private static final Logger LOG = LogManager.getLogger(RealSystemFacade.class);
     private static final String LOG_CALLED = "called"; //$NON-NLS-1$
-    private static final String STATUS_PARAM = "status";
 
     private final TransactionDao transactionDao;
     private final AccountFacade accountFacade;
@@ -153,39 +151,37 @@ public final class RealSystemFacade implements SystemFacade {
     }
 
     @Override
-    public List<Transaction> getAllTransactions(Status status) {
+    public List<Transaction> getAllTransactions(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
-        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
-        return this.transactionDao.getAllTransactions(status);
+        return this.transactionDao.getAllTransactions(includeDeleted);
     }
 
     @Override
-    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status) {
+    public List<Transaction> getAllTransactionsOverPeriod(YearMonth period,
+        boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
-        return this.transactionDao.getAllTransactionsOverPeriod(period, status);
+        return this.transactionDao.getAllTransactionsOverPeriod(period, includeDeleted);
     }
 
     @Override
-    public List<Transaction> getTransactionsForAccount(Account account, Status status) {
+    public List<Transaction> getTransactionsForAccount(Account account, boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
-        return this.transactionDao.getTransactionsForAccount(account, status);
+        return this.transactionDao.getTransactionsForAccount(account, includeDeleted);
     }
 
     @Override
     public List<Transaction> getTransactionsForAccountOverPeriod(YearMonth period,
-        Account account, Status status) {
+        Account account, boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(period, Messages.getParameterIsNull("period"));
         Objects.requireNonNull(account, Messages.getParameterIsNull("account"));
-        Objects.requireNonNull(status, Messages.getParameterIsNull(STATUS_PARAM));
 
-        return this.transactionDao.getTransactionsForAccountOverPeriod(period, account, status);
+        return this.transactionDao.getTransactionsForAccountOverPeriod(period, account,
+            includeDeleted);
     }
 
     private void updateParentBalance(Long accountId, final Money amount) {

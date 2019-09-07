@@ -31,7 +31,6 @@ import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
-import org.veary.debs.facade.Status;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
@@ -74,17 +73,17 @@ public class SystemFacadeGetAllTxTest extends AbstractSystemFacadeTestBase {
         this.systemFacade.deleteTransaction(result.get());
 
         List<Transaction> listNonDeleted = this.systemFacade
-            .getAllTransactions(Status.NON_DELETED);
+            .getAllTransactions(false);
         Assert.assertNotNull(listNonDeleted);
         Assert.assertFalse(listNonDeleted.isEmpty());
         Assert.assertTrue(listNonDeleted.size() == 3);
-
-        List<Transaction> listDeleted = this.systemFacade.getAllTransactions(Status.DELETED);
+        /*
+        List<Transaction> listDeleted = this.systemFacade.getAllTransactions(true);
         Assert.assertNotNull(listDeleted);
         Assert.assertFalse(listDeleted.isEmpty());
         Assert.assertTrue(listDeleted.size() == 1);
-
-        List<Transaction> listBoth = this.systemFacade.getAllTransactions(Status.BOTH);
+        */
+        List<Transaction> listBoth = this.systemFacade.getAllTransactions(true);
         Assert.assertNotNull(listBoth);
         Assert.assertFalse(listBoth.isEmpty());
         Assert.assertTrue(listBoth.size() == 4);

@@ -83,6 +83,7 @@ public class AccountList extends BaseAction {
         this.viewMap.put(LIST_VIEW_GROUP, getText("AccountList.listView.group"));
         this.viewMap.put(LIST_VIEW_ALL, getText("AccountList.listView.all"));
         this.listView = LIST_VIEW_ACTUAL;
+        this.includeDeleted = Boolean.FALSE;
 
         this.pageBean.setPageTitle(getText("AccountList.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountList.mainHeader"));
@@ -95,15 +96,15 @@ public class AccountList extends BaseAction {
         switch (this.listView) {
             case LIST_VIEW_ALL:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getAllAccounts(isIncludeDeleted().booleanValue()));
+                    this.accountFacade.getAllAccounts(this.includeDeleted.booleanValue()));
                 break;
             case LIST_VIEW_GROUP:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getGroupAccounts(isIncludeDeleted().booleanValue()));
+                    this.accountFacade.getGroupAccounts(this.includeDeleted.booleanValue()));
                 break;
             default:
                 this.accounts = accountListToBeanList(
-                    this.accountFacade.getActualAccounts(isIncludeDeleted().booleanValue()));
+                    this.accountFacade.getActualAccounts(this.includeDeleted.booleanValue()));
         }
 
         return BaseAction.SUCCESS;

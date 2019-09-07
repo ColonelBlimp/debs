@@ -24,14 +24,21 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.facade.SystemFacade;
+import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
@@ -53,9 +60,18 @@ public final class TransactionList extends BaseAction {
 
     private final SystemFacade systemFacade;
     private final Map<String, String> viewMap;
+
     private List<TransactionBean> transactions;
     private String listView;
+    private Boolean includeDeleted;
 
+    /**
+     * Constructor.
+     *
+     * @param pageBean {@link PageBean}
+     * @param systemFacade {@link SystemFacade}
+     */
+    @Inject
     public TransactionList(PageBean pageBean, SystemFacade systemFacade) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
@@ -66,6 +82,7 @@ public final class TransactionList extends BaseAction {
         this.viewMap.put(LIST_VIEW_LAST_MONTH, getText("TransactionList.listView.last_month"));
         this.viewMap.put(LIST_VIEW_ALL, getText("TransactionList.listView.all"));
         this.listView = LIST_VIEW_THIS_MONTH;
+        this.includeDeleted = Boolean.FALSE;
 
         this.pageBean.setPageTitle(getText("TransactionList.pageTitle"));
         this.pageBean.setMainHeadingText(getText("TransactionList.mainHeader"));
@@ -74,6 +91,17 @@ public final class TransactionList extends BaseAction {
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
+
+        if (this.listView.equals(LIST_VIEW_ALL)) {
+            this.transactions = transactionListToBeanList(
+                this.systemFacade.getAllTransactions(this.includeDeleted.booleanValue()));
+        } else {
+            YearMonth period = getSelectedPeriod();
+            this.transactions = transactionListToBeanList(
+                this.systemFacade.getAllTransactionsOverPeriod(period,
+                    this.includeDeleted.booleanValue()));
+
+        }
 
         return BaseAction.SUCCESS;
     }
@@ -92,5 +120,39 @@ public final class TransactionList extends BaseAction {
 
     public void setListView(String listView) {
         this.listView = listView;
+    }
+
+    public Boolean isIncludeDeleted() {
+        return this.includeDeleted;
+    }
+
+    public void setIncludeDeleted(Boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
+    }
+
+    private List<TransactionBean> transactionListToBeanList(List<Transaction> transactions) {
+        LOG.trace(LOG_CALLED);
+
+        List<TransactionBean> list = new ArrayList<>(transactions.size());
+
+        for (Transaction obj : transactions) {
+            TransactionBean bean = new TransactionBean(obj);
+            list.add(bean);
+        }
+
+        return Collections.unmodifiableList(list);
+    }
+
+    private YearMonth getSelectedPeriod() {
+        LOG.trace(LOG_CALLED);
+
+        YearMonth period = YearMonth.now();
+        final Month month = period.getMonth();
+
+        if (this.listView.equals(LIST_VIEW_LAST_MONTH)) {
+            period = YearMonth.of(period.getYear(), month.minus(1));
+        }
+
+        return period;
     }
 }

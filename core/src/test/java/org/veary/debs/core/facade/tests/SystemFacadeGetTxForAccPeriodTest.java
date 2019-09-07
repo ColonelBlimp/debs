@@ -34,7 +34,6 @@ import java.util.Optional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.Money;
-import org.veary.debs.facade.Status;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 
@@ -84,37 +83,37 @@ public class SystemFacadeGetTxForAccPeriodTest extends AbstractSystemFacadeTestB
 
         List<Transaction> listNonDeleted = this.systemFacade
             .getTransactionsForAccountOverPeriod(PERIOD_PAST, this.fromAccount,
-                Status.NON_DELETED);
+                false);
         Assert.assertNotNull(listNonDeleted);
         Assert.assertFalse(listNonDeleted.isEmpty());
         Assert.assertTrue(listNonDeleted.size() == 1);
 
         listNonDeleted = this.systemFacade
             .getTransactionsForAccountOverPeriod(PERIOD, this.fromAccount,
-                Status.NON_DELETED);
+                false);
         Assert.assertNotNull(listNonDeleted);
         Assert.assertFalse(listNonDeleted.isEmpty());
         Assert.assertTrue(listNonDeleted.size() == 2);
-
+        /*
         List<Transaction> listDeleted = this.systemFacade
-            .getTransactionsForAccountOverPeriod(PERIOD_PAST, this.fromAccount, Status.DELETED);
+            .getTransactionsForAccountOverPeriod(PERIOD_PAST, this.fromAccount, DeletedStatus.DELETED);
         Assert.assertNotNull(listDeleted);
         Assert.assertFalse(listDeleted.isEmpty());
         Assert.assertTrue(listDeleted.size() == 1);
 
         listDeleted = this.systemFacade
-            .getTransactionsForAccountOverPeriod(PERIOD, this.fromAccount, Status.DELETED);
+            .getTransactionsForAccountOverPeriod(PERIOD, this.fromAccount, DeletedStatus.DELETED);
         Assert.assertNotNull(listDeleted);
         Assert.assertTrue(listDeleted.isEmpty());
-
+        */
         List<Transaction> listBoth = this.systemFacade.getTransactionsForAccountOverPeriod(
-            PERIOD_PAST, this.fromAccount, Status.BOTH);
+            PERIOD_PAST, this.fromAccount, true);
         Assert.assertNotNull(listBoth);
         Assert.assertFalse(listBoth.isEmpty());
         Assert.assertTrue(listBoth.size() == 2);
 
         listBoth = this.systemFacade.getTransactionsForAccountOverPeriod(
-            PERIOD, this.fromAccount, Status.BOTH);
+            PERIOD, this.fromAccount, true);
         Assert.assertNotNull(listBoth);
         Assert.assertFalse(listBoth.isEmpty());
         Assert.assertTrue(listBoth.size() == 2);

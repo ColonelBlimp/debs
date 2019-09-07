@@ -27,7 +27,6 @@ package org.veary.debs.dao;
 import java.time.YearMonth;
 import java.util.List;
 
-import org.veary.debs.facade.Status;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
@@ -84,30 +83,30 @@ public interface TransactionDao {
     /**
      * Returns a {@code List} of all the {@code Transaction} objects in the system.
      *
-     * @param status indicates which records to include in the results
+     * @param includeDeleted indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
-    List<Transaction> getAllTransactions(Status status);
+    List<Transaction> getAllTransactions(boolean includeDeleted);
 
     /**
      * Returns a {@code List} of all the {@link Transaction} objects posted during the
      * referenced {@link YearMonth}.
      *
      * @param period {@link YearMonth} defining the year and month
-     * @param status indicates which records to include in the results
+     * @param includeDeleted indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
-    List<Transaction> getAllTransactionsOverPeriod(YearMonth period, Status status);
+    List<Transaction> getAllTransactionsOverPeriod(YearMonth period, boolean includeDeleted);
 
     /**
      * Returns a {@code List} of all the {@code Transaction} objects relating to the referenced
      * {@code Account}.
      *
      * @param account {@code Account}
-     * @param status indicates which records to include in the results
+     * @param includeDeleted indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
-    List<Transaction> getTransactionsForAccount(Account account, Status status);
+    List<Transaction> getTransactionsForAccount(Account account, boolean includeDeleted);
 
     /**
      * Returns a {@code List} of all the {@code Transaction} objects relating to the referenced
@@ -115,9 +114,9 @@ public interface TransactionDao {
      *
      * @param period {@link YearMonth} defining the year and month
      * @param account the {@code Account}
-     * @param status indicates which records to include in the results
+     * @param includeDeleted indicates which records to include in the results
      * @return an unmodifiable {@code List}. Cannot be {@code null}.
      */
     List<Transaction> getTransactionsForAccountOverPeriod(YearMonth period, Account account,
-        Status status);
+        boolean includeDeleted);
 }
