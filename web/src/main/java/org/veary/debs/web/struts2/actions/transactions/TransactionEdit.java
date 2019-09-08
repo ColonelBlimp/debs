@@ -24,18 +24,23 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.core.utils.Validator;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
+import org.veary.persist.exceptions.PersistenceException;
 
 /**
  * <b>Purpose:</b> ?
@@ -56,9 +61,9 @@ public final class TransactionEdit extends TransactionBaseAction {
     /**
      * Constructor.
      *
-     * @param pageBean
-     * @param systemFacade
-     * @param accountFacade
+     * @param pageBean {@link PageBean}
+     * @param systemFacade {@link SystemFacade}
+     * @param accountFacade {@link AccountFacade}
      */
     @Inject
     public TransactionEdit(PageBean pageBean, SystemFacade systemFacade,
@@ -89,6 +94,58 @@ public final class TransactionEdit extends TransactionBaseAction {
         this.bean = new TransactionBean(this.original);
 
         return BaseAction.INPUT;
+    }
+
+    @Override
+    protected String executeSubmitUpdate() {
+        LOG.trace(LOG_CALLED);
+
+        //        Transaction updated = Transaction.newInstance(date, narrative, reference, amount, cleared)
+        try {
+            //            this.systemFacade.updateTransaction(this.original, updated, updatedFromEntry,
+            //                updatedToEntry);
+        } catch (PersistenceException e) {
+            LOG.error(e);
+            return BaseAction.ERROR;
+        }
+
+        return BaseAction.SUCCESS;
+    }
+
+    @Override
+    protected void validateSubmitUpdate() {
+        LOG.trace(LOG_CALLED);
+
+        if ("".equals(this.bean.getDate())) {
+            addFieldError("date", "Invalid date");
+            return;
+        }
+
+        try {
+            LocalDate.parse(this.bean.getDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            addFieldError("date", "Invalid date");
+            return;
+        }
+
+        if ("".equals(this.bean.getNarrative())) {
+            addFieldError("narrative", "Narrative cannot be empty");
+            return;
+        }
+
+        try {
+            if (!Validator.checkMonetaryFormat(this.bean.getAmount())) {
+                addFieldError("amount", "Amount invalid");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            addFieldError("amount", "Amount invalid");
+            return;
+        }
+
+        if (this.bean.getFromAccountId().equals(this.bean.getToAccountId())) {
+            addFieldError("to", "Cannot be the same as the From Account");
+        }
     }
 
     public Long getId() {
