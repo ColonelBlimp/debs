@@ -6,7 +6,7 @@
 <struts>
 
   <constant name="struts.devMode" value="true"/>
-  <constant name="struts.ui.theme" value="simple"/>
+  <constant name="struts.ui.theme" value="html5"/>
   <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
   <constant name="struts.custom.i18n.resources" value="debs"/>
   <constant name="struts.serve.static" value="false" />
