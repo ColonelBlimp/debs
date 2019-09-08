@@ -31,12 +31,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
@@ -49,7 +49,7 @@ import org.veary.debs.web.struts2.actions.beans.TransactionBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class TransactionList extends BaseAction {
+public final class TransactionList extends TransactionBaseAction {
 
     private static final String LIST_VIEW_THIS_MONTH = "this_month";
     private static final String LIST_VIEW_LAST_MONTH = "last_month";
@@ -58,7 +58,6 @@ public final class TransactionList extends BaseAction {
     private static final Logger LOG = LogManager.getLogger(TransactionList.class);
     private static final String LOG_CALLED = "called";
 
-    private final SystemFacade systemFacade;
     private final Map<String, String> viewMap;
 
     private List<TransactionBean> transactions;
@@ -72,11 +71,11 @@ public final class TransactionList extends BaseAction {
      * @param systemFacade {@link SystemFacade}
      */
     @Inject
-    public TransactionList(PageBean pageBean, SystemFacade systemFacade) {
-        super(pageBean);
+    public TransactionList(PageBean pageBean, SystemFacade systemFacade,
+        AccountFacade accountFacade) {
+        super(pageBean, systemFacade, accountFacade);
         LOG.trace(LOG_CALLED);
 
-        this.systemFacade = Objects.requireNonNull(systemFacade);
         this.viewMap = new HashMap<>();
         this.viewMap.put(LIST_VIEW_THIS_MONTH, getText("TransactionList.listView.this_month"));
         this.viewMap.put(LIST_VIEW_LAST_MONTH, getText("TransactionList.listView.last_month"));
@@ -138,6 +137,9 @@ public final class TransactionList extends BaseAction {
         for (Transaction obj : transactions) {
             TransactionBean bean = new TransactionBean(obj);
             list.add(bean);
+            bean.setFromAccountName(
+                getAccountFromId(obj.getFromEntry().getAccountId()).getName());
+            bean.setToAccountName(getAccountFromId(obj.getToEntry().getAccountId()).getName());
         }
 
         return Collections.unmodifiableList(list);

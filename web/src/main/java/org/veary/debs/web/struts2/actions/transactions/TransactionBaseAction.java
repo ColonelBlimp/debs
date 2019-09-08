@@ -62,8 +62,8 @@ public abstract class TransactionBaseAction extends BaseAction {
      *
      * @param pageBean
      */
-    public TransactionBaseAction(PageBean pageBean, AccountFacade accountFacade,
-        SystemFacade systemFacade) {
+    public TransactionBaseAction(PageBean pageBean,
+        SystemFacade systemFacade, AccountFacade accountFacade) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
 

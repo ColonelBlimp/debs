@@ -149,6 +149,10 @@ public final class Money {
             Objects.requireNonNull(that, Messages.getParameterIsNull(THAT_PARAM)).value);
     }
 
+    /**
+     * Returns a string represention of the monetary value of this object. This will be in the
+     * format of {@code 0.00}.
+     */
     @Override
     public String toString() {
         return String.format("%.2f", this.value); //$NON-NLS-1$

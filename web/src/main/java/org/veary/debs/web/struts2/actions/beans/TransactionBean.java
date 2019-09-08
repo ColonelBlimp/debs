@@ -33,7 +33,9 @@ public final class TransactionBean {
     private String narrative;
     private String amount;
     private String fromAccountId;
+    private String fromAccountName;
     private String toAccountId;
+    private String toAccountName;
     private String reference;
     private boolean deleted;
 
@@ -46,6 +48,7 @@ public final class TransactionBean {
         this.narrative = object.getNarrative();
         this.fromAccountId = object.getFromEntry().getAccountId().toString();
         this.toAccountId = object.getToEntry().getAccountId().toString();
+        this.amount = object.getToEntry().getAmount().toString();
         this.reference = object.getReference();
         this.deleted = object.isDeleted();
     }
@@ -112,5 +115,21 @@ public final class TransactionBean {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getFromAccountName() {
+        return this.fromAccountName;
+    }
+
+    public void setFromAccountName(String fromAccountName) {
+        this.fromAccountName = fromAccountName;
+    }
+
+    public String getToAccountName() {
+        return this.toAccountName;
+    }
+
+    public void setToAccountName(String toAccountName) {
+        this.toAccountName = toAccountName;
     }
 }

@@ -71,7 +71,7 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
     @Inject
     public TransactionAdd(PageBean pageBean, AccountFacade accountFacade,
         SystemFacade systemFacade) {
-        super(pageBean, accountFacade, systemFacade);
+        super(pageBean, systemFacade, accountFacade);
         LOG.trace(LOG_CALLED);
 
         this.pageBean.setPageTitle(getText("TransactionAdd.pageTitle"));

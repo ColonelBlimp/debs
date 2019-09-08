@@ -30,9 +30,12 @@
 </@s.else>
         <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/transactions',<@s.property value="id"/>)"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="date"/></span></td>
-        <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
+        <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="amount"/></span></td>
         <td><span class="block truncate text-left"><a href="<@s.url action="view" namespace="transactions"><@s.param name="id" value="fromAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="fromAccountName"/></a></span></td>
+        <td><span class="block truncate text-left"><a href="<@s.url action="view" namespace="transactions"><@s.param name="id" value="toAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="toAccountName"/></a></span></td>
+		<td><span class="block truncate text-left"><@s.property value="reference"/></span></td>
+		<td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled="true"></span></td>
       </tr>
 </@s.iterator>
     </tbody>
