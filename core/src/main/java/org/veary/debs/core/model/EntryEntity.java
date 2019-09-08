@@ -178,12 +178,22 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
         return this.cleared;
     }
 
+    /**
+     * Sets the {@code Entry.Types}.
+     *
+     * @param type {@link Entry.Types}
+     */
     public void setType(Types type) {
         this.type = Objects.requireNonNull(type,
             Messages.getParameterIsNull("type")); //$NON-NLS-1$
         validateInput();
     }
 
+    /**
+     * Sets the unique identifier of the {@code Account} referenced by this {@code Entry}.
+     *
+     * @param accountId {@code Long}
+     */
     public void setAccountId(Long accountId) {
         this.accountId = Objects.requireNonNull(accountId,
             Messages.getParameterIsNull("accountId")); //$NON-NLS-1$

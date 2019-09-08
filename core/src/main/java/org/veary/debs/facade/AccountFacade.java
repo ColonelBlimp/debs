@@ -69,7 +69,7 @@ public interface AccountFacade {
      * Update the referenced {@code Account} with the given {@code Money}'s value.
      *
      * @param object {@code Account}
-     * @param ammount {@code Money}
+     * @param amount {@code Money}
      */
     void updateBalance(Account object, Money amount);
 

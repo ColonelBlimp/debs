@@ -39,9 +39,9 @@ import org.veary.debs.facade.SystemFacade;
 import org.veary.persist.PersistenceManagerFactory;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Guice module implementation.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> Binding for the DI.
  *
  * @author Marc L. Veary
  * @since 1.0

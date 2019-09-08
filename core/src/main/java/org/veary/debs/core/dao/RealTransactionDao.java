@@ -202,9 +202,6 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
     public List<Transaction> getAllTransactions(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
 
-        if (includeDeleted) {
-
-        }
         final String[] keys = {
             "getAllTransactionsExcludeDeleted",
             "getAllTransactionsBoth"

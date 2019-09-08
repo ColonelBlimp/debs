@@ -109,7 +109,7 @@ public interface Account extends PersistentObject {
         }
 
         /**
-         * Returns the {@code id} for the a particular {@code Account.Type}
+         * Returns the {@code id} for the a particular {@code Account.Type}.
          *
          * @return {@code Integer}
          */

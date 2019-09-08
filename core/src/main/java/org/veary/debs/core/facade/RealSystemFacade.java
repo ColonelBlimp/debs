@@ -191,8 +191,8 @@ public final class RealSystemFacade implements SystemFacade {
         if (result.isEmpty()) {
             throw new AssertionError("Unable to fetch account with ID: " + accountId);
         }
-
         Account account = result.get();
+
         Long parentId = account.getParentId();
         if (!parentId.equals(Long.valueOf(0))) {
             updateParentBalance(parentId, amount);
