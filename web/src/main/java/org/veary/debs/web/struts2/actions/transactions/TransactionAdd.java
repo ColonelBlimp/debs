@@ -24,18 +24,24 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.veary.debs.core.Money;
+import org.veary.debs.core.utils.Validator;
 import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
+import org.veary.debs.model.Entry;
+import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
@@ -48,16 +54,13 @@ import org.veary.debs.web.struts2.actions.beans.TransactionBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class TransactionAdd extends BaseAction implements SessionAware {
+public final class TransactionAdd extends TransactionBaseAction implements SessionAware {
 
     private static final Logger LOG = LogManager.getLogger(TransactionAdd.class);
     private static final String LOG_CALLED = "called";
     private static final String SESSION_DATE_KEY = "sessionDateKey";
 
-    private final AccountFacade accountFacade;
-    private final Map<String, String> accountsMap;
     private String sessionDate;
-    private TransactionBean bean;
     private Map<String, Object> sessionMap;
 
     /**
@@ -66,15 +69,10 @@ public final class TransactionAdd extends BaseAction implements SessionAware {
      * @param pageBean
      */
     @Inject
-    public TransactionAdd(PageBean pageBean, AccountFacade accountFacade) {
-        super(pageBean);
+    public TransactionAdd(PageBean pageBean, AccountFacade accountFacade,
+        SystemFacade systemFacade) {
+        super(pageBean, accountFacade, systemFacade);
         LOG.trace(LOG_CALLED);
-
-        this.accountFacade = Objects.requireNonNull(accountFacade);
-        this.accountsMap = new HashMap<>();
-        for (Account obj : this.accountFacade.getActualAccounts(false)) {
-            this.accountsMap.put(obj.getId().toString(), obj.getName());
-        }
 
         this.pageBean.setPageTitle(getText("TransactionAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("TransactionAdd.mainHeader"));
@@ -96,6 +94,72 @@ public final class TransactionAdd extends BaseAction implements SessionAware {
     }
 
     @Override
+    protected String executeSubmitCreate() {
+        LOG.trace(LOG_CALLED);
+
+        final Account fromAccount = getAccountFromId(Long.valueOf(this.bean.getFromAccountId()));
+        final Account toAccount = getAccountFromId(Long.valueOf(this.bean.getToAccountId()));
+        final Money amount = new Money(
+            BigDecimal.valueOf(Long.valueOf(this.bean.getAmount()).doubleValue()));
+
+        final Entry fromEntry = Entry.newInstance(Entry.Types.FROM, fromAccount);
+        final Entry toEntry = Entry.newInstance(Entry.Types.TO, toAccount);
+
+        final Transaction transaction = Transaction.newInstance(
+            calculateDate(this.bean.getDate()),
+            this.bean.getNarrative(),
+            this.bean.getReference(),
+            amount, false);
+
+        LOG.info("New transaction created: {}",
+            this.systemFacade.postTransaction(transaction, fromEntry, toEntry));
+
+        this.sessionMap.put(SESSION_DATE_KEY, this.bean.getDate());
+
+        return BaseAction.SUCCESS;
+    }
+
+    @Override
+    protected void validateSubmitCreate() {
+        LOG.trace(LOG_CALLED);
+
+        if ("".equals(this.bean.getDate())) {
+            addFieldError("date", "Invalid date");
+            return;
+        }
+
+        try {
+            LocalDate.parse(this.bean.getDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            addFieldError("date", "Invalid date");
+            return;
+        }
+
+        if ("".equals(this.bean.getNarrative())) {
+            addFieldError("narrative", "Narrative cannot be empty");
+            return;
+        }
+
+        try {
+            if (!Validator.checkMonetaryFormat(this.bean.getAmount())) {
+                addFieldError("amount", "Amount invalid");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            addFieldError("amount", "Amount invalid");
+            return;
+        }
+
+        if (this.bean.getFromAccountId().equals(this.bean.getToAccountId())) {
+            addFieldError("to", "Cannot be the same as the From Account");
+        }
+    }
+
+    private LocalDate calculateDate(String isoLocalDate) {
+        return LocalDate.parse(isoLocalDate, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    @Override
     public void setSession(Map<String, Object> session) {
         this.sessionMap = session;
     }
@@ -106,17 +170,5 @@ public final class TransactionAdd extends BaseAction implements SessionAware {
 
     public void setSessionDate(String sessionDate) {
         this.sessionDate = sessionDate;
-    }
-
-    public TransactionBean getBean() {
-        return this.bean;
-    }
-
-    public void setBean(TransactionBean bean) {
-        this.bean = bean;
-    }
-
-    public Map<String, String> getAccountsMap() {
-        return this.accountsMap;
     }
 }

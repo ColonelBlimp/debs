@@ -27,7 +27,7 @@
 <@s.label for="amount" value="Amount:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.textfield name="bean.amount" id="amount" maxlength="20" pattern="^(?:0|[1-9]{0,9})([.]\\d{2})?" placeholder="0.00" cssErrorClass="text-red-700 font-bold inline-block" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
+<@s.textfield name="bean.amount" id="amount" maxlength="20" pattern="^(-{0,1}\\d+)([.]\\d{2})?" placeholder="0.00" cssErrorClass="text-red-700 font-bold inline-block" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'amount'}"/></@s.fielderror></div>
   </div>
@@ -47,7 +47,7 @@
     <div class="w-56">
 <@s.select name="bean.toAccountId" id="to" list="accountsMap" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
     </div>
-    <div class="w-96 pl-6 font-bold text-red-700 italic"></div>
+    <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'to'}"/></@s.fielderror></div>
   </div>
   <div class="flex mb-2 items-center">
     <div class="w-32">
@@ -58,7 +58,6 @@
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'reference'}"/></@s.fielderror></div>
   </div>
-
   <div class="flex items-center">
     <div class="w-32"></div>
     <div class="w-88">

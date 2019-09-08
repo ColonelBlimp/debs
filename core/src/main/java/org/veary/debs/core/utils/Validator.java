@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import org.veary.debs.Messages;
 
@@ -40,6 +41,11 @@ import org.veary.debs.Messages;
  */
 public final class Validator {
 
+    private static final Pattern money = Pattern
+        .compile("^(?:0|[1-9]\\d{0,3})(\\,)?(\\d{3})?(\\,)?(\\d{3})?([.]\\d{2})?");
+
+    // ^(-{0,1}\d+)([.]\d{2})?
+
     private static final List<Character> acceptedChars = Arrays.asList(
         Character.valueOf('('),
         Character.valueOf(')'),
@@ -48,11 +54,25 @@ public final class Validator {
         Character.valueOf('.'));
 
     /**
+     * Checks the given currency string is not null and is correctly formatted.
+     *
+     * @param monetaryString a string representation of the currency to be checked.
+     * @return {@code true} if valid, otherwise {@code false}.
+     */
+    public static boolean checkMonetaryFormat(final String monetaryString) {
+        if ("".equals(
+            Objects.requireNonNull(monetaryString, "Monetary string cannot be null."))) {
+            throw new IllegalArgumentException("Monetary string must be non-empty.");
+        }
+        return money.matcher(monetaryString).matches();
+    }
+
+    /**
      * Validate the state of the given {@code Map}.
      *
      * <p>This method ensures that the given {@code Map} is not {@code null} or {@code empty},
-     * contains the right number of elements and all the required keys are present. It also checks
-     * that the map contains no {@code null} values.
+     * contains the right number of elements and all the required keys are present. It also
+     * checks that the map contains no {@code null} values.
      *
      * @param dataMap the {@code Map} object
      * @param fields an String array of map keys
