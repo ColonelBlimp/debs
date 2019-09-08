@@ -47,6 +47,10 @@
       <result type="freemarker" name="input">/WEB-INF/templates/transactions/add.ftl</result>
       <result type="redirect" name="success">list</result>
     </action>
+    <action name="edit" class="org.veary.debs.web.struts2.actions.transactions.TransactionEdit">
+      <result type="freemarker" name="input">/WEB-INF/templates/transactions/edit.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
   </package>
 
 </struts>
