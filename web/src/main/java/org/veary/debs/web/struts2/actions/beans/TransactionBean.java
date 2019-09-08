@@ -28,10 +28,89 @@ import org.veary.debs.model.Transaction;
 
 public final class TransactionBean {
 
+    private String id;
+    private String date;
+    private String narrative;
+    private String amount;
+    private String fromAccountId;
+    private String toAccountId;
+    private String reference;
+    private boolean deleted;
+
     public TransactionBean() {
     }
 
     public TransactionBean(Transaction object) {
+        this.id = object.getId().toString();
+        this.date = object.getDate().toString();
+        this.narrative = object.getNarrative();
+        this.fromAccountId = object.getFromEntry().getAccountId().toString();
+        this.toAccountId = object.getToEntry().getAccountId().toString();
+        this.reference = object.getReference();
+        this.deleted = object.isDeleted();
+    }
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getFromAccountId() {
+        return this.fromAccountId;
+    }
+
+    public void setFromAccountId(String fromAccountId) {
+        this.fromAccountId = fromAccountId;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getNarrative() {
+        return this.narrative;
+    }
+
+    public void setNarrative(String narrative) {
+        this.narrative = narrative;
+    }
+
+    public String getToAccountId() {
+        return this.toAccountId;
+    }
+
+    public void setToAccountId(String toAccountId) {
+        this.toAccountId = toAccountId;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

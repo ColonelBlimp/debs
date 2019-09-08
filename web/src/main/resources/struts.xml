@@ -43,6 +43,10 @@
     <action name="list" class="org.veary.debs.web.struts2.actions.transactions.TransactionList">
       <result type="freemarker" name="success">/WEB-INF/templates/transactions/list.ftl</result>
     </action>
+    <action name="add" class="org.veary.debs.web.struts2.actions.transactions.TransactionAdd">
+      <result type="freemarker" name="input">/WEB-INF/templates/transactions/add.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
   </package>
 
 </struts>

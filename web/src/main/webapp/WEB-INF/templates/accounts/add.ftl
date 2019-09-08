@@ -8,7 +8,7 @@
 <@s.label for="name" value="Name:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.textfield name="bean.name" id="name" maxlength="20" cssErrorClass="field-error" autocomplete="off" autofocus="autofocus" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
+<@s.textfield name="bean.name" id="name" maxlength="20" cssErrorClass="text-red-700 font-bold inline-block" autocomplete="off" autofocus="autofocus" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'name'}"/></@s.fielderror></div>
   </div>
@@ -17,7 +17,7 @@
 <@s.label for="description" value="Description:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.textfield name="bean.description" id="description" maxlength="100" cssErrorClass="field-error" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
+<@s.textfield name="bean.description" id="description" maxlength="100" cssErrorClass="text-red-700 font-bold inline-block" autocomplete="off" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'description'}"/></@s.fielderror></div>
   </div>
@@ -40,8 +40,7 @@
     <div class="w-96 pl-6"></div>
   </div>
   <div class="flex items-center">
-    <div class="w-32">
-    </div>
+    <div class="w-32"></div>
     <div class="w-88">
 <@s.submit name="submitType" id="create" value="Create" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
 <@s.submit name="submitType" id="cancel" value="Cancel" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>

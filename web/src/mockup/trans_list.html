@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>DEBS :: Accounts List</title>
+    <title>DEBS :: Transactions List</title>
     <link rel="stylesheet" href="static/css/main.css"/>
     <link rel="stylesheet" href="static/css/custom.css"/>
     <script src="static/js/utils.js"></script>
@@ -18,16 +18,16 @@
         </ul>
       </nav>
     </div>
-    <div class="container border border-white mt-12">
+    <div class="container border border-black mt-12">
 <div class="w-full h-12 bg-purple-300 mt-4">
 <div class="float-left w-1/2 p-3 inline-block">
 <div class="float-left pr-2 font-bold">Viewing:</div>
 <div class="float-left"><form id="list" name="list" action="/accounts/list.action" method="post">
 <input type="hidden" name="id" id="id"/>
 <select name="viewing" id="list_viewing" onchange="this.form.submit();">
-    <option value="all">All Accounts</option>
-    <option value="actual" selected>Actual Accounts</option>
-    <option value="group">Group Accounts</option>
+    <option value="all" selected>This Month</option>
+    <option value="actual">Last Month</option>
+    <option value="group">All</option>
 </select>
 <input type="checkbox" id="includeDeleted" name="includeDeleted" onchange="this.form.submit();">
 <label for="includeDeleted">Include Deleted</label>
@@ -35,11 +35,6 @@
 </div>
 </div>
 <div class="float-right w-1/2 pt-3">
-    <a href="#" id="delete" title="Delete" class="pointer-events-none"><span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">
-        <path d="M3.389 7.113L4.49 18.021c.061.461 2.287 1.977 5.51 1.979 3.225-.002 5.451-1.518 5.511-1.979l1.102-10.908C14.929 8.055 12.412 8.5 10 8.5c-2.41 0-4.928-.445-6.611-1.387zm9.779-5.603l-.859-.951C11.977.086 11.617 0 10.916 0H9.085c-.7 0-1.061.086-1.392.559l-.859.951C4.264 1.959 2.4 3.15 2.4 4.029v.17C2.4 5.746 5.803 7 10 7c4.198 0 7.601-1.254 7.601-2.801v-.17c0-.879-1.863-2.07-4.433-2.519zM12.07 4.34L11 3H9L7.932 4.34h-1.7s1.862-2.221 2.111-2.522c.19-.23.384-.318.636-.318h2.043c.253 0 .447.088.637.318.248.301 2.111 2.522 2.111 2.522h-1.7z"/>
-      </svg>
-    </span></a>
     <a href="#" id="edit" title="Edit" class="pointer-events-none"><span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">
         <path d="M18.174 1.826c-1.102-1.102-2.082-.777-2.082-.777L7.453 9.681 6 14l4.317-1.454 8.634-8.638s.324-.98-.777-2.082zm-7.569 9.779l-.471.47-1.473.5a2.216 2.216 0 0 0-.498-.74 2.226 2.226 0 0 0-.74-.498l.5-1.473.471-.47s.776-.089 1.537.673c.762.761.674 1.538.674 1.538zM16 17H3V4h5l2-2H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h13c1.1 0 2-.9 2-2v-7l-2 2v5z"/>
@@ -57,21 +52,25 @@
     <thead>
       <tr>
         <th class="w-6"><span class="block text-left">&nbsp;</span></th>
-        <th class="w-56"><span class="block text-left pl-1">Name</span></th>
+        <th class="w-32"><span class="block text-left pl-1">Date</span></th>
         <th class="w-56"><span class="block text-left">Description</span></th>
-        <th class="w-56"><span class="block text-left">Type</span></th>
-        <th class="w-56"><span class="block text-left">Group</span></th>
-        <th><span class="block text-left">Balance</span></th>
+        <th class="w-48"><span class="block text-left">Amount</span></th>
+        <th class="w-48"><span class="block text-left">From</span></th>
+        <th class="w-32"><span class="block text-left">To</span></th>
+        <th class="w-48"><span class="block text-left">Reference</span></th>
+        <th class="w-6"><span class="block text-left">X</span></th>
       </tr>
     </thead>
     <tbody>
       <tr class="bg-purple-200">
         <td><span class="block text-left pl-2"><input type="radio" name="selected" value="8" onchange="updateSelected('/accounts',8)"/></span></td>
-        <td><span class="block truncate text-left pl-1"><a href="#">Opening Balance</a></span></td>
-        <td><span class="block truncate text-left">Build-In</span></td>
-        <td><span class="block truncate text-left">RETAINED_EARNINGS</span></td>
-        <td><span class="block truncate text-left">?</span></td>
-        <td><span class="block truncate text-left">0.00</span></td>
+        <td><span class="block truncate text-left pl-1"><a href="#">2019-09-01</a></span></td>
+        <td><span class="block truncate text-left">Description</span></td>
+        <td><span class="block truncate text-left">1500000.00</span></td>
+        <td><span class="block truncate text-left">Bank</span></td>
+        <td><span class="block truncate text-left">Cash</span></td>
+        <td><span class="block truncate text-left">CHQ00001</span></td>
+        <td><span class="block truncate text-left">&#9744;</span></td>
       </tr>
     </tbody>
   </table>
