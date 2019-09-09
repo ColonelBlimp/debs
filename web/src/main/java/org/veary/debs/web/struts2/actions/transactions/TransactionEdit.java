@@ -24,6 +24,7 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -33,9 +34,12 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.core.Money;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
+import org.veary.debs.model.Entry;
+import org.veary.debs.model.Entry.Types;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
@@ -100,10 +104,26 @@ public final class TransactionEdit extends TransactionBaseAction {
     protected String executeSubmitUpdate() {
         LOG.trace(LOG_CALLED);
 
-        //        Transaction updated = Transaction.newInstance(date, narrative, reference, amount, cleared)
+        if (this.original == null) {
+            LOG.error("The original transaction object has not been set");
+            return BaseAction.ERROR;
+        }
+
+        Transaction updated = Transaction.newInstance(
+            LocalDate.parse(this.bean.getDate()),
+            this.bean.getNarrative(),
+            this.bean.getReference(),
+            new Money(BigDecimal.valueOf(Long.valueOf(this.bean.getAmount()).longValue())),
+            false, this.bean.isDeleted());
+
+        Entry updatedFromEntry = Entry.newInstance(Types.FROM,
+            getAccountFromId(Long.valueOf(this.bean.getFromAccountId())));
+        Entry updatedToEntry = Entry.newInstance(Types.FROM,
+            getAccountFromId(Long.valueOf(this.bean.getToAccountId())));
+
         try {
-            //            this.systemFacade.updateTransaction(this.original, updated, updatedFromEntry,
-            //                updatedToEntry);
+            this.systemFacade.updateTransaction(this.original, updated, updatedFromEntry,
+                updatedToEntry);
         } catch (PersistenceException e) {
             LOG.error(e);
             return BaseAction.ERROR;

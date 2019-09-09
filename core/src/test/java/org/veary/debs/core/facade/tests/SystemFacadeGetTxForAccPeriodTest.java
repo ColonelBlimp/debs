@@ -61,19 +61,19 @@ public class SystemFacadeGetTxForAccPeriodTest extends AbstractSystemFacadeTestB
     @Test
     public void getForAccountOverPeriod() {
         Transaction transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
-            AMOUNT_ONE, false);
+            AMOUNT_ONE, false, false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
         Entry toEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 
         this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
 
         transaction = Transaction.newInstance(PAST_DATE, TX_NARRATIVE, TX_REFERENCE,
-            AMOUNT_TWO, false);
+            AMOUNT_TWO, false, false);
 
         this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
 
         transaction = Transaction.newInstance(PAST_DATE, TX_NARRATIVE, TX_REFERENCE,
-            AMOUNT_THREE, false);
+            AMOUNT_THREE, false, false);
 
         Long id = this.systemFacade.postTransaction(transaction, fromEntry, toEntry);
         Optional<Transaction> result = this.systemFacade.getTransactionById(id);
@@ -100,7 +100,7 @@ public class SystemFacadeGetTxForAccPeriodTest extends AbstractSystemFacadeTestB
         Assert.assertNotNull(listDeleted);
         Assert.assertFalse(listDeleted.isEmpty());
         Assert.assertTrue(listDeleted.size() == 1);
-
+        
         listDeleted = this.systemFacade
             .getTransactionsForAccountOverPeriod(PERIOD, this.fromAccount, DeletedStatus.DELETED);
         Assert.assertNotNull(listDeleted);

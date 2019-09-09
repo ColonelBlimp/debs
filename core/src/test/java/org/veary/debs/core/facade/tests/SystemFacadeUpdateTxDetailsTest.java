@@ -56,7 +56,7 @@ public class SystemFacadeUpdateTxDetailsTest extends AbstractSystemFacadeTestBas
         Transaction original = result.get();
 
         Transaction updated = Transaction.newInstance(UPDATE_DATE, UPDATE_NARRATIVE,
-            UPDATE_REFERENCE, TX_AMOUNT, false);
+            UPDATE_REFERENCE, TX_AMOUNT, false, false);
 
         this.systemFacade.updateTransaction(original, updated,
             new EntryEntity(original.getFromEntry()),

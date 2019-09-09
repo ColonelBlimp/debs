@@ -38,6 +38,8 @@ public final class TransactionBean {
     private String toAccountName;
     private String reference;
     private boolean deleted;
+    private boolean fromCleared;
+    private boolean toCleared;
 
     public TransactionBean() {
     }
@@ -51,6 +53,8 @@ public final class TransactionBean {
         this.amount = object.getToEntry().getAmount().toString();
         this.reference = object.getReference();
         this.deleted = object.isDeleted();
+        this.fromCleared = object.getFromEntry().isCleared();
+        this.toCleared = object.getToEntry().isCleared();
     }
 
     public String getId() {
@@ -131,5 +135,21 @@ public final class TransactionBean {
 
     public void setToAccountName(String toAccountName) {
         this.toAccountName = toAccountName;
+    }
+
+    public boolean isFromCleared() {
+        return this.fromCleared;
+    }
+
+    public void setFromCleared(boolean fromCleared) {
+        this.fromCleared = fromCleared;
+    }
+
+    public boolean isToCleared() {
+        return this.toCleared;
+    }
+
+    public void setToCleared(boolean toCleared) {
+        this.toCleared = toCleared;
     }
 }

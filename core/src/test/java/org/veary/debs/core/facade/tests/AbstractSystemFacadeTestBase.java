@@ -87,7 +87,7 @@ public class AbstractSystemFacadeTestBase extends JndiTestBase {
         createAccounts();
 
         Transaction transaction = Transaction.newInstance(TX_DATE, TX_NARRATIVE, TX_REFERENCE,
-            TX_AMOUNT, false);
+            TX_AMOUNT, false, false);
         Entry fromEntry = Entry.newInstance(Entry.Types.FROM, this.fromAccount);
         Entry toEntry = Entry.newInstance(Entry.Types.TO, this.toAccount);
 

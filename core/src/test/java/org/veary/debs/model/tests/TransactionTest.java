@@ -54,8 +54,7 @@ public class TransactionTest {
     @Test
     public void instantiationNotCleared() {
         TransactionEntity entity = (TransactionEntity) Transaction.newInstance(DATE, NARRATIVE,
-            REFERENCE, AMOUNT,
-            false);
+            REFERENCE, AMOUNT, false, false);
         Assert.assertNotNull(entity);
         Assert.assertEquals(entity.getNarrative(), NARRATIVE);
         Assert.assertEquals(entity.getReference(), REFERENCE);

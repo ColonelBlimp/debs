@@ -49,7 +49,7 @@ public class SystemFacadeUpdateTxFromAccAndAmountTest extends AbstractSystemFaca
         Transaction original = result.get();
 
         Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
-            original.getReference(), UPDATED_AMOUNT, false);
+            original.getReference(), UPDATED_AMOUNT, false, false);
 
         EntryEntity updatedFromEntry = new EntryEntity(original.getFromEntry());
         updatedFromEntry.setAccountId(this.otherFromAccount.getId());

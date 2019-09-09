@@ -47,7 +47,7 @@ public class SystemFacadeUpdateTxToAccTest extends AbstractSystemFacadeTestBase 
         Transaction original = result.get();
 
         Transaction updated = Transaction.newInstance(original.getDate(), original.getNarrative(),
-            original.getReference(), TX_AMOUNT, false);
+            original.getReference(), TX_AMOUNT, false, false);
 
         EntryEntity updatedToEntry = new EntryEntity(original.getToEntry());
         updatedToEntry.setAccountId(this.otherToAccount.getId());

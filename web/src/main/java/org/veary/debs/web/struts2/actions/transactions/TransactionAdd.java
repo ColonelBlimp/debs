@@ -109,7 +109,7 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
             calculateDate(this.bean.getDate()),
             this.bean.getNarrative(),
             this.bean.getReference(),
-            amount, false);
+            amount, false, false);
 
         LOG.info("New transaction created: {}",
             this.systemFacade.postTransaction(transaction, fromEntry, toEntry));

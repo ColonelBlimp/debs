@@ -82,10 +82,12 @@ public interface Transaction extends PersistentObject {
      * @param amount {@link Money}
      * @param cleared {@code true} if the whole transaction should be marked as <i>cleared</i>,
      *     otherwise {@code false}
+     * @param deleted {@code true} if the whole transaction should be marked as <i>deleted</i>,
+     *     otherwise {@code false}
      * @return a new unpersisted {@code Transaction} object
      */
     static Transaction newInstance(LocalDate date, String narrative, String reference,
-        Money amount, boolean cleared) {
+        Money amount, boolean cleared, boolean deleted) {
         return new TransactionEntity(date, narrative, reference, amount, cleared);
     }
 }
