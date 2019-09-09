@@ -138,8 +138,11 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateAccountBalance(manager, original.getFromEntry(), original.getToEntry().getAmount());
         updateAccountBalance(manager, original.getToEntry(), original.getFromEntry().getAmount());
 
-        updateAccountBalance(manager, updated.getFromEntry(), updated.getFromEntry().getAmount());
-        updateAccountBalance(manager, updated.getToEntry(), updated.getToEntry().getAmount());
+        if (!updated.isDeleted()) {
+            updateAccountBalance(manager, updated.getFromEntry(),
+                updated.getFromEntry().getAmount());
+            updateAccountBalance(manager, updated.getToEntry(), updated.getToEntry().getAmount());
+        }
 
         LOG.trace("Update the Transaction Entry objects");
         updateTransactionEntry(manager, updated.getFromEntry());

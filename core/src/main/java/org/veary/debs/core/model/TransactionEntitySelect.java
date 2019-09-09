@@ -50,6 +50,12 @@ import org.veary.debs.model.Transaction;
  */
 public class TransactionEntitySelect extends PersistentObjectImpl {
 
+    /**
+     * <b>Purpose:</b> Enum defining all the persistent storage fields (columns).
+     *
+     * @author Marc L. Veary
+     * @since 1.0
+     */
     public enum Fields {
         ID("ID"), //$NON-NLS-1$
         CREATED("CREATED"), //$NON-NLS-1$
@@ -254,7 +260,7 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
     /**
      * Set the {@code cleared} flag for the TO {@code Entry}.
      *
-     * @param fromCleared boolean
+     * @param toCleared boolean
      */
     public void setToCleared(boolean toCleared) {
         this.toCleared = toCleared;

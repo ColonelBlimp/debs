@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.home;
 
+import com.opensymphony.xwork2.Action;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -86,7 +88,7 @@ public final class HomePageAction extends BaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     public TreeNode<Account> getChart() {

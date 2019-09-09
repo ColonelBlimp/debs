@@ -132,6 +132,18 @@ public final class RealSystemFacade implements SystemFacade {
         transactionEntity.setEntries(updatedFromEntry, updatedToEntry);
 
         this.transactionDao.updateTransaction(original, updated);
+
+        // Undo the original balance
+        updateParentBalance(original.getFromEntry().getAccountId(),
+            original.getToEntry().getAmount());
+        updateParentBalance(original.getToEntry().getAccountId(),
+            original.getFromEntry().getAmount());
+
+        // Update the parent hierarchy balances
+        if (!updated.isDeleted()) {
+            updateParentBalance(updatedFromEntry.getAccountId(), updatedFromEntry.getAmount());
+            updateParentBalance(updatedToEntry.getAccountId(), updatedToEntry.getAmount());
+        }
     }
 
     @Override
