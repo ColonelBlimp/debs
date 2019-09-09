@@ -319,6 +319,11 @@ public class TransactionEntitySelect extends PersistentObjectImpl {
         return this.fromClearedTimestamp;
     }
 
+    /**
+     * Sets the cleared timestamp for the FROM Entry object.
+     *
+     * @param fromClearedTimestamp {@link LocalDateTime}
+     */
     public void setFromClearedTimestamp(LocalDateTime fromClearedTimestamp) {
         this.fromClearedTimestamp = fromClearedTimestamp;
         if (fromClearedTimestamp.equals(EntryEntity.NOT_CLEARED_TIMESTAMP)) {

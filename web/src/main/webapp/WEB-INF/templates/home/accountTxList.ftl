@@ -13,7 +13,7 @@
 <@s.else>
         <tr>
 </@s.else>
-          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><a href="#"<@s.property value="data.name"/></a></span></td>
+          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><a href="#"><@s.property value="data.name"/></a></span></td>
         </tr>
 </@s.iterator>
       </tbody>
@@ -31,15 +31,15 @@
         </tr>
       </thead>
       <tbody>
-<@s.iterator value="accountTransactions" status="stats">
+<@s.iterator value="transactions" status="stats">
 <@s.if test="#stats.odd == true">
         <tr class="bg-purple-200">
 </@s.if>
 <@s.else>
         <tr>
 </@s.else>
-          <td><span class="block truncate text-left pl-2">?</span></td>
-          <td><span class="block truncate text-left">?</span></td>
+          <td><span class="block truncate text-left pl-2"><@s.property value="date"/></span></td>
+          <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
           <td><span class="block truncate text-left">?</span></td>
           <td><span class="block truncate text-left">?</span></td>
           <td><span class="block truncate text-left">?</span></td>

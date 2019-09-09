@@ -199,6 +199,11 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
             Messages.getParameterIsNull("accountId")); //$NON-NLS-1$
     }
 
+    /**
+     * Sets the amount ({@link Money}) for this object.
+     *
+     * @param amount {@link Money}
+     */
     public void setAmount(Money amount) {
         this.amount = Objects.requireNonNull(amount,
             Messages.getParameterIsNull("amount")); //$NON-NLS-1$

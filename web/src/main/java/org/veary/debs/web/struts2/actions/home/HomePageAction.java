@@ -26,18 +26,22 @@ package org.veary.debs.web.struts2.actions.home;
 
 import com.opensymphony.xwork2.Action;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 import org.veary.tree.TreeNode;
 
 /**
@@ -53,8 +57,10 @@ public final class HomePageAction extends BaseAction {
     private static final Logger LOG = LogManager.getLogger(HomePageAction.class);
     private static final String LOG_CALLED = "called";
 
+    private final SystemFacade systemFacade;
     private final AccountFacade accountFacade;
-    private final TreeNode<Account> chart;
+
+    private TreeNode<Account> chart;
 
     /**
      * The home page has two views: chart of accounts plus balances (default), or chart of
@@ -65,28 +71,50 @@ public final class HomePageAction extends BaseAction {
      */
     private boolean showChartBalance;
 
-    private List<Transaction> accountTransactions;
+    private Long id;
+    private List<AccountTransactionBean> transactions;
 
     /**
      * Constructor.
      *
      * @param pageBean
+     * @param systemFacade
+     * @param accountFacade
      */
     @Inject
-    public HomePageAction(PageBean pageBean, AccountFacade accountFacade) {
+    public HomePageAction(PageBean pageBean, SystemFacade systemFacade,
+        AccountFacade accountFacade) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
 
+        this.systemFacade = systemFacade;
         this.accountFacade = accountFacade;
-        this.chart = this.accountFacade.getChartOfAccounts();
+
         this.pageBean.setPageTitle("DEBS :: Chart");
         this.showChartBalance = true;
-        this.accountTransactions = Collections.emptyList();
+        this.transactions = Collections.emptyList();
     }
 
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
+
+        this.chart = this.accountFacade.getChartOfAccounts();
+
+        if (this.id != null) {
+            Optional<Account> result = this.accountFacade.getById(this.id);
+            if (result.isEmpty()) {
+                LOG.error("Unknown account for ID: {}", this.id);
+                return Action.SUCCESS;
+            }
+            if (result.get().getType().equals(Account.Types.GROUP)) {
+                this.showChartBalance = true;
+            } else {
+                this.showChartBalance = false;
+                this.transactions = transactionListToBeanList(
+                    this.systemFacade.getTransactionsForAccount(result.get(), false));
+            }
+        }
 
         return Action.SUCCESS;
     }
@@ -103,7 +131,27 @@ public final class HomePageAction extends BaseAction {
         this.showChartBalance = showChartBalance;
     }
 
-    public List<Transaction> getAccountTransactions() {
-        return this.accountTransactions;
+    public List<AccountTransactionBean> getTransactions() {
+        return this.transactions;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private List<AccountTransactionBean>
+        transactionListToBeanList(List<Transaction> transactions) {
+
+        List<AccountTransactionBean> list = new ArrayList<>(transactions.size());
+
+        for (Transaction obj : transactions) {
+            AccountTransactionBean bean = new AccountTransactionBean(this.id, obj);
+        }
+
+        return Collections.unmodifiableList(list);
     }
 }
