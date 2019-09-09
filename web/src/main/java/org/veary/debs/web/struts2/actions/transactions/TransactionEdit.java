@@ -121,6 +121,7 @@ public final class TransactionEdit extends TransactionBaseAction {
 
         Entry updatedFromEntry = Entry.newInstance(Types.FROM,
             getAccountFromId(Long.valueOf(this.bean.getFromAccountId())));
+
         Entry updatedToEntry = Entry.newInstance(Types.TO,
             getAccountFromId(Long.valueOf(this.bean.getToAccountId())));
 

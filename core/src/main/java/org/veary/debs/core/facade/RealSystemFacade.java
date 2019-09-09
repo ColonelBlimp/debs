@@ -36,6 +36,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
+import org.veary.debs.core.model.EntryEntity;
 import org.veary.debs.core.model.TransactionEntity;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
@@ -124,8 +125,13 @@ public final class RealSystemFacade implements SystemFacade {
                 Messages.getString("RealSystemFacade.updateTransaction.toexception"));
         }
 
+        ((EntryEntity) updatedFromEntry).setId(original.getFromEntry().getId());
+        ((EntryEntity) updatedToEntry).setId(original.getToEntry().getId());
+
         TransactionEntity transactionEntity = (TransactionEntity) updated;
         transactionEntity.setEntries(updatedFromEntry, updatedToEntry);
+
+        LOG.debug("DELETED: {}", updated.isDeleted());
 
         this.transactionDao.updateTransaction(original, updated);
     }
