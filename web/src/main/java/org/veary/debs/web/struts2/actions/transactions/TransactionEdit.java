@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import com.opensymphony.xwork2.Action;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,7 +44,6 @@ import org.veary.debs.model.Entry;
 import org.veary.debs.model.Entry.Types;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
-import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 import org.veary.persist.exceptions.PersistenceException;
 
@@ -85,19 +86,19 @@ public final class TransactionEdit extends TransactionBaseAction {
 
         if (this.id == null) {
             LOG.error("The transaction ID has not been set");
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
         Optional<Transaction> result = this.systemFacade.getTransactionById(this.id);
         if (result.isEmpty()) {
             LOG.error("Unknown transaction with ID: {}", this.id);
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
         this.original = result.get();
         this.bean = new TransactionBean(this.original);
 
-        return BaseAction.INPUT;
+        return Action.INPUT;
     }
 
     @Override
@@ -108,7 +109,7 @@ public final class TransactionEdit extends TransactionBaseAction {
             .getTransactionById(Long.valueOf(this.bean.getId()));
         if (result.isEmpty()) {
             LOG.error("Unknown transaction with ID: {}", this.id);
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
         this.original = result.get();
 
@@ -130,10 +131,10 @@ public final class TransactionEdit extends TransactionBaseAction {
                 updatedToEntry);
         } catch (PersistenceException e) {
             LOG.error(e);
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     @Override

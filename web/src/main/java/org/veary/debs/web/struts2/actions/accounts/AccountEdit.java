@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import com.opensymphony.xwork2.Action;
+
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -34,7 +36,6 @@ import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
-import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.AccountBean;
 import org.veary.persist.exceptions.PersistenceException;
 
@@ -71,19 +72,19 @@ public final class AccountEdit extends AccountBaseAction {
 
         if (this.id == null) {
             LOG.error("The account ID has not been set");
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
         Optional<Account> result = this.accountFacade.getById(this.id);
         if (result.isEmpty()) {
             LOG.error("Unknown account with ID: {}", this.id);
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
         this.original = result.get();
         this.bean = new AccountBean(this.original);
 
-        return BaseAction.INPUT;
+        return Action.INPUT;
     }
 
     @Override
@@ -99,10 +100,10 @@ public final class AccountEdit extends AccountBaseAction {
                 this.bean.isDeleted());
         } catch (PersistenceException e) {
             LOG.error(e);
-            return BaseAction.ERROR;
+            return Action.ERROR;
         }
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     @Override

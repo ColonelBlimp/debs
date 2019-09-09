@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import com.opensymphony.xwork2.Action;
+
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -40,7 +42,6 @@ import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
-import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 
 /**
@@ -102,7 +103,7 @@ public final class TransactionList extends TransactionBaseAction {
 
         }
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     public List<TransactionBean> getTransactions() {

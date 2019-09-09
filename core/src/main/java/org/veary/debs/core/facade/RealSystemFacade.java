@@ -131,8 +131,6 @@ public final class RealSystemFacade implements SystemFacade {
         TransactionEntity transactionEntity = (TransactionEntity) updated;
         transactionEntity.setEntries(updatedFromEntry, updatedToEntry);
 
-        LOG.debug("DELETED: {}", updated.isDeleted());
-
         this.transactionDao.updateTransaction(original, updated);
     }
 

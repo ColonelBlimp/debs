@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import com.opensymphony.xwork2.Action;
+
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -34,7 +36,6 @@ import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
-import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.persist.exceptions.PersistenceException;
 
 /**
@@ -66,7 +67,7 @@ public final class AccountAdd extends AccountBaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
-        return BaseAction.INPUT;
+        return Action.INPUT;
     }
 
     @Override
@@ -85,7 +86,7 @@ public final class AccountAdd extends AccountBaseAction {
             throw new DebsException(e);
         }
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     @Override

@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.transactions;
 
+import com.opensymphony.xwork2.Action;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +45,6 @@ import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
-import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 
 /**
@@ -90,7 +91,7 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
 
         this.sessionDate = (String) this.sessionMap.get(SESSION_DATE_KEY);
 
-        return BaseAction.INPUT;
+        return Action.INPUT;
     }
 
     @Override
@@ -116,7 +117,7 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
 
         this.sessionMap.put(SESSION_DATE_KEY, this.bean.getDate());
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     @Override

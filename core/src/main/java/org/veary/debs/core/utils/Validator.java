@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.utils;
 
+import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
 import java.util.List;
@@ -144,7 +145,7 @@ public final class Validator {
         final StringCharacterIterator iterator = new StringCharacterIterator(
             requireNonEmpty(str, "A text field cannot be be null or empty"));
         char ch = iterator.current();
-        while (ch != StringCharacterIterator.DONE) {
+        while (ch != CharacterIterator.DONE) {
             final boolean validChar = (Character.isLetterOrDigit(ch)
                 || Character.isSpaceChar(ch)
                 || acceptedChars.contains(Character.valueOf(ch)));

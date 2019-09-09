@@ -24,6 +24,8 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import com.opensymphony.xwork2.Action;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -107,7 +109,7 @@ public class AccountList extends BaseAction {
                     this.accountFacade.getActualAccounts(this.includeDeleted.booleanValue()));
         }
 
-        return BaseAction.SUCCESS;
+        return Action.SUCCESS;
     }
 
     public List<AccountBean> getAccounts() {
