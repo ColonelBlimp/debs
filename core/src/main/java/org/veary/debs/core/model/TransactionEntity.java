@@ -64,9 +64,11 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
      * @param cleared {@code true} if <b>both</b> {@code Entry} object should be marked as
      *     <i>cleared</i>, otherwise {@code false}. <b>Note:</b> The {@code Transaction} object
      *     itself does does not have a <i>cleared</i> field.
+     * @param deleted {@code true} if the transaction and its entries should be marked as
+     *     deleted
      */
     public TransactionEntity(LocalDate date, String narrative, String reference, Money amount,
-        boolean cleared) {
+        boolean cleared, boolean deleted) {
         this.date = Objects.requireNonNull(date, Messages.getParameterIsNull("date")); //$NON-NLS-1$
         this.narrative = Objects.requireNonNull(narrative,
             Messages.getParameterIsNull("narrative")); //$NON-NLS-1$
@@ -75,6 +77,7 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
         this.amount = Objects.requireNonNull(amount,
             Messages.getParameterIsNull("amount")); //$NON-NLS-1$
         this.cleared = cleared;
+        setDeleted(deleted);
     }
 
     /**
@@ -134,6 +137,10 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
     /**
      * Sets the <b>TO</b> and <b>FROM</b> Entry objects for this Transaction object.
      *
+     * <p><b>Note:</b> If the transaction is marked as {@code delete}, then the referenced
+     * {@code Entry} object will also be marked as {@code deleted}. The same is true for the
+     * {@code cleared} flag.
+     *
      * @param fromEntry {@code Entry}
      * @param toEntry {@code Entry}
      */
@@ -146,6 +153,9 @@ public final class TransactionEntity extends PersistentObjectImpl implements Tra
 
         ((EntryEntity) fromEntry).setAmount(this.amount.negate());
         ((EntryEntity) toEntry).setAmount(this.amount);
+
+        ((EntryEntity) fromEntry).setDeleted(isDeleted());
+        ((EntryEntity) toEntry).setDeleted(isDeleted());
 
         this.fromEntry = fromEntry;
         this.toEntry = toEntry;

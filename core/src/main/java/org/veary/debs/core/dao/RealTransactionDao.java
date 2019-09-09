@@ -153,7 +153,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateTx.setParameter(3, updated.getNarrative());
         updateTx.setParameter(4, original.getFromEntry().getId());
         updateTx.setParameter(5, original.getToEntry().getId());
-        updateTx.setParameter(6, original.getId());
+        updateTx.setParameter(6, Boolean.valueOf(updated.isDeleted()));
+        updateTx.setParameter(7, original.getId());
 
         manager.persist(updateTx);
         manager.commit();
@@ -335,7 +336,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         updateTxEntry.setParameter(3, object.getAccountId());
         updateTxEntry.setParameter(4, Boolean.valueOf(object.isCleared()));
         updateTxEntry.setParameter(5, object.getClearedTimestamp());
-        updateTxEntry.setParameter(6, object.getId());
+        updateTxEntry.setParameter(6, Boolean.valueOf(object.isDeleted()));
+        updateTxEntry.setParameter(7, object.getId());
 
         manager.persist(updateTxEntry);
     }

@@ -104,21 +104,24 @@ public final class TransactionEdit extends TransactionBaseAction {
     protected String executeSubmitUpdate() {
         LOG.trace(LOG_CALLED);
 
-        if (this.original == null) {
-            LOG.error("The original transaction object has not been set");
+        Optional<Transaction> result = this.systemFacade
+            .getTransactionById(Long.valueOf(this.bean.getId()));
+        if (result.isEmpty()) {
+            LOG.error("Unknown transaction with ID: {}", this.id);
             return BaseAction.ERROR;
         }
+        this.original = result.get();
 
         Transaction updated = Transaction.newInstance(
             LocalDate.parse(this.bean.getDate()),
             this.bean.getNarrative(),
             this.bean.getReference(),
-            new Money(BigDecimal.valueOf(Long.valueOf(this.bean.getAmount()).longValue())),
+            new Money(new BigDecimal(this.bean.getAmount())),
             false, this.bean.isDeleted());
 
         Entry updatedFromEntry = Entry.newInstance(Types.FROM,
             getAccountFromId(Long.valueOf(this.bean.getFromAccountId())));
-        Entry updatedToEntry = Entry.newInstance(Types.FROM,
+        Entry updatedToEntry = Entry.newInstance(Types.TO,
             getAccountFromId(Long.valueOf(this.bean.getToAccountId())));
 
         try {

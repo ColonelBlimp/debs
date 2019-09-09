@@ -88,6 +88,6 @@ public interface Transaction extends PersistentObject {
      */
     static Transaction newInstance(LocalDate date, String narrative, String reference,
         Money amount, boolean cleared, boolean deleted) {
-        return new TransactionEntity(date, narrative, reference, amount, cleared);
+        return new TransactionEntity(date, narrative, reference, amount, cleared, deleted);
     }
 }
