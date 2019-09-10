@@ -13,7 +13,7 @@
 <@s.else>
         <tr>
 </@s.else>
-          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><a href="#"><@s.property value="data.name"/></a></span></td>
+          <td><span class="block <@s.if test="data.type.getId()==8">folder-bg</@s.if><@s.else>account-bg</@s.else> truncate level-<@s.property value="level"/>"><a href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.id"/></@s.url>"><@s.property value="data.name"/></a></span></td>
         </tr>
 </@s.iterator>
       </tbody>
@@ -40,9 +40,9 @@
 </@s.else>
           <td><span class="block truncate text-left pl-2"><@s.property value="date"/></span></td>
           <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
-          <td><span class="block truncate text-left">?</span></td>
-          <td><span class="block truncate text-left">?</span></td>
-          <td><span class="block truncate text-left">?</span></td>
+          <td><span class="block truncate text-left"><@s.property value="amountFrom"/></span></td>
+          <td><span class="block truncate text-left"><@s.property value="amountTo"/></span></td>
+          <td><span class="block truncate text-left"><@s.property value="otherAccountName"/></span></td>
         </tr>
 </@s.iterator>
       </tbody>

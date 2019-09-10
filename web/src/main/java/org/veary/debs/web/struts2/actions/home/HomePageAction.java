@@ -149,7 +149,16 @@ public final class HomePageAction extends BaseAction {
         List<AccountTransactionBean> list = new ArrayList<>(transactions.size());
 
         for (Transaction obj : transactions) {
-            AccountTransactionBean bean = new AccountTransactionBean(this.id, obj);
+            AccountTransactionBean bean = new AccountTransactionBean(obj);
+            if (obj.getFromEntry().getAccountId().equals(this.id)) {
+                bean.setOtherAccountName("TO Account Name");
+                bean.setAmountFrom(obj.getFromEntry().getAmount().toString());
+            } else {
+                bean.setOtherAccountName("FROM Account Name");
+                bean.setAmountTo(obj.getToEntry().getAmount().toString());
+            }
+
+            list.add(bean);
         }
 
         return Collections.unmodifiableList(list);

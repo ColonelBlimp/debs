@@ -30,9 +30,7 @@ import org.veary.debs.Messages;
 import org.veary.debs.model.Transaction;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> To view transactions for a particular account.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -40,6 +38,13 @@ import org.veary.debs.model.Transaction;
 public final class AccountTransactionBean {
 
     private String id;
+    private String date;
+    private String narrative;
+    private String reference;
+    private String amountFrom = "";
+    private String amountTo = "";
+    private String otherAccountName;
+    private boolean deleted;
 
     /**
      * Constructor.
@@ -52,8 +57,76 @@ public final class AccountTransactionBean {
      *
      * @param object
      */
-    public AccountTransactionBean(Long accountId, Transaction object) {
-        this.id = Objects.requireNonNull(accountId, Messages.getParameterIsNull("id")).toString();
+    public AccountTransactionBean(Transaction object) {
         Objects.requireNonNull(object, Messages.getParameterIsNull("object"));
+        this.id = Objects.requireNonNull(object.getId()).toString();
+        this.date = Objects.requireNonNull(object.getDate()).toString();
+        this.narrative = Objects.requireNonNull(object.getNarrative());
+        this.reference = Objects.requireNonNull(object.getReference());
+        this.deleted = object.isDeleted();
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getNarrative() {
+        return this.narrative;
+    }
+
+    public void setNarrative(String narrative) {
+        this.narrative = narrative;
+    }
+
+    public String getAmountFrom() {
+        return this.amountFrom;
+    }
+
+    public void setAmountFrom(String amountFrom) {
+        this.amountFrom = amountFrom;
+    }
+
+    public String getAmountTo() {
+        return this.amountTo;
+    }
+
+    public void setAmountTo(String amountTo) {
+        this.amountTo = amountTo;
+    }
+
+    public String getOtherAccountName() {
+        return this.otherAccountName;
+    }
+
+    public void setOtherAccountName(String otherAccountName) {
+        this.otherAccountName = otherAccountName;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
