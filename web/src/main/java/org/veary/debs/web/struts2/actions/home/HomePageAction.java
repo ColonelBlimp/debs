@@ -151,10 +151,13 @@ public final class HomePageAction extends BaseAction {
         for (Transaction obj : transactions) {
             AccountTransactionBean bean = new AccountTransactionBean(obj);
             if (obj.getFromEntry().getAccountId().equals(this.id)) {
-                bean.setOtherAccountName("TO Account Name");
+
+                bean.setOtherAccountName(
+                    getAccountFromId(obj.getToEntry().getAccountId()).getName());
                 bean.setAmountFrom(obj.getFromEntry().getAmount().toString());
             } else {
-                bean.setOtherAccountName("FROM Account Name");
+                bean.setOtherAccountName(
+                    getAccountFromId(obj.getFromEntry().getAccountId()).getName());
                 bean.setAmountTo(obj.getToEntry().getAmount().toString());
             }
 
@@ -162,5 +165,16 @@ public final class HomePageAction extends BaseAction {
         }
 
         return Collections.unmodifiableList(list);
+    }
+
+    private Account getAccountFromId(Long id) {
+        LOG.trace(LOG_CALLED);
+        Optional<Account> result = this.accountFacade.getById(id);
+        if (result.isEmpty()) {
+            throw new AssertionError(
+                String.format(
+                    "AccountFacade.getById() returned an empty result for ID: %s", id));
+        }
+        return result.get();
     }
 }
