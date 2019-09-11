@@ -32,8 +32,8 @@
         <td><span class="block truncate text-left"><@s.property value="date"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="amount"/></span></td>
-        <td><span class="block truncate text-left"><a href="<@s.url action="view" namespace="transactions"><@s.param name="id" value="fromAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="fromAccountName"/></a></span></td>
-        <td><span class="block truncate text-left"><a href="<@s.url action="view" namespace="transactions"><@s.param name="id" value="toAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="toAccountName"/></a></span></td>
+        <td><span class="block truncate text-left"><a href="<@s.url action="transactions" namespace="accounts"><@s.param name="id" value="fromAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="fromAccountName"/></a></span></td>
+        <td><span class="block truncate text-left"><a href="<@s.url action="transactions" namespace="accounts"><@s.param name="id" value="toAccountId"/></@s.url>" title="View Account's Transactions" class="border-b border-dotted border-black"><@s.property value="toAccountName"/></a></span></td>
 		<td><span class="block truncate text-left"><@s.property value="reference"/></span></td>
 		<td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled="true"></span></td>
       </tr>

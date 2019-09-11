@@ -1,4 +1,5 @@
 <#macro page>
+<#global GROUP_TYPE=8>
 <!DOCTYPE html>
 <html lang="${pageBean.siteLocale}" class="bg-white antialiased w-full">
   <head>
