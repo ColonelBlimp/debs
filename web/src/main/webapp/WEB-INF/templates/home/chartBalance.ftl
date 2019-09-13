@@ -14,7 +14,7 @@
 <@s.else>
       <tr>
 </@s.else>
-<@chartRow/>
+<@chartRow/> <#-- See home.ftl -->
         <td><span class="block"><@s.property value="data.balance"/></span></td>
       </tr>
 </@s.iterator>

@@ -13,7 +13,7 @@
 <@s.else>
         <tr>
 </@s.else>
-<@chartRow/>
+<@chartRow/> <#-- See home.ftl -->
         </tr>
 </@s.iterator>
       </tbody>

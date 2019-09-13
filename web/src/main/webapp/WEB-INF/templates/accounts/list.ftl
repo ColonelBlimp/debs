@@ -31,7 +31,7 @@
       <tr>
 </@s.else>
         <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/accounts',<@s.property value="id"/>)"/></span></td>
-        <td><span class="block truncate text-left"><@s.if test="typeId!=${GROUP_TYPE}"><a href="<@s.url action="transactions" namespace="accounts"><@s.param name="id" value="id"/></@s.url>"></@s.if><@s.property value="name"/></a></span></td>
+        <td><span class="block truncate text-left"><@s.if test="typeId!=${GROUP_TYPE}"><a href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" class="border-b border-dotted border-black" title="View Transactions"></@s.if><@s.property value="name"/></a></span></td>
         <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="typeName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="parentName"/></span></td>
