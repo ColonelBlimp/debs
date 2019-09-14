@@ -38,8 +38,8 @@
       <result type="redirect" name="success">list</result>
     </action>
     <action name="transactions" class="org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList">
-      <result type="freemarker" name="input">/WEB-INF/templates/accounts/txlist.ftl</result>
-      <result type="redirect" name="success">list</result>
+      <result type="freemarker" name="success">/WEB-INF/templates/accounts/txlist.ftl</result>
+      <!-- result type="redirect" name="success">list</result -->
     </action>
   </package>
 

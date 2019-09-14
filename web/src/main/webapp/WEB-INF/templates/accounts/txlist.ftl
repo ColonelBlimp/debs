@@ -1,6 +1,8 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
+<div class="float-left pt-2 pl-2 font-bold">Transactions for <@s.property value="account.name"/></div>
+<div class="float-right pt-2 pr-2 font-bold">Current Balance: <@s.property value="account.balance"/></div>
 </@f.contentHeader>
   <div class="w-full">
     <table class="table-fixed w-full">

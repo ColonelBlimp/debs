@@ -65,6 +65,7 @@ public final class AccountTransactionsList extends BaseAction {
     private List<AccountTransactionBean> transactions;
     private BigDecimal fromColumnTotal = BigDecimal.ZERO;
     private BigDecimal toColumnTotal = BigDecimal.ZERO;
+    private Account account;
 
     /**
      * Constructor.
@@ -91,11 +92,17 @@ public final class AccountTransactionsList extends BaseAction {
         if (this.id == null) {
             this.transactions = Collections.emptyList();
         } else {
+            Optional<Account> result = this.accountFacade.getById(this.id);
+            if (result.isEmpty()) {
+                LOG.error("Unable to fetch account with ID: {}", () -> this.id);
+                return Action.ERROR;
+            }
+            this.account = result.get();
             this.transactions = transactionListToBeanList(
-                this.systemFacade.getAllTransactions(false));
+                this.systemFacade.getTransactionsForAccount(this.account, false));
         }
 
-        return Action.INPUT;
+        return Action.SUCCESS;
     }
 
     public Long getId() {
@@ -125,6 +132,10 @@ public final class AccountTransactionsList extends BaseAction {
         return new Money(this.toColumnTotal).toString();
     }
 
+    public Account getAccount() {
+        return this.account;
+    }
+
     private List<AccountTransactionBean>
         transactionListToBeanList(List<Transaction> transactions) {
         LOG.trace(LOG_CALLED);
@@ -152,6 +163,7 @@ public final class AccountTransactionsList extends BaseAction {
 
         this.fromColumnTotal = fromTotal;
         this.toColumnTotal = toTotal;
+
         return Collections.unmodifiableList(list);
     }
 
