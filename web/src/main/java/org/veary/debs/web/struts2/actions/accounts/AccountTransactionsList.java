@@ -151,11 +151,13 @@ public final class AccountTransactionsList extends BaseAction {
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getToEntry().getAccountId()).getName());
                 bean.setAmountFrom(obj.getFromEntry().getAmount().toString());
+                bean.setOtherAccountId(obj.getToEntry().getAccountId().toString());
                 fromTotal = fromTotal.add(obj.getFromEntry().getAmount().getValue());
             } else {
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getFromEntry().getAccountId()).getName());
                 bean.setAmountTo(obj.getToEntry().getAmount().toString());
+                bean.setOtherAccountId(obj.getFromEntry().getAccountId().toString());
                 toTotal = toTotal.add(obj.getToEntry().getAmount().getValue());
             }
             list.add(bean);

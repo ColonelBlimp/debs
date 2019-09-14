@@ -44,6 +44,7 @@ public final class AccountTransactionBean {
     private String amountFrom = "";
     private String amountTo = "";
     private String otherAccountName;
+    private String otherAccountId;
     private boolean deleted;
 
     /**
@@ -128,5 +129,13 @@ public final class AccountTransactionBean {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getOtherAccountId() {
+        return this.otherAccountId;
+    }
+
+    public void setOtherAccountId(String otherAccountId) {
+        this.otherAccountId = otherAccountId;
     }
 }

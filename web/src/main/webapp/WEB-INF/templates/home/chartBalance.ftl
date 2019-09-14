@@ -9,10 +9,10 @@
     <tbody>
 <@s.iterator value="chart" status="stats">
 <@s.if test="#stats.odd == true">
-      <tr class="bg-purple-200 cursor-pointer" <@dataHref/>>
+      <tr class="bg-purple-200 cursor-pointer" <@chartDataHref/>>
 </@s.if>
 <@s.else>
-      <tr class="cursor-pointer" <@dataHref/>>
+      <tr class="cursor-pointer" <@chartDataHref/>>
 </@s.else>
 <@chartRow/> <#-- See home.ftl -->
         <td><span class="block"><@s.property value="data.balance"/></span></td>
