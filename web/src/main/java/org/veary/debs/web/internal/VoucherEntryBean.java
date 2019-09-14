@@ -28,22 +28,22 @@ import org.veary.debs.core.Money;
 
 public final class VoucherEntryBean {
 
+    private final String narrative;
     private final String reference;
-    private final String description;
     private final Money amount;
 
-    public VoucherEntryBean(String reference, String description, Money amount) {
+    public VoucherEntryBean(String narrative, String reference, Money amount) {
+        this.narrative = narrative;
         this.reference = reference;
-        this.description = description;
         this.amount = amount;
+    }
+
+    public String getNarrative() {
+        return this.narrative;
     }
 
     public String getReference() {
         return this.reference;
-    }
-
-    public String getDescription() {
-        return this.description;
     }
 
     public Money getAmount() {

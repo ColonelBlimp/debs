@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <Context>
-  <Resource name="jdbc/debs" 
-            auth="Container" 
-            type="javax.sql.DataSource" 
-            driverClassName="org.h2.Driver"
-            username="sa"
-            password=""
-            url="jdbc:h2:${catalina.base}/webapps/ROOT/WEB-INF/db/debs"
-            factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory">
-  </Resource>
+  <ResourceLink name="jdbc/debs"
+                global="org.veary.debs.datasource.H2DataSource"
+                type="javax.sql.DataSource" />
   <Loader delegate="true" />
 </Context>

@@ -49,6 +49,7 @@ import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.GuiceContextListener;
+import org.veary.debs.web.internal.VoucherEntryBean;
 import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
@@ -129,6 +130,8 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
         File voucherFile = new File(
             voucherDir.toString() + File.separator + this.voucherNumber + ".pdf");
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
+
+            LOG.trace("LIST: {}", () -> this.transactions);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -240,6 +243,25 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
                     "AccountFacade.getById() returned an empty result for ID: %s", id));
         }
         return result.get();
+    }
+
+    private List<VoucherEntryBean>
+        transactionListToVoucherBeanList(List<Transaction> transactions) {
+        LOG.trace(LOG_CALLED);
+
+        final List<VoucherEntryBean> voucherList = new ArrayList<>(transactions.size());
+
+        for (Transaction obj : transactions) {
+
+            VoucherEntryBean bean = new VoucherEntryBean(
+                obj.getNarrative(),
+                obj.getReference(),
+                new Money(BigDecimal.ZERO));
+
+            voucherList.add(bean);
+        }
+
+        return Collections.unmodifiableList(voucherList);
     }
 
     @Override

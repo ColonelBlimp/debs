@@ -148,11 +148,11 @@ final class PdfVoucherGenerator {
         Money balance = new Money(BigDecimal.ZERO);
 
         for (final VoucherEntryBean bean : data) {
-            final PdfPCell c1 = new PdfPCell(new Phrase(bean.getReference(), defaultFont));
+            final PdfPCell c1 = new PdfPCell(new Phrase(bean.getNarrative(), defaultFont));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
             table.addCell(c1);
 
-            final PdfPCell c2 = new PdfPCell(new Phrase(bean.getDescription(), defaultFont));
+            final PdfPCell c2 = new PdfPCell(new Phrase(bean.getReference(), defaultFont));
             c2.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
             table.addCell(c2);
 
