@@ -82,8 +82,8 @@ public final class RealRegistry implements Registry {
     /**
      * Constructor.
      *
-     * @param filename the name of the file containing the SQL statements which is located on
-     *     the classpath
+     * @param filename the name of the file containing the SQL statements which is located on the
+     *     classpath
      */
     public RealRegistry(String... filename) {
         LOG.trace(LOG_CALLED);
@@ -117,6 +117,7 @@ public final class RealRegistry implements Registry {
 
     private void readXmlFile(String fileName, String element, String nodeSelector,
         NodeParser parser) {
+        LOG.trace(LOG_CALLED);
         final Document doc = readFileAndGetDocument(Objects.requireNonNull(fileName));
         final Element modelsElement = doc.getRootElement();
         if (modelsElement.getName().equals(Objects.requireNonNull(element))) {
@@ -128,6 +129,7 @@ public final class RealRegistry implements Registry {
     }
 
     private Document readFileAndGetDocument(String fileName) {
+        LOG.trace(LOG_CALLED);
         try {
             try (
                 InputStream in = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
@@ -139,6 +141,7 @@ public final class RealRegistry implements Registry {
     }
 
     private void parseMethodNode(Map<String, String> map, Node node) {
+        LOG.trace(LOG_CALLED);
         final String methodName = node.valueOf(XPATH_ATTRIB_NAME);
         final String cdata = node.getText()
             .replaceAll("\\r|\\n", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$

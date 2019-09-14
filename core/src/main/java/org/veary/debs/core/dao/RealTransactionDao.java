@@ -128,8 +128,8 @@ public final class RealTransactionDao extends AbstractDao<Transaction> implement
         if (LOG.isTraceEnabled()) {
             TransactionEntity originalTxEntity = (TransactionEntity) original;
             TransactionEntity updatedTxEntity = (TransactionEntity) updated;
-            LOG.trace("Tx Original: {}", originalTxEntity);
-            LOG.trace("Tx Updated: {}", updatedTxEntity);
+            LOG.trace("Tx Original: {}", () -> originalTxEntity);
+            LOG.trace("Tx Updated: {}", () -> updatedTxEntity);
         }
 
         final TransactionManager manager = this.factory.createTransactionManager();

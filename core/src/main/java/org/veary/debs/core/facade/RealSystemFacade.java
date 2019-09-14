@@ -215,7 +215,7 @@ public final class RealSystemFacade implements SystemFacade {
         }
 
         if (account.getType().equals(Account.Types.GROUP)) {
-            LOG.trace("Update Balance for Account: {}", account.getName());
+            LOG.trace("Update Balance for Account: {}", () -> account.getName());
             this.accountFacade.updateBalance(account, amount);
         }
     }
