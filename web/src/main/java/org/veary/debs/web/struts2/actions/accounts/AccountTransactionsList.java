@@ -26,6 +26,7 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import com.opensymphony.xwork2.Action;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.core.Money;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
@@ -44,9 +46,9 @@ import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Struts action.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>View:</b> {@code /WEB-INF/templates/accounts/txlist.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -61,6 +63,8 @@ public final class AccountTransactionsList extends BaseAction {
 
     private Long id;
     private List<AccountTransactionBean> transactions;
+    private BigDecimal fromColumnTotal = BigDecimal.ZERO;
+    private BigDecimal toColumnTotal = BigDecimal.ZERO;
 
     /**
      * Constructor.
@@ -110,10 +114,23 @@ public final class AccountTransactionsList extends BaseAction {
         this.transactions = transactions;
     }
 
+    public String getFromColumnTotal() {
+        if (this.fromColumnTotal.signum() == -1) {
+            return new Money(this.fromColumnTotal).negate().toString();
+        }
+        return new Money(this.fromColumnTotal).toString();
+    }
+
+    public String getToColumnTotal() {
+        return new Money(this.toColumnTotal).toString();
+    }
+
     private List<AccountTransactionBean>
         transactionListToBeanList(List<Transaction> transactions) {
         LOG.trace(LOG_CALLED);
 
+        BigDecimal fromTotal = BigDecimal.ZERO;
+        BigDecimal toTotal = BigDecimal.ZERO;
         List<AccountTransactionBean> list = new ArrayList<>(transactions.size());
 
         for (Transaction obj : transactions) {
@@ -123,14 +140,18 @@ public final class AccountTransactionsList extends BaseAction {
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getToEntry().getAccountId()).getName());
                 bean.setAmountFrom(obj.getFromEntry().getAmount().toString());
+                fromTotal = fromTotal.add(obj.getFromEntry().getAmount().getValue());
             } else {
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getFromEntry().getAccountId()).getName());
                 bean.setAmountTo(obj.getToEntry().getAmount().toString());
+                toTotal = toTotal.add(obj.getToEntry().getAmount().getValue());
             }
             list.add(bean);
         }
 
+        this.fromColumnTotal = fromTotal;
+        this.toColumnTotal = toTotal;
         return Collections.unmodifiableList(list);
     }
 
