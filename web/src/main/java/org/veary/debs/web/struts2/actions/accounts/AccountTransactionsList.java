@@ -60,12 +60,15 @@ public final class AccountTransactionsList extends BaseAction {
 
     private final SystemFacade systemFacade;
     private final AccountFacade accountFacade;
+    private final boolean showVoucherModal;
 
     private Long id;
     private List<AccountTransactionBean> transactions;
     private BigDecimal fromColumnTotal = BigDecimal.ZERO;
     private BigDecimal toColumnTotal = BigDecimal.ZERO;
     private Account account;
+    private String voucherDate;
+    private String voucherNumber;
 
     /**
      * Constructor.
@@ -80,6 +83,7 @@ public final class AccountTransactionsList extends BaseAction {
 
         this.systemFacade = systemFacade;
         this.accountFacade = accountFacade;
+        this.showVoucherModal = true;
 
         this.pageBean.setPageTitle(getText("AccountTransactionsList.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountTransactionsList.mainHeader"));
@@ -103,6 +107,18 @@ public final class AccountTransactionsList extends BaseAction {
         }
 
         return Action.SUCCESS;
+    }
+
+    @Override
+    protected String executeSubmitCreate() {
+        LOG.trace(LOG_CALLED);
+
+        return executeSubmitNull();
+    }
+
+    @Override
+    protected void validateSubmitCreate() {
+        LOG.trace(LOG_CALLED);
     }
 
     public Long getId() {
@@ -134,6 +150,26 @@ public final class AccountTransactionsList extends BaseAction {
 
     public Account getAccount() {
         return this.account;
+    }
+
+    public boolean isShowVoucherModal() {
+        return this.showVoucherModal;
+    }
+
+    public String getVoucherDate() {
+        return this.voucherDate;
+    }
+
+    public void setVoucherDate(String voucherDate) {
+        this.voucherDate = voucherDate;
+    }
+
+    public String getVoucherNumber() {
+        return this.voucherNumber;
+    }
+
+    public void setVoucherNumber(String voucherNumber) {
+        this.voucherNumber = voucherNumber;
     }
 
     private List<AccountTransactionBean>

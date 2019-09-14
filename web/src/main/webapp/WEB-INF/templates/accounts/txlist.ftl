@@ -2,7 +2,10 @@
 <@f.page>
 <@f.contentHeader>
 <div class="float-left pt-2 pl-2 font-bold">Transactions for <@s.property value="account.name"/></div>
-<div class="float-right pt-2 pr-2 font-bold">Current Balance: <@s.property value="account.balance"/></div>
+<div class="float-right pt-2 pr-2 font-bold">
+  <div>Current Balance: <@s.property value="account.balance"/></div>
+  <div class="pl-4"><#include "../includes/voucherModal.ftl"></div>
+</div>
 </@f.contentHeader>
   <div class="w-full">
     <table class="table-fixed w-full">
