@@ -104,7 +104,7 @@ public final class HomePageAction extends BaseAction {
         if (this.id != null) {
             Optional<Account> result = this.accountFacade.getById(this.id);
             if (result.isEmpty()) {
-                LOG.error("Unknown account for ID: {}", this.id);
+                LOG.error("Unknown account for ID: {}", () -> this.id);
                 return Action.SUCCESS;
             }
             if (result.get().getType().equals(Account.Types.GROUP)) {
