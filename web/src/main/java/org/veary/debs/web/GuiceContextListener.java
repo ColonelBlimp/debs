@@ -32,6 +32,11 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.inject.Singleton;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -42,6 +47,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.veary.debs.core.GuiceDebsCoreModule;
+import org.veary.debs.exceptions.DebsException;
+import org.veary.debs.web.internal.PdfDocumentGenerator;
+import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.beans.RealPageBean;
 
@@ -54,6 +62,8 @@ import org.veary.debs.web.struts2.actions.beans.RealPageBean;
  */
 public final class GuiceContextListener extends GuiceServletContextListener {
 
+    public static final String VOUCHER_DIR_KEY = "VOUCHER_DIR";
+
     private static final Logger LOG = LogManager.getLogger(GuiceContextListener.class);
     private static final String LOG_CALLED = "called";
 
@@ -61,17 +71,19 @@ public final class GuiceContextListener extends GuiceServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
         LOG.trace(LOG_CALLED);
-        /*
-        String dir = System.getenv("CATALINA_BASE");
-        Path dirPath = Paths.get(dir + File.separator + "backup");
-        if (!Files.exists(dirPath)) {
-            try {
-                Files.createDirectory(dirPath);
-            } catch (IOException e) {
-                throw new DebsException(e);
-            }
+
+        String voucherDir = servletContextEvent.getServletContext().getRealPath("vouchers");
+        LOG.trace("Voucher Directory: {}", voucherDir);
+
+        try {
+            Path vDir = Files.createDirectories(Paths.get(voucherDir));
+            servletContextEvent.getServletContext().setAttribute(VOUCHER_DIR_KEY, vDir);
+        } catch (IOException e) {
+            throw new DebsException(e);
         }
-        */
+
+        String dbDir = servletContextEvent.getServletContext().getRealPath("WEB-INF/db");
+        LOG.trace("Database Directory: {}", dbDir);
     }
 
     @Override
@@ -87,7 +99,7 @@ public final class GuiceContextListener extends GuiceServletContextListener {
                         .toProvider(JndiIntegration.fromJndi(DataSource.class,
                             "java:/comp/env/jdbc/debs"));
                     bind(PageBean.class).to(RealPageBean.class);
-                    //                    bind(DocumentGenerator.class).to(PdfDocumentGenerator.class);
+                    bind(DocumentGenerator.class).to(PdfDocumentGenerator.class);
                 }
             },
             new Struts2GuicePluginModule(),
@@ -107,5 +119,4 @@ public final class GuiceContextListener extends GuiceServletContextListener {
 
         super.contextDestroyed(servletContextEvent);
     }
-
 }

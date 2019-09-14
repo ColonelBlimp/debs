@@ -26,21 +26,30 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import com.opensymphony.xwork2.Action;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.util.ServletContextAware;
 import org.veary.debs.core.Money;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
+import org.veary.debs.web.GuiceContextListener;
+import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
@@ -53,7 +62,7 @@ import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class AccountTransactionsList extends BaseAction {
+public final class AccountTransactionsList extends BaseAction implements ServletContextAware {
 
     private static final Logger LOG = LogManager.getLogger(AccountTransactionsList.class);
     private static final String LOG_CALLED = "called";
@@ -61,7 +70,9 @@ public final class AccountTransactionsList extends BaseAction {
     private final SystemFacade systemFacade;
     private final AccountFacade accountFacade;
     private final boolean showVoucherModal;
+    private final DocumentGenerator documentGenerator;
 
+    private ServletContext context;
     private Long id;
     private List<AccountTransactionBean> transactions;
     private BigDecimal fromColumnTotal = BigDecimal.ZERO;
@@ -77,13 +88,14 @@ public final class AccountTransactionsList extends BaseAction {
      */
     @Inject
     public AccountTransactionsList(PageBean pageBean, SystemFacade systemFacade,
-        AccountFacade accountFacade) {
+        AccountFacade accountFacade, DocumentGenerator documentGenerator) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
 
         this.systemFacade = systemFacade;
         this.accountFacade = accountFacade;
         this.showVoucherModal = true;
+        this.documentGenerator = documentGenerator;
 
         this.pageBean.setPageTitle(getText("AccountTransactionsList.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountTransactionsList.mainHeader"));
@@ -113,12 +125,26 @@ public final class AccountTransactionsList extends BaseAction {
     protected String executeSubmitCreate() {
         LOG.trace(LOG_CALLED);
 
+        Path voucherDir = (Path) this.context.getAttribute(GuiceContextListener.VOUCHER_DIR_KEY);
+        File voucherFile = new File(
+            voucherDir.toString() + File.separator + this.voucherNumber + ".pdf");
+        try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return Action.ERROR;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Action.ERROR;
+        }
+
         return executeSubmitNull();
     }
 
     @Override
     protected void validateSubmitCreate() {
         LOG.trace(LOG_CALLED);
+
     }
 
     public Long getId() {
@@ -214,5 +240,10 @@ public final class AccountTransactionsList extends BaseAction {
                     "AccountFacade.getById() returned an empty result for ID: %s", id));
         }
         return result.get();
+    }
+
+    @Override
+    public void setServletContext(ServletContext context) {
+        this.context = context;
     }
 }

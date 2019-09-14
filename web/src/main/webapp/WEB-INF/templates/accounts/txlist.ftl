@@ -32,19 +32,22 @@
       <tbody>
 <@s.iterator value="transactions" status="stats">
 <@s.if test="#stats.odd == true">
-      <tr class="bg-purple-200">
+        <tr class="bg-purple-200">
 </@s.if>
 <@s.else>
-      <tr>
+        <tr>
 </@s.else>
-        <td><span class="block text-left pl-2"><@s.property value="id"/></span></td>
-        <td><span class="block truncate text-left pl-1"><@s.property value="date"/></span></td>
-        <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
-        <td><span class="block truncate text-right"><@s.property value="amountFrom"/></span></td>
-        <td><span class="block truncate text-right"><@s.property value="amountTo"/></span></td>
-        <td><span class="block truncate text-left pl-2"><@s.property value="otherAccountName"/></span></td>
-        <td><span class="block truncate text-left"><@s.property value="reference"/></span></td>
-        <td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled></span></td>
-      </tr>
+          <td><span class="block text-left pl-2"><@s.property value="id"/></span></td>
+          <td><span class="block truncate text-left pl-1"><@s.property value="date"/></span></td>
+          <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>
+          <td><span class="block truncate text-right"><@s.property value="amountFrom"/></span></td>
+          <td><span class="block truncate text-right"><@s.property value="amountTo"/></span></td>
+          <td><span class="block truncate text-left pl-2"><@s.property value="otherAccountName"/></span></td>
+          <td><span class="block truncate text-left"><@s.property value="reference"/></span></td>
+          <td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled></span></td>
+        </tr>
 </@s.iterator>
+      </tbody>
+    </table>
+  </div>
 </@f.page>

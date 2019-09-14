@@ -11,11 +11,11 @@
     <span class="text-2xl text-center">Create Voucher</span>
     <@s.form action="transactions" onsubmit="return validateForm();" id="voucher" autocomplete="off">
     <@s.hidden name="id" id="id"/>
-    <@s.label for="date" value="Date:" class="inline-block w-16"/>
+    <@s.label for="date" value="Date:" class="inline-block w-20"/>
     <@s.textfield name="voucherDate" id="date" autocomplete="off" autofocus="autofocus" placeholder="YYYY-MM-DD" required="true" maxlength="10" oninput="fieldUpdate()" class="border border-gray-400 w-32 my-1 p-1 outline-none focus:shadow-outline focus:bg-blue-100"/>
     <@s.fielderror><@s.param value="%{'date'}"/></@s.fielderror><br/>
-    <@s.label for="number" value="Number:" class="inline-block w-16"/>
-    <@s.textfield name="voucherNumber" id="number" autocomplete="off" placeholder="PVYYYYMMDD###" required="true" class="border border-gray-400 w-40 my-1 p-1 outline-none focus:shadow-outline focus:bg-blue-100"/>
+    <@s.label for="number" value="Number:" class="inline-block w-20"/>
+    <@s.textfield name="voucherNumber" id="number" autocomplete="off" placeholder="PVYYYYMMDD###" required="true" class="border border-gray-400 w-40 my-1 p-1 outline-none focus:shadow-outline focus:bg-blue-100" onfocus="moveCursorToEnd(this)"/>
     <@s.fielderror><@s.param value="%{'number'}"/></@s.fielderror><br/><br/><br/>
     <@s.submit name="submitType" id="create" value="Create" title="Create Voucher" class="border border-gray-400 px-2 pb-1 rounded cursor-pointer hover:bg-blue-700 hover:text-white font-semibold outline-none focus:shadow-outline"/>
     </@s.form>
@@ -54,5 +54,18 @@
     var date = document.getElementById("date");
     var number = document.getElementById("number");
     number.value = "PV" + date.value.replace(/\D/g,'');
+  }
+  function moveCursorToEnd(elem) {
+    var inx = elem.value.length;
+    if (elem.setSelectionRange) {
+      setTimeout(function () {elem.setSelectionRange(inx, inx);},0);
+    }
+    else if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', idx);
+      range.moveStart('character', idx);
+      range.select();
+    }
   }
 </script>

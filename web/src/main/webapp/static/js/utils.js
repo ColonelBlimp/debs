@@ -15,3 +15,4 @@ function homeView(elem) {
   window.location = href;
   return false;
 }
+
