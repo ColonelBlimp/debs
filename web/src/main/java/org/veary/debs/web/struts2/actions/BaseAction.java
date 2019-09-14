@@ -120,7 +120,7 @@ public class BaseAction extends ValidationAwareImpl implements Action, Validatea
         LOG.trace(LOG_CALLED);
 
         if (this.submitType == null || this.submitType.equalsIgnoreCase(SUBMIT_CANCEL)) {
-            LOG.trace("Returning early, submit [{}]", this.submitType);
+            LOG.trace("Returning early, submit [{}]", () -> this.submitType);
             return;
         }
 
