@@ -5,9 +5,9 @@
             auth="Container" 
             type="javax.sql.DataSource" 
             driverClassName="org.h2.Driver"
-            url="jdbc:h2:./WB-INF/db/debs"
             username="sa"
             password=""
+            url="jdbc:h2:${catalina.base}/webapps/ROOT/WEB-INF/db/debs"
             factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory">
   </Resource>
   <Loader delegate="true" />

@@ -39,6 +39,7 @@ public class SystemFacadeUpdateTxToAccTest extends AbstractSystemFacadeTestBase 
 
     /**
      * Updates the current TO account to another account.
+     *
      */
     @Test
     public void updateTransactionFromAccount() {
