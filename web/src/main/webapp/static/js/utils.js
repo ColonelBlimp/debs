@@ -6,12 +6,12 @@ edit.className="pointer-events-auto";
 function checkForTab(event) {
   var dElem = document.getElementById("date");
   if(event.keyCode==9 && dElem.value.length == 0) {
-    var fdElem = document.getElementById("sessionDate");
-    dElem.value=fdElem.value=fdElem.value;
+    var fdElem = document.getElementById('sessionDate');
+    dElem.value=fdElem.value;
   }
 }
 function dataHrefLink(elem) {
-  var href = elem.getAttribute("data-href");
+  var href = elem.getAttribute('data-href');
   window.location = href;
   return false;
 }

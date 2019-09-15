@@ -1,14 +1,19 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
+<#if (session.getAttribute('VOUCHER_NAME'))??>
+<span class="hidden" id="voucherName">${session.getAttribute('VOUCHER_NAME')}</span>
 <script>
 document.addEventListener('readystatechange', event => {
   if (event.target.readyState === 'interactive') {
     setTimeout(function() {
-      alert("Ready to download");
+      var elem = document.getElementById('voucherName');
+//      alert('/accounts/download.action?voucherFileName='+elem.textContent);
+      window.location = '/accounts/download.action?voucherFileName='+elem.textContent;
     }, 1000);
   }
 });
 </script>
+</#if>
 <@f.contentHeader>
 <div class="float-left pt-2 pl-2 font-bold"><span class="font-semibold">Transactions for:</span><span class="font-bold pl-2"><@s.property value="account.name"/></span></div>
 <div class="float-right pt-2 pr-2">

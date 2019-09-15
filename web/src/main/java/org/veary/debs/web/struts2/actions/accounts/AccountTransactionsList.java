@@ -53,6 +53,7 @@ import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.GuiceContextListener;
 import org.veary.debs.web.internal.VoucherEntryBean;
+import org.veary.debs.web.internal.WebConstants;
 import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
@@ -85,7 +86,6 @@ public final class AccountTransactionsList extends BaseAction
     private Account account;
     private String voucherDate;
     private String voucherNumber;
-
     private Map<String, Object> sessionMap;
 
     /**
@@ -156,7 +156,6 @@ public final class AccountTransactionsList extends BaseAction
         Path voucherDir = (Path) this.context.getAttribute(GuiceContextListener.VOUCHER_DIR_KEY);
         File voucherFile = new File(
             voucherDir.toString() + File.separator + voucherFileName);
-        final String voucherFilePath = voucherFile.toString();
 
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
 
@@ -175,8 +174,7 @@ public final class AccountTransactionsList extends BaseAction
             return Action.ERROR;
         }
 
-        this.sessionMap.put("VOUCHER_NAME", voucherFileName);
-        this.sessionMap.put("VOUCHER_FILEPAHT", voucherFilePath);
+        this.sessionMap.put(WebConstants.VOUCHER_NAME_SESSION_KEY, voucherFileName);
 
         return Action.SUCCESS;
     }
