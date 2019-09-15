@@ -40,6 +40,14 @@
     <action name="transactions" class="org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList">
       <result type="freemarker" name="success">/WEB-INF/templates/accounts/txlist.ftl</result>
     </action>
+    <action name="download" class="org.veary.debs.web.struts2.actions.accounts.VoucherDownloadAction">
+      <result type="stream" name="success">
+        <param name="contentType">application/pdf</param>
+        <param name="inputName">fileInputStream</param>
+        <param name="contentDisposition">attachment;filename="${voucherFileName}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
   </package>
 
   <package name="transactions" namespace="/transactions" extends="debs-base">

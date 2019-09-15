@@ -1,10 +1,19 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
+<script>
+document.addEventListener('readystatechange', event => {
+  if (event.target.readyState === 'interactive') {
+    setTimeout(function() {
+      alert("Ready to download");
+    }, 1000);
+  }
+});
+</script>
 <@f.contentHeader>
 <div class="float-left pt-2 pl-2 font-bold"><span class="font-semibold">Transactions for:</span><span class="font-bold pl-2"><@s.property value="account.name"/></span></div>
 <div class="float-right pt-2 pr-2">
   <div class="float-left"><span class="font-semibold">Current Balance:</span><span class="font-bold pl-2"><@s.property value="account.balance"/></span></div>
-  <div class="pl-4"><#include "../includes/voucherModal.ftl"></div>
+  <div class="pl-4 float-left"><#include "../includes/voucherModal.ftl"></div>
 </div>
 </@f.contentHeader>
   <div class="w-full">

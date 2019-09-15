@@ -26,6 +26,13 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import com.opensymphony.xwork2.Action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,20 +40,55 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
 
-public final class AccountVoucherAction extends BaseAction {
-    private static final Logger LOG = LogManager.getLogger(AccountVoucherAction.class);
+public final class VoucherDownloadAction extends BaseAction {
+    private static final Logger LOG = LogManager.getLogger(VoucherDownloadAction.class);
     private static final String LOG_CALLED = "called";
 
+    private InputStream inputStream;
+    private String voucherFileName;
+    private String voucherFilePath;
+
     @Inject
-    public AccountVoucherAction(PageBean pageBean) {
+    public VoucherDownloadAction(PageBean pageBean) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
+
+        this.voucherFileName = "TEST.pdf";
     }
 
     @Override
-    protected String executeSubmitNull() {
+    protected String executeSubmitCreate() {
         LOG.trace(LOG_CALLED);
 
-        return Action.INPUT;
+        if (!Files.exists(Paths.get(this.voucherFilePath))) {
+            throw new AssertionError("Unknown voucher file: " + this.voucherFilePath);
+        }
+        final File voucherFile = new File(this.voucherFilePath);
+        try {
+            this.inputStream = new FileInputStream(voucherFile);
+        } catch (FileNotFoundException e) {
+            LOG.error(() -> e);
+        }
+        return Action.SUCCESS;
+    }
+
+    public InputStream getFileInputStream() {
+        return this.inputStream;
+    }
+
+    public String getVoucherFileName() {
+        return this.voucherFileName;
+    }
+
+    public void setVoucherFileName(String voucherFileName) {
+        this.voucherFileName = voucherFileName;
+    }
+
+    public String getVoucherFilePath() {
+        return this.voucherFilePath;
+    }
+
+    public void setVoucherFilePath(String voucherFilePath) {
+        this.voucherFilePath = voucherFilePath;
     }
 }

@@ -36,6 +36,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -43,6 +44,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.veary.debs.core.Money;
 import org.veary.debs.facade.AccountFacade;
@@ -64,7 +66,8 @@ import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class AccountTransactionsList extends BaseAction implements ServletContextAware {
+public final class AccountTransactionsList extends BaseAction
+    implements ServletContextAware, SessionAware {
 
     private static final Logger LOG = LogManager.getLogger(AccountTransactionsList.class);
     private static final String LOG_CALLED = "called";
@@ -82,6 +85,8 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
     private Account account;
     private String voucherDate;
     private String voucherNumber;
+
+    private Map<String, Object> sessionMap;
 
     /**
      * Constructor.
@@ -146,9 +151,13 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
         final List<VoucherEntryBean> data = transactionListToVoucherBeanList(
             this.systemFacade.getTransactionsForAccount(account, false));
 
+        final String voucherFileName = this.voucherNumber + ".pdf";
+
         Path voucherDir = (Path) this.context.getAttribute(GuiceContextListener.VOUCHER_DIR_KEY);
         File voucherFile = new File(
-            voucherDir.toString() + File.separator + this.voucherNumber + ".pdf");
+            voucherDir.toString() + File.separator + voucherFileName);
+        final String voucherFilePath = voucherFile.toString();
+
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
 
             this.documentGenerator
@@ -166,13 +175,15 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
             return Action.ERROR;
         }
 
-        return executeSubmitNull();
+        this.sessionMap.put("VOUCHER_NAME", voucherFileName);
+        this.sessionMap.put("VOUCHER_FILEPAHT", voucherFilePath);
+
+        return Action.SUCCESS;
     }
 
     @Override
     protected void validateSubmitCreate() {
         LOG.trace(LOG_CALLED);
-
     }
 
     public Long getId() {
@@ -292,5 +303,10 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
     @Override
     public void setServletContext(ServletContext context) {
         this.context = context;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> sessionMap) {
+        this.sessionMap = sessionMap;
     }
 }
