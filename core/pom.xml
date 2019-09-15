@@ -14,6 +14,10 @@
   <name>DEBS :: Core</name>
   <description>Double Entry Bookkeeping System :: Core</description>
 
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.veary</groupId>

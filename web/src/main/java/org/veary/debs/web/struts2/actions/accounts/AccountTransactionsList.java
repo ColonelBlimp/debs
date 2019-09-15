@@ -24,6 +24,7 @@
 
 package org.veary.debs.web.struts2.actions.accounts;
 
+import com.itextpdf.text.DocumentException;
 import com.opensymphony.xwork2.Action;
 
 import java.io.File;
@@ -107,6 +108,7 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
         LOG.trace(LOG_CALLED);
 
         if (this.id == null) {
+            LOG.error("Account ID has not been set");
             this.transactions = Collections.emptyList();
         } else {
             Optional<Account> result = this.accountFacade.getById(this.id);
@@ -126,18 +128,41 @@ public final class AccountTransactionsList extends BaseAction implements Servlet
     protected String executeSubmitCreate() {
         LOG.trace(LOG_CALLED);
 
+        LOG.trace("LIST: {}", () -> this.transactions);
+        LOG.trace("ID: {}", () -> this.id);
+
+        if (this.id == null) {
+            LOG.error("Account ID has not been set");
+            return Action.ERROR;
+        }
+
+        Optional<Account> result = this.accountFacade.getById(this.id);
+        if (result.isEmpty()) {
+            LOG.error("Unable to fetch account with ID: {}", () -> this.id);
+            return Action.ERROR;
+        }
+
+        final Account account = result.get();
+        final List<VoucherEntryBean> data = transactionListToVoucherBeanList(
+            this.systemFacade.getTransactionsForAccount(account, false));
+
         Path voucherDir = (Path) this.context.getAttribute(GuiceContextListener.VOUCHER_DIR_KEY);
         File voucherFile = new File(
             voucherDir.toString() + File.separator + this.voucherNumber + ".pdf");
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
 
-            LOG.trace("LIST: {}", () -> this.transactions);
+            this.documentGenerator
+                .generateVoucher(this.voucherNumber, this.voucherDate, account.getName(), data)
+                .writeTo(fos);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOG.error(() -> e);
             return Action.ERROR;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(() -> e);
+            return Action.ERROR;
+        } catch (DocumentException e) {
+            LOG.error(() -> e);
             return Action.ERROR;
         }
 
