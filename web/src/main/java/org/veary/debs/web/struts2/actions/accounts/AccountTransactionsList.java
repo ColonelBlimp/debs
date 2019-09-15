@@ -176,7 +176,7 @@ public final class AccountTransactionsList extends BaseAction
 
         this.sessionMap.put(WebConstants.VOUCHER_NAME_SESSION_KEY, voucherFileName);
 
-        return Action.SUCCESS;
+        return executeSubmitNull();
     }
 
     @Override

@@ -7,7 +7,6 @@ document.addEventListener('readystatechange', event => {
   if (event.target.readyState === 'interactive') {
     setTimeout(function() {
       var elem = document.getElementById('voucherName');
-//      alert('/accounts/download.action?voucherFileName='+elem.textContent);
       window.location = '/accounts/download.action?voucherFileName='+elem.textContent;
     }, 1000);
   }
