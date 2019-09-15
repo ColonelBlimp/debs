@@ -2,6 +2,9 @@
  * AccountList.java
 -->
 <#import "../lib/utils.ftl" as f>
+<#macro accTxDataHref>
+<@s.if test="typeId!=${GROUP_TYPE}">cursor-pointer" data-href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" title="View Account's Transactions" onclick="dataHrefLink(this);"</@s.if><#rt>
+</#macro>
 <@f.page>
 <@f.contentHeader>
 <div class="float-left w-1/2 p-3">
@@ -25,13 +28,13 @@
     <tbody>
 <@s.iterator value="accounts" status="stats">
 <@s.if test="#stats.odd == true">
-      <tr class="bg-purple-200">
+      <tr class="bg-purple-200 <@accTxDataHref/>>
 </@s.if>
 <@s.else>
-      <tr>
+      <tr class="<@accTxDataHref/>">
 </@s.else>
         <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/accounts',<@s.property value="id"/>)"/></span></td>
-        <td><span class="block truncate text-left"><@s.if test="typeId!=${GROUP_TYPE}"><a href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" class="border-b border-dotted border-black" title="View Transactions"></@s.if><@s.property value="name"/></a></span></td>
+        <td><span class="block truncate text-left"><@s.property value="name"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="typeName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="parentName"/></span></td>

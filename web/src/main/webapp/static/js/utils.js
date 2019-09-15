@@ -10,9 +10,8 @@ function checkForTab(event) {
     dElem.value=fdElem.value=fdElem.value;
   }
 }
-function homeView(elem) {
+function dataHrefLink(elem) {
   var href = elem.getAttribute("data-href");
   window.location = href;
   return false;
 }
-

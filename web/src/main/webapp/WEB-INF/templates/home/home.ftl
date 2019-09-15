@@ -1,3 +1,6 @@
+<#--
+ HomePageAction.java
+-->
 <#import "../lib/utils.ftl" as f>
 <#macro chartRow>
 <td>
@@ -7,10 +10,10 @@
 </td>
 </#macro>
 <#macro chartDataHref>
-data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.id"/></@s.url>" title=<@s.if test="data.type.getId()==8">"View Chart Balances"</@s.if><@s.else>"View Account's Transactions"</@s.else> onclick="homeView(this);"<#rt>
+data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.id"/></@s.url>" title=<@s.if test="data.type.getId()==8">"View Chart Balances"</@s.if><@s.else>"View Account's Transactions"</@s.else> onclick="dataHrefLink(this);"<#rt>
 </#macro>
 <#macro otherAccDataHref>
-data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherAccountId"/></@s.url>" title="View Other Account's Transactions" onclick="homeView(this);"<#rt>
+data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherAccountId"/></@s.url>" title="View Other Account's Transactions" onclick="dataHrefLink(this);"<#rt>
 </#macro>
 <@f.page>
 <@f.contentHeader>

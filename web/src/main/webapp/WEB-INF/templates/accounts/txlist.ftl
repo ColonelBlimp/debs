@@ -1,9 +1,9 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
-<div class="float-left pt-2 pl-2 font-bold">Transactions for <@s.property value="account.name"/></div>
-<div class="float-right pt-2 pr-2 font-bold">
-  <div>Current Balance: <@s.property value="account.balance"/></div>
+<div class="float-left pt-2 pl-2 font-bold"><span class="font-semibold">Transactions for:</span><span class="font-bold pl-2"><@s.property value="account.name"/></span></div>
+<div class="float-right pt-2 pr-2">
+  <div class="float-left"><span class="font-semibold">Current Balance:</span><span class="font-bold pl-2"><@s.property value="account.balance"/></span></div>
   <div class="pl-4"><#include "../includes/voucherModal.ftl"></div>
 </div>
 </@f.contentHeader>
