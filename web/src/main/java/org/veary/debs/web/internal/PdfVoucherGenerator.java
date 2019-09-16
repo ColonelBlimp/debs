@@ -148,21 +148,33 @@ final class PdfVoucherGenerator {
         Money balance = new Money(BigDecimal.ZERO);
 
         for (final VoucherEntryBean bean : data) {
-            final PdfPCell c1 = new PdfPCell(new Phrase(bean.getNarrative(), defaultFont));
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
+            final PdfPCell c0 = new PdfPCell(new Phrase(bean.getDate(), defaultFont));
+            c0.setHorizontalAlignment(Element.ALIGN_LEFT);
+            c0.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            table.addCell(c0);
+
+            final PdfPCell c1 = new PdfPCell(new Phrase(bean.getReference(), defaultFont));
+            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
 
-            final PdfPCell c2 = new PdfPCell(new Phrase(bean.getReference(), defaultFont));
-            c2.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
+            final PdfPCell c2 = new PdfPCell(new Phrase(bean.getNarrative(), defaultFont));
+            c2.setHorizontalAlignment(Element.ALIGN_LEFT);
+            c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c2);
 
             final PdfPCell c3 = new PdfPCell(
                 new Phrase(bean.getAmount().toString(), defaultFont));
-            c3.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
+            c3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c3);
 
             balance = balance.plus(bean.getAmount());
         }
+
+        final PdfPCell fc0 = new PdfPCell(new Phrase(" "));
+        fc0.setBorder(Rectangle.NO_BORDER);
+        table.addCell(fc0);
 
         final PdfPCell fc1 = new PdfPCell(new Phrase(" "));
         fc1.setBorder(Rectangle.NO_BORDER);
@@ -170,12 +182,13 @@ final class PdfVoucherGenerator {
 
         final PdfPCell fc2 = new PdfPCell(new Phrase("TOTAL: ", defaultFontBold));
         fc2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        fc2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         fc2.setBorder(Rectangle.NO_BORDER);
-
         table.addCell(fc2);
 
         final PdfPCell fc3 = new PdfPCell(new Phrase(balance.toString(), defaultFontBold));
-        fc3.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
+        fc3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        fc3.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(fc3);
 
         table.setComplete(true);
@@ -186,20 +199,28 @@ final class PdfVoucherGenerator {
     private static PdfPTable generateTableHeader() throws DocumentException {
         LOG.trace(LOG_CALLED);
 
-        final PdfPTable table = new PdfPTable(3);
+        final PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(90);
-        table.setWidths(new int[] { 1, 3, 1 });
+        table.setWidths(new int[] { 1, 1, 2, 1 });
+
+        final PdfPCell hc0 = new PdfPCell(new Phrase("Date", defaultFontBold));
+        hc0.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hc0.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(hc0);
 
         final PdfPCell hc1 = new PdfPCell(new Phrase("Reference", defaultFontBold));
-        hc1.setHorizontalAlignment(Element.ALIGN_CENTER | Element.ALIGN_MIDDLE);
+        hc1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hc1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(hc1);
 
         final PdfPCell hc2 = new PdfPCell(new Phrase("Description", defaultFontBold));
-        hc2.setHorizontalAlignment(Element.ALIGN_LEFT | Element.ALIGN_MIDDLE);
+        hc2.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hc2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(hc2);
 
         final PdfPCell hc3 = new PdfPCell(new Phrase("Amount", defaultFontBold));
-        hc3.setHorizontalAlignment(Element.ALIGN_CENTER | Element.ALIGN_MIDDLE);
+        hc3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        hc3.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(hc3);
 
         return table;

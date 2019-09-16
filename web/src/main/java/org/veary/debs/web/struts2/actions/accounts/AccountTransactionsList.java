@@ -155,9 +155,10 @@ public final class AccountTransactionsList extends BaseAction
                     this.systemFacade.getTransactionsForAccount(this.account,
                         this.includeDeleted.booleanValue()));
             } else {
-                final YearMonth period = getSelectedPeriod();
                 this.transactions = transactionListToBeanList(
-                    this.systemFacade.getTransactionsForAccountOverPeriod(period, this.account,
+                    this.systemFacade.getTransactionsForAccountOverPeriod(
+                        getSelectedPeriod(),
+                        this.account,
                         this.includeDeleted.booleanValue()));
             }
 
@@ -187,14 +188,27 @@ public final class AccountTransactionsList extends BaseAction
         }
 
         final Account account = result.get();
-        final List<VoucherEntryBean> data = transactionListToVoucherBeanList(
-            this.systemFacade.getTransactionsForAccount(account, false));
+        this.listView = (String) this.sessionMap.get(LIST_VIEW_SESSION_KEY);
+
+        List<VoucherEntryBean> data;
+        if (this.listView.equals(LIST_VIEW_ALL)) {
+            data = transactionListToVoucherBeanList(
+                this.systemFacade.getTransactionsForAccount(account,
+                    this.includeDeleted.booleanValue()),
+                account);
+        } else {
+            data = transactionListToVoucherBeanList(
+                this.systemFacade.getTransactionsForAccountOverPeriod(
+                    getSelectedPeriod(),
+                    account,
+                    this.includeDeleted.booleanValue()),
+                account);
+        }
 
         final String voucherFileName = this.voucherNumber + ".pdf";
 
         Path voucherDir = (Path) this.context.getAttribute(GuiceContextListener.VOUCHER_DIR_KEY);
-        File voucherFile = new File(
-            voucherDir.toString() + File.separator + voucherFileName);
+        File voucherFile = new File(voucherDir.toString() + File.separator + voucherFileName);
 
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
 
@@ -335,17 +349,25 @@ public final class AccountTransactionsList extends BaseAction
     }
 
     private List<VoucherEntryBean>
-        transactionListToVoucherBeanList(List<Transaction> transactions) {
+        transactionListToVoucherBeanList(List<Transaction> transactions, Account account) {
         LOG.trace(LOG_CALLED);
 
         final List<VoucherEntryBean> voucherList = new ArrayList<>(transactions.size());
 
         for (Transaction obj : transactions) {
 
+            Money amount;
+            if (obj.getFromEntry().getAccountId().equals(account.getId())) {
+                amount = obj.getFromEntry().getAmount();
+            } else {
+                amount = obj.getToEntry().getAmount();
+            }
+
             VoucherEntryBean bean = new VoucherEntryBean(
+                obj.getDate(),
                 obj.getNarrative(),
                 obj.getReference(),
-                new Money(BigDecimal.ZERO));
+                amount);
 
             voucherList.add(bean);
         }
@@ -362,6 +384,8 @@ public final class AccountTransactionsList extends BaseAction
         if (this.listView.equals(LIST_VIEW_LAST_MONTH)) {
             period = YearMonth.of(period.getYear(), month.minus(1));
         }
+
+        LOG.trace("Selected Period: {}", period);
 
         return period;
     }

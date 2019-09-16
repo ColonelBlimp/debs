@@ -24,15 +24,19 @@
 
 package org.veary.debs.web.internal;
 
+import java.time.LocalDate;
+
 import org.veary.debs.core.Money;
 
 public final class VoucherEntryBean {
 
+    private final String date;
     private final String narrative;
     private final String reference;
     private final Money amount;
 
-    public VoucherEntryBean(String narrative, String reference, Money amount) {
+    public VoucherEntryBean(LocalDate date, String narrative, String reference, Money amount) {
+        this.date = date.toString();
         this.narrative = narrative;
         this.reference = reference;
         this.amount = amount;
@@ -48,5 +52,9 @@ public final class VoucherEntryBean {
 
     public Money getAmount() {
         return this.amount;
+    }
+
+    public String getDate() {
+        return this.date;
     }
 }

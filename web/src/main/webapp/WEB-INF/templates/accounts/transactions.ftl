@@ -22,7 +22,7 @@ document.addEventListener('readystatechange', event => {
 </div>
 <div class="float-right w-1/2 p-3">
   <div class="float-right">
-    <div class="float-left"><span class="font-semibold">Current Balance:</span><span class="font-bold pl-2"><@s.property value="account.balance"/></span></div>
+    <div class="float-left"></div>
     <div class="pl-4 float-left"><#include "../includes/voucherModal.ftl"></div>
   </div>
 </div>
