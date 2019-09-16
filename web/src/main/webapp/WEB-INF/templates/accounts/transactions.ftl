@@ -1,3 +1,6 @@
+<#--
+ * org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList.java
+-->
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <#if (session.getAttribute('VOUCHER_NAME'))??>
@@ -14,10 +17,14 @@ document.addEventListener('readystatechange', event => {
 </script>
 </#if>
 <@f.contentHeader>
-<div class="float-left pt-2 pl-2 font-bold"><span class="font-semibold">Transactions for:</span><span class="font-bold pl-2"><@s.property value="account.name"/></span></div>
-<div class="float-right pt-2 pr-2">
-  <div class="float-left"><span class="font-semibold">Current Balance:</span><span class="font-bold pl-2"><@s.property value="account.balance"/></span></div>
-  <div class="pl-4 float-left"><#include "../includes/voucherModal.ftl"></div>
+<div class="float-left w-1/2 p-3">
+  <div class="float-left font-bold">Viewing:</div><div class="float-left"><@f.listSelect/></div>
+</div>
+<div class="float-right w-1/2 p-3">
+  <div class="float-right">
+    <div class="float-left"><span class="font-semibold">Current Balance:</span><span class="font-bold pl-2"><@s.property value="account.balance"/></span></div>
+    <div class="pl-4 float-left"><#include "../includes/voucherModal.ftl"></div>
+  </div>
 </div>
 </@f.contentHeader>
   <div class="w-full">

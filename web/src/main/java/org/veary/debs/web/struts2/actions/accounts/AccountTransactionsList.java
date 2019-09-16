@@ -33,8 +33,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,13 +65,17 @@ import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 /**
  * <b>Purpose:</b> Struts action.
  *
- * <p><b>View:</b> {@code /WEB-INF/templates/accounts/txlist.ftl}
+ * <p><b>View:</b> {@code /WEB-INF/templates/accounts/transactions.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public final class AccountTransactionsList extends BaseAction
     implements ServletContextAware, SessionAware {
+
+    private static final String LIST_VIEW_THIS_MONTH = "this_month";
+    private static final String LIST_VIEW_LAST_MONTH = "last_month";
+    private static final String LIST_VIEW_ALL = "all";
 
     private static final Logger LOG = LogManager.getLogger(AccountTransactionsList.class);
     private static final String LOG_CALLED = "called";
@@ -77,6 +84,7 @@ public final class AccountTransactionsList extends BaseAction
     private final AccountFacade accountFacade;
     private final boolean showVoucherModal;
     private final DocumentGenerator documentGenerator;
+    private final Map<String, String> viewMap;
 
     private ServletContext context;
     private Long id;
@@ -87,11 +95,16 @@ public final class AccountTransactionsList extends BaseAction
     private String voucherDate;
     private String voucherNumber;
     private Map<String, Object> sessionMap;
+    private String listView;
+    private Boolean includeDeleted;
 
     /**
      * Constructor.
      *
      * @param pageBean
+     * @param systemFacade
+     * @param accountFacade
+     * @param documentGenerator
      */
     @Inject
     public AccountTransactionsList(PageBean pageBean, SystemFacade systemFacade,
@@ -103,6 +116,15 @@ public final class AccountTransactionsList extends BaseAction
         this.accountFacade = accountFacade;
         this.showVoucherModal = true;
         this.documentGenerator = documentGenerator;
+
+        this.viewMap = new HashMap<>();
+        this.viewMap.put(LIST_VIEW_THIS_MONTH,
+            getText("AccountTransactionList.listView.this_month"));
+        this.viewMap.put(LIST_VIEW_LAST_MONTH,
+            getText("AccountTransactionList.listView.last_month"));
+        this.viewMap.put(LIST_VIEW_ALL, getText("AccountTransactionList.listView.all"));
+        this.listView = LIST_VIEW_THIS_MONTH;
+        this.includeDeleted = Boolean.FALSE;
 
         this.pageBean.setPageTitle(getText("AccountTransactionsList.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountTransactionsList.mainHeader"));
@@ -122,8 +144,17 @@ public final class AccountTransactionsList extends BaseAction
                 return Action.ERROR;
             }
             this.account = result.get();
-            this.transactions = transactionListToBeanList(
-                this.systemFacade.getTransactionsForAccount(this.account, false));
+
+            if (this.listView.equals(LIST_VIEW_ALL)) {
+                this.transactions = transactionListToBeanList(
+                    this.systemFacade.getTransactionsForAccount(this.account,
+                        this.includeDeleted.booleanValue()));
+            } else {
+                final YearMonth period = getSelectedPeriod();
+                this.transactions = transactionListToBeanList(
+                    this.systemFacade.getTransactionsForAccountOverPeriod(period, this.account,
+                        this.includeDeleted.booleanValue()));
+            }
         }
 
         return Action.SUCCESS;
@@ -135,6 +166,7 @@ public final class AccountTransactionsList extends BaseAction
 
         LOG.trace("LIST: {}", () -> this.transactions);
         LOG.trace("ID: {}", () -> this.id);
+        LOG.trace("ListView: {}", () -> this.listView);
 
         if (this.id == null) {
             LOG.error("Account ID has not been set");
@@ -196,8 +228,24 @@ public final class AccountTransactionsList extends BaseAction
         return this.transactions;
     }
 
-    public void setTransactions(List<AccountTransactionBean> transactions) {
-        this.transactions = transactions;
+    public Map<String, String> getViewMap() {
+        return this.viewMap;
+    }
+
+    public String getListView() {
+        return this.listView;
+    }
+
+    public void setListView(String listView) {
+        this.listView = listView;
+    }
+
+    public Boolean isIncludeDeleted() {
+        return this.includeDeleted;
+    }
+
+    public void setIncludeDeleted(Boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
     }
 
     public String getFromColumnTotal() {
@@ -296,6 +344,19 @@ public final class AccountTransactionsList extends BaseAction
         }
 
         return Collections.unmodifiableList(voucherList);
+    }
+
+    private YearMonth getSelectedPeriod() {
+        LOG.trace(LOG_CALLED);
+
+        YearMonth period = YearMonth.now();
+        final Month month = period.getMonth();
+
+        if (this.listView.equals(LIST_VIEW_LAST_MONTH)) {
+            period = YearMonth.of(period.getYear(), month.minus(1));
+        }
+
+        return period;
     }
 
     @Override

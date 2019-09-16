@@ -60,6 +60,7 @@ public final class TransactionList extends TransactionBaseAction {
     private static final String LOG_CALLED = "called";
 
     private final Map<String, String> viewMap;
+    private String id;
 
     private List<TransactionBean> transactions;
     private String listView;
@@ -157,5 +158,13 @@ public final class TransactionList extends TransactionBaseAction {
         }
 
         return period;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
