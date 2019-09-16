@@ -28,7 +28,6 @@ import com.itextpdf.text.DocumentException;
 import com.opensymphony.xwork2.Action;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -187,22 +186,22 @@ public final class AccountTransactionsList extends BaseAction
             return Action.ERROR;
         }
 
-        final Account account = result.get();
+        final Account acc = result.get();
         this.listView = (String) this.sessionMap.get(LIST_VIEW_SESSION_KEY);
 
         List<VoucherEntryBean> data;
         if (this.listView.equals(LIST_VIEW_ALL)) {
             data = transactionListToVoucherBeanList(
-                this.systemFacade.getTransactionsForAccount(account,
+                this.systemFacade.getTransactionsForAccount(acc,
                     this.includeDeleted.booleanValue()),
-                account);
+                acc);
         } else {
             data = transactionListToVoucherBeanList(
                 this.systemFacade.getTransactionsForAccountOverPeriod(
                     getSelectedPeriod(),
-                    account,
+                    acc,
                     this.includeDeleted.booleanValue()),
-                account);
+                acc);
         }
 
         final String voucherFileName = this.voucherNumber + ".pdf";
@@ -213,16 +212,10 @@ public final class AccountTransactionsList extends BaseAction
         try (FileOutputStream fos = new FileOutputStream(voucherFile)) {
 
             this.documentGenerator
-                .generateVoucher(this.voucherNumber, this.voucherDate, account.getName(), data)
+                .generateVoucher(this.voucherNumber, this.voucherDate, acc.getName(), data)
                 .writeTo(fos);
 
-        } catch (FileNotFoundException e) {
-            LOG.error(() -> e);
-            return Action.ERROR;
-        } catch (IOException e) {
-            LOG.error(() -> e);
-            return Action.ERROR;
-        } catch (DocumentException e) {
+        } catch (IOException | DocumentException e) {
             LOG.error(() -> e);
             return Action.ERROR;
         }
