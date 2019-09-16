@@ -38,7 +38,7 @@ import org.veary.debs.web.struts2.PageBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class BaseAction extends ValidationAwareImpl implements Action, Validateable {
+public abstract class BaseAction extends ValidationAwareImpl implements Action, Validateable {
 
     public static final String SUBMIT_CREATE = "create";
     public static final String SUBMIT_UPDATE = "update";
