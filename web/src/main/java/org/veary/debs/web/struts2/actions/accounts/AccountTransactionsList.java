@@ -73,6 +73,11 @@ import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 public final class AccountTransactionsList extends BaseAction
     implements ServletContextAware, SessionAware {
 
+    /**
+     * Used to retain the current listView setting when generating a voucher.
+     */
+    public static final String LIST_VIEW_SESSION_KEY = "listViewKey";
+
     private static final String LIST_VIEW_THIS_MONTH = "this_month";
     private static final String LIST_VIEW_LAST_MONTH = "last_month";
     private static final String LIST_VIEW_ALL = "all";
@@ -155,6 +160,8 @@ public final class AccountTransactionsList extends BaseAction
                     this.systemFacade.getTransactionsForAccountOverPeriod(period, this.account,
                         this.includeDeleted.booleanValue()));
             }
+
+            this.sessionMap.put(LIST_VIEW_SESSION_KEY, this.listView);
         }
 
         return Action.SUCCESS;
@@ -166,7 +173,7 @@ public final class AccountTransactionsList extends BaseAction
 
         LOG.trace("LIST: {}", () -> this.transactions);
         LOG.trace("ID: {}", () -> this.id);
-        LOG.trace("ListView: {}", () -> this.listView);
+        LOG.trace("ListView: {}", () -> this.sessionMap.get(LIST_VIEW_SESSION_KEY));
 
         if (this.id == null) {
             LOG.error("Account ID has not been set");
