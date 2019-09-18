@@ -1,6 +1,7 @@
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
+<div class="p-3"><span class="font-bold">${pageBean.mainHeadingText}</span></div>
 </@f.contentHeader>
 <@s.form autocomplete="off">
   <div class="flex mt-6 mb-2 items-center">
