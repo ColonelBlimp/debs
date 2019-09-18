@@ -31,12 +31,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.veary.debs.Messages;
 import org.veary.debs.core.Money;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.facade.AccountFacade;
@@ -44,13 +46,14 @@ import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Entry;
 import org.veary.debs.model.Transaction;
+import org.veary.debs.web.Config;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Struts2 action class for adding a new Transaction to the system.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>View:</b> {@code /WEB-INF/templates/transactions/add.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -64,17 +67,20 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
     private String sessionDate;
     private Map<String, Object> sessionMap;
 
+    private final Config config;
+
     /**
      * Constructor.
      *
      * @param pageBean
      */
     @Inject
-    public TransactionAdd(PageBean pageBean, AccountFacade accountFacade,
+    public TransactionAdd(PageBean pageBean, Config config, AccountFacade accountFacade,
         SystemFacade systemFacade) {
         super(pageBean, systemFacade, accountFacade);
         LOG.trace(LOG_CALLED);
 
+        this.config = Objects.requireNonNull(config, Messages.getParameterIsNull("config"));
         this.pageBean.setPageTitle(getText("TransactionAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("TransactionAdd.mainHeader"));
     }
@@ -171,5 +177,9 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
 
     public void setSessionDate(String sessionDate) {
         this.sessionDate = sessionDate;
+    }
+
+    public String getSelectedFromAccount() {
+        return this.config.get("transaction.from.account");
     }
 }

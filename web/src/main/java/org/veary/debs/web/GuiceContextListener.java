@@ -96,6 +96,7 @@ public final class GuiceContextListener extends GuiceServletContextListener {
                         .toProvider(JndiIntegration.fromJndi(DataSource.class,
                             "java:/comp/env/jdbc/debs"));
                     bind(PageBean.class).to(RealPageBean.class);
+                    bind(Config.class);
                     bind(DocumentGenerator.class).to(PdfDocumentGenerator.class);
                 }
             },

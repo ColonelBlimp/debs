@@ -26,20 +26,25 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import com.opensymphony.xwork2.Action;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.Messages;
 import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
+import org.veary.debs.web.Config;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.persist.exceptions.PersistenceException;
 
 /**
- * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/add.ftl}
+ * <b>Purpose:</b> Struts2 Action class for adding a new {@code Account} to the system.
+ *
+ * <p><b>View:</b> {@code /WEB-INF/templates/accounts/add.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -49,16 +54,19 @@ public final class AccountAdd extends AccountBaseAction {
     private static final Logger LOG = LogManager.getLogger(AccountAdd.class);
     private static final String LOG_CALLED = "called";
 
+    private final Config config;
+
     /**
      * Constructor.
      *
      * @param pageBean
      */
     @Inject
-    public AccountAdd(PageBean pageBean, AccountFacade accountFacade) {
+    public AccountAdd(PageBean pageBean, Config config, AccountFacade accountFacade) {
         super(pageBean, accountFacade);
         LOG.trace(LOG_CALLED);
 
+        this.config = Objects.requireNonNull(config, Messages.getParameterIsNull("config"));
         this.pageBean.setPageTitle(getText("AccountAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountAdd.mainHeader"));
     }
@@ -100,5 +108,13 @@ public final class AccountAdd extends AccountBaseAction {
         if (result.isPresent()) {
             addFieldError("name", getText("AccountAdd.account.name.notunique"));
         }
+    }
+
+    public String getSelectedType() {
+        return this.config.get("account.add.type");
+    }
+
+    public String getSelectedParent() {
+        return this.config.get("account.add.parent");
     }
 }

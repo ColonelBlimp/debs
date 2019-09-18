@@ -1,3 +1,6 @@
+<#--
+ * org.veary.debs.web.struts2.actions.transactions.TransactionAdd
+-->
 <#import "../lib/utils.ftl" as f>
 <@f.page>
 <@f.contentHeader>
@@ -37,7 +40,7 @@
 <@s.label for="from" value="From Account:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.fromAccountId" id="from" list="accountsMap" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@s.select name="bean.fromAccountId" id="from" list="accountsMap" value="selectedFromAccount" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"></div>
   </div>
