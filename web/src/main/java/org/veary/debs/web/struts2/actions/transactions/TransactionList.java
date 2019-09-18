@@ -38,6 +38,7 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Transaction;
@@ -50,7 +51,12 @@ import org.veary.debs.web.struts2.actions.beans.TransactionBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class TransactionList extends TransactionBaseAction {
+public final class TransactionList extends TransactionBaseAction implements SessionAware {
+
+    /**
+     * Used to retain the current listView across requests.
+     */
+    public static final String LIST_VIEW_SESSION_KEY = "org.veary.debs.web.struts2.actions.transactions.TransactionList";
 
     private static final String LIST_VIEW_THIS_MONTH = "this_month";
     private static final String LIST_VIEW_LAST_MONTH = "last_month";
@@ -65,6 +71,7 @@ public final class TransactionList extends TransactionBaseAction {
     private List<TransactionBean> transactions;
     private String listView;
     private Boolean includeDeleted;
+    private Map<String, Object> sessionMap;
 
     /**
      * Constructor.
@@ -93,6 +100,10 @@ public final class TransactionList extends TransactionBaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
+        if (this.sessionMap.containsKey(TransactionList.LIST_VIEW_SESSION_KEY)) {
+            this.listView = (String) this.sessionMap.get(TransactionList.LIST_VIEW_SESSION_KEY);
+        }
+
         if (this.listView.equals(LIST_VIEW_ALL)) {
             this.transactions = transactionListToBeanList(
                 this.systemFacade.getAllTransactions(this.includeDeleted.booleanValue()));
@@ -105,6 +116,11 @@ public final class TransactionList extends TransactionBaseAction {
         }
 
         return Action.SUCCESS;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> sessionMap) {
+        this.sessionMap = sessionMap;
     }
 
     public List<TransactionBean> getTransactions() {
@@ -121,6 +137,7 @@ public final class TransactionList extends TransactionBaseAction {
 
     public void setListView(String listView) {
         this.listView = listView;
+        this.sessionMap.put(TransactionList.LIST_VIEW_SESSION_KEY, listView);
     }
 
     public Boolean isIncludeDeleted() {

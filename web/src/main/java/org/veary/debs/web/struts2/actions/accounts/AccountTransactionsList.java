@@ -73,9 +73,10 @@ public final class AccountTransactionsList extends BaseAction
     implements ServletContextAware, SessionAware {
 
     /**
-     * Used to retain the current listView setting when generating a voucher.
+     * Used to retain the current listView setting when generating a voucher and across
+     * requests.
      */
-    public static final String LIST_VIEW_SESSION_KEY = "listViewKey";
+    public static final String LIST_VIEW_SESSION_KEY = "org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList";
 
     private static final String LIST_VIEW_THIS_MONTH = "this_month";
     private static final String LIST_VIEW_LAST_MONTH = "last_month";
@@ -137,6 +138,11 @@ public final class AccountTransactionsList extends BaseAction
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
+
+        if (this.sessionMap.containsKey(AccountTransactionsList.LIST_VIEW_SESSION_KEY)) {
+            this.listView = (String) this.sessionMap
+                .get(AccountTransactionsList.LIST_VIEW_SESSION_KEY);
+        }
 
         if (this.id == null) {
             LOG.error("Account ID has not been set");
@@ -252,6 +258,7 @@ public final class AccountTransactionsList extends BaseAction
 
     public void setListView(String listView) {
         this.listView = listView;
+        this.sessionMap.put(AccountTransactionsList.LIST_VIEW_SESSION_KEY, listView);
     }
 
     public Boolean isIncludeDeleted() {
