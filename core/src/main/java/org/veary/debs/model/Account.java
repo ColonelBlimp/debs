@@ -200,4 +200,11 @@ public interface Account extends PersistentObject {
      * @return {@code Long}. Non-{@code null}.
      */
     Long getParentId();
+
+    /**
+     * Returns the balance as it should be displayed for this account object.
+     *
+     * @return {@code String}
+     */
+    String getDisplayBalance();
 }

@@ -45,9 +45,9 @@ import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 import org.veary.tree.TreeNode;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Struts2 action class for the main page.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>View:</b> {@code /WEB-INF/templates/home/home.ftl}
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -105,7 +105,7 @@ public final class HomePageAction extends BaseAction {
             Optional<Account> result = this.accountFacade.getById(this.id);
             if (result.isEmpty()) {
                 LOG.error("Unknown account for ID: {}", () -> this.id);
-                return Action.SUCCESS;
+                return Action.ERROR;
             }
             if (result.get().getType().equals(Account.Types.GROUP)) {
                 this.showChartBalance = true;

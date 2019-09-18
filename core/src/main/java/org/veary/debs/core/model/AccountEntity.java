@@ -218,4 +218,14 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
         }
         return this.hashCode;
     }
+
+    @Override
+    public String getDisplayBalance() {
+        BigDecimal amount = this.balance.getValue();
+        String display = String.format("%,.2f", amount);
+        if (this.type.equals(Account.Types.RETAINED_EARNINGS)) {
+            display = String.format("%,.2f", amount.abs());
+        }
+        return display;
+    }
 }

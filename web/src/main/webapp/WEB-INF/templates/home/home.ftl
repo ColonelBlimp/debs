@@ -1,5 +1,5 @@
 <#--
- HomePageAction.java
+ * org.veary.debs.web.struts2.actions.home.HomePageAction.java
 -->
 <#import "../lib/utils.ftl" as f>
 <#macro chartRow>
