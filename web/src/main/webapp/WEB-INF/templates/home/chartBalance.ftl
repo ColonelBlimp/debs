@@ -15,7 +15,7 @@
       <tr class="cursor-pointer" <@chartDataHref/>>
 </@s.else>
 <@chartRow/> <#-- See home.ftl -->
-        <td><span class="block"><@s.property value="data.displayBalance"/></span></td>
+        <td><#if data.displayBalance?starts_with("-")><span class="block font-bold text-red-700"><#else><span class="block font-bold"></#if><@s.property value="data.displayBalance"/></span></td>
       </tr>
 </@s.iterator>
     </tbody>
