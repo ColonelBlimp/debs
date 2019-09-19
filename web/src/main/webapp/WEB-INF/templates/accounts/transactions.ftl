@@ -44,9 +44,10 @@ document.addEventListener('readystatechange', event => {
       <tfoot>
         <tr class="border-b border-t border-gray-600">
           <td colspan="3"></td>
-          <td><div class="text-right tcw-132"><@s.property value="fromColumnTotal"/></div></td>
-          <td><div class="text-right tcw-132"><@s.property value="toColumnTotal"/></div></td>
-          <td colspan="3"></td>
+          <td><div class="text-right font-bold"><@s.property value="fromColumnTotal"/></div></td>
+          <td><div class="text-right font-bold"><@s.property value="toColumnTotal"/></div></td>
+          <td><div class="text-right font-bold">TOTAL: </div></td>
+          <td colspan="2"></td>
         </tr>
       </tfoot>
       <tbody>

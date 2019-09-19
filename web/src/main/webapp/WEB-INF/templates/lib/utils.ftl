@@ -23,6 +23,7 @@
       </nav>
     </div>
     <div class="container border border-white mt-12">
+      <div class="mt-4 pl-1 font-bold">${pageBean.mainHeadingText}</div>
 <#nested>
     </div>
   </body>

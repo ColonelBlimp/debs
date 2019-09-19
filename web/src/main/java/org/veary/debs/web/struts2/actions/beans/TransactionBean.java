@@ -25,6 +25,7 @@
 package org.veary.debs.web.struts2.actions.beans;
 
 import org.veary.debs.model.Transaction;
+import org.veary.debs.web.internal.WebConstants;
 
 public final class TransactionBean {
 
@@ -50,7 +51,8 @@ public final class TransactionBean {
         this.narrative = object.getNarrative();
         this.fromAccountId = object.getFromEntry().getAccountId().toString();
         this.toAccountId = object.getToEntry().getAccountId().toString();
-        this.amount = String.format("%,.2f", object.getToEntry().getAmount().getValue());
+        this.amount = String.format(WebConstants.CURRENCY_DISPLAY_FORMAT,
+            object.getToEntry().getAmount().getValue());
         this.reference = object.getReference();
         this.deleted = object.isDeleted();
         this.fromCleared = object.getFromEntry().isCleared();

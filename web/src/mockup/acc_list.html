@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en" class="bg-white antialiased w-full">
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>DEBS :: Accounts List</title>
+    <title>DEBS :: Account Transactions</title>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico"/>
     <link rel="stylesheet" href="static/css/main.css"/>
     <link rel="stylesheet" href="static/css/custom.css"/>
     <script src="static/js/utils.js"></script>
@@ -13,64 +15,202 @@
       <nav>
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="/accounts/list" title="Accounts">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="transactions/list.action" title="Transactions">Transactions</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="accounts/list.action" title="Accounts">Accounts</a></li>
         </ul>
       </nav>
     </div>
     <div class="container border border-white mt-12">
+    <div class="mt-4 pl-1 font-bold">Header</div>
 <div class="w-full h-12 bg-purple-300 mt-4">
-<div class="float-left w-1/2 p-3 inline-block">
-<div class="float-left pr-2 font-bold">Viewing:</div>
-<div class="float-left"><form id="list" name="list" action="/accounts/list.action" method="post">
-<input type="hidden" name="id" id="id"/>
-<select name="viewing" id="list_viewing" onchange="this.form.submit();">
-    <option value="all">All Accounts</option>
-    <option value="actual" selected>Actual Accounts</option>
-    <option value="group">Group Accounts</option>
+<div class="float-left w-1/2 p-3">
+  <div class="float-left font-bold">Viewing:</div><div class="float-left"><form id="transactions" name="transactions" action="/accounts/transactions.action" method="post"><input type="hidden" name="id" value="9" id="id"/><select name="listView" id="transactions_listView" class="bg-purple-300" onchange="this.form.submit();">
+    <option value="all">All</option>
+    <option value="this_month">This Month</option>
+    <option value="last_month" selected="selected">Last Month</option>
+
+
 </select>
-<input type="checkbox" id="includeDeleted" name="includeDeleted" onchange="this.form.submit();">
+
+<input type="checkbox" name="includeDeleted" value="true" onchange="this.form.submit();" >
 <label for="includeDeleted">Include Deleted</label>
 </form>
+
+
 </div>
 </div>
-<div class="float-right w-1/2 pt-3">
-    <a href="#" id="edit" title="Edit" class="pointer-events-none"><span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">
-        <path d="M18.174 1.826c-1.102-1.102-2.082-.777-2.082-.777L7.453 9.681 6 14l4.317-1.454 8.634-8.638s.324-.98-.777-2.082zm-7.569 9.779l-.471.47-1.473.5a2.216 2.216 0 0 0-.498-.74 2.226 2.226 0 0 0-.74-.498l.5-1.473.471-.47s.776-.089 1.537.673c.762.761.674 1.538.674 1.538zM16 17H3V4h5l2-2H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h13c1.1 0 2-.9 2-2v-7l-2 2v5z"/>
-      </svg>
-    </span></a>
-    <a href="#" title="Add"><span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">
-        <path d="M19.4 9H16V5.6c0-.6-.4-.6-1-.6s-1 0-1 .6V9h-3.4c-.6 0-.6.4-.6 1s0 1 .6 1H14v3.4c0 .6.4.6 1 .6s1 0 1-.6V11h3.4c.6 0 .6-.4.6-1s0-1-.6-1zm-12 0H.6C0 9 0 9.4 0 10s0 1 .6 1h6.8c.6 0 .6-.4.6-1s0-1-.6-1zm0 5H.6c-.6 0-.6.4-.6 1s0 1 .6 1h6.8c.6 0 .6-.4.6-1s0-1-.6-1zm0-10H.6C0 4 0 4.4 0 5s0 1 .6 1h6.8C8 6 8 5.6 8 5s0-1-.6-1z"/>
-      </svg>
-    </span></a>
+<div class="float-right w-1/2 p-3">
+  <div class="float-right">
+    <div class="float-left"></div>
+    <div class="pl-4 float-left"><a href="javascript:void(0);" id="modalLink" title="Generate Voucher">
+  <span class="float-right hover:bg-blue-500 w-7 mr-1 p-1 mb-1">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20px" height="20px">
+      <path d="M16 1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm-1 16H5V3h10v14zM13 5H7v2h6V5zm0 8H7v2h6v-2zm0-4H7v2h6V9z"/>
+    </svg>
+  </span>
+</a>
+<div id="modal" class="voucher-modal">
+  <div class="voucher-modal-content">
+    <span id="close" class="voucher-modal-close">X</span>
+    <span class="text-2xl text-center">Create Voucher</span>
+            
+<form id="voucher" name="voucher" onsubmit="return validateForm();" action="/accounts/transactions.action" method="post" autocomplete="off"><input type="hidden" name="id" value="9" id="id"/><label class="inline-block w-20" for="date">Date:</label><input type="text" name="voucherDate" maxlength="10" value="" id="date" class="border border-gray-400 w-32 my-1 p-1 outline-none focus:shadow-outline focus:bg-blue-100" autocomplete="off" placeholder="YYYY-MM-DD" autofocus="autofocus" required="true" oninput="fieldUpdate()"/>    <br/>
+<label class="inline-block w-20" for="number">Number:</label><input type="text" name="voucherNumber" value="" id="number" class="border border-gray-400 w-40 my-1 p-1 outline-none focus:shadow-outline focus:bg-blue-100" onfocus="moveCursorToEnd(this)" autocomplete="off" placeholder="PVYYYYMMDD###" required="true"/>    <br/><br/><br/>
+<input type="submit" value="Create" id="create" name="submitType" class="border border-gray-400 px-2 pb-1 rounded cursor-pointer hover:bg-blue-700 hover:text-white font-semibold outline-none focus:shadow-outline" title="Create Voucher"/>
+</form>
+
+
+  </div>
+</div>
+<script>
+  var modal = document.getElementById('modal');
+  var modalLink = document.getElementById('modalLink');
+  var close = document.getElementById('close');
+  modalLink.onclick = function() {
+    modal.style.visibility = 'visible';
+    document.voucher.voucherDate.focus();
+  }
+  close.onclick = function() {
+    modal.style.visibility = 'hidden';
+  }
+  window.onclick = function(event) {
+    if(event.target === modal) {
+      modal.style.visibility = 'hidden';
+    }
+  }
+  function validateForm() {
+    var date = document.voucher.voucherDate;
+    if (!validateDate(date.value)) {
+      date.focus();
+      return false;
+    }
+    var num = document.voucher.voucherNumber;
+    if(!validateVoucherNumber(num.value)) {
+      num.focus();
+      return false;
+    }
+    return true;
+  }
+  function fieldUpdate() {
+    var date = document.getElementById("date");
+    var number = document.getElementById("number");
+    number.value = "PV" + date.value.replace(/\D/g,'');
+  }
+  function moveCursorToEnd(elem) {
+    var inx = elem.value.length;
+    if (elem.setSelectionRange) {
+      setTimeout(function () {elem.setSelectionRange(inx, inx);},0);
+    }
+    else if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', idx);
+      range.moveStart('character', idx);
+      range.select();
+    }
+  }
+</script>
+</div>
+  </div>
 </div>
 </div>
-<div>
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th class="w-6"><span class="block text-left">&nbsp;</span></th>
-        <th class="w-56"><span class="block text-left pl-1">Name</span></th>
-        <th class="w-56"><span class="block text-left">Description</span></th>
-        <th class="w-56"><span class="block text-left">Type</span></th>
-        <th class="w-56"><span class="block text-left">Group</span></th>
-        <th><span class="block text-left">Balance</span></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="bg-purple-200 cursor-pointer" data-href="" title="View Account's Transactions"">
-        <td><span class="block text-left pl-2"><input type="radio" name="selected" value="8" onchange="updateSelected('/accounts',8)"/></span></td>
-        <td><span class="block truncate text-left pl-1">Opening Balance</span></td>
-        <td><span class="block truncate text-left">Build-In</span></td>
-        <td><span class="block truncate text-left">RETAINED_EARNINGS</span></td>
-        <td><span class="block truncate text-left">?</span></td>
-        <td><span class="block truncate text-left">0.00</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div class="w-full">
+    <table class="table-fixed w-full">
+      <thead>
+        <tr>
+          <th class="w-6"><span class="block text-left pl-1">ID</span></th>
+          <th class="w-32"><span class="block truncate text-left pl-1">Date</span></th>
+          <th class="w-56"><span class="block truncate text-left">Description</span></th>
+          <th class="w-32"><span class="block truncate text-right">Amount From</span></th>
+          <th class="w-32"><span class="block truncate text-right">Amount To</span></th>
+          <th class="w-40"><span class="block truncate text-left pl-2">Other Account</span></th>
+          <th class="w-48"><span class="block text-left">Reference</span></th>
+          <th class="w-6"><span class="block text-left">X</span></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr class="border-b border-t border-gray-600">
+          <td colspan="3"></td>
+          <td><div class="text-right font-bold">823,500.00</div></td>
+          <td><div class="text-right font-bold">1,263,421.00</div></td>
+          <td><div class="text-right font-bold text-red-700">TOTAL: -111,000.00</div></td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr class="bg-purple-200">
+          <td><span class="block text-left pl-2">1</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">Opening Balance</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-right">213421.00</span></td>
+          <td><span class="block truncate text-left pl-2">Opening Balance</span></td>
+          <td><span class="block truncate text-left"></span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr>
+          <td><span class="block text-left pl-2">2</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">Kitchen Petty Cash</span></td>
+          <td><span class="block truncate text-right">-496550.00</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-left pl-2">Kitchen Petty Cash</span></td>
+          <td><span class="block truncate text-left"></span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr class="bg-purple-200">
+          <td><span class="block text-left pl-2">3</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">School Bread</span></td>
+          <td><span class="block truncate text-right">-134950.00</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-left pl-2">Food</span></td>
+          <td><span class="block truncate text-left"></span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr>
+          <td><span class="block text-left pl-2">4</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">Various Materials</span></td>
+          <td><span class="block truncate text-right">-42000.00</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-left pl-2">Facilities Maintenance</span></td>
+          <td><span class="block truncate text-left"></span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr class="bg-purple-200">
+          <td><span class="block text-left pl-2">6</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">Loan Repayment</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-right">50000.00</span></td>
+          <td><span class="block truncate text-left pl-2">Loans</span></td>
+          <td><span class="block truncate text-left">School Fees</span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr>
+          <td><span class="block text-left pl-2">7</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-01</span></td>
+          <td><span class="block truncate text-left">Beef</span></td>
+          <td><span class="block truncate text-right">-150000.00</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-left pl-2">Food</span></td>
+          <td><span class="block truncate text-left">August</span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+        <tr class="bg-purple-200">
+          <td><span class="block text-left pl-2">8</span></td>
+          <td><span class="block truncate text-left pl-1">2019-08-03</span></td>
+          <td><span class="block truncate text-left">Cash Withdrawal</span></td>
+          <td><span class="block truncate text-right"></span></td>
+          <td><span class="block truncate text-right">1000000.00</span></td>
+          <td><span class="block truncate text-left pl-2">Bank</span></td>
+          <td><span class="block truncate text-left">CHQ000</span></td>
+          <td><span class="block truncate text-left"><input type="checkbox"  disabled></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
     </div>
   </body>
 </html>

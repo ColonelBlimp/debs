@@ -90,7 +90,8 @@ public final class HomePageAction extends BaseAction {
         this.systemFacade = systemFacade;
         this.accountFacade = accountFacade;
 
-        this.pageBean.setPageTitle("DEBS :: Chart");
+        this.pageBean.setPageTitle(getText("HomePageAction.pageTitle"));
+        this.pageBean.setMainHeadingText(getText("HomePageAction.mainHeader"));
         this.showChartBalance = true;
         this.transactions = Collections.emptyList();
     }

@@ -36,6 +36,8 @@ public final class WebConstants {
 
     public static final String VOUCHER_NAME_SESSION_KEY = "VOUCHER_NAME";
 
+    public static final String CURRENCY_DISPLAY_FORMAT = "%,.2f";
+
     private WebConstants() {
     }
 }
