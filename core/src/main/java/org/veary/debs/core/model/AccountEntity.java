@@ -222,10 +222,9 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
     @Override
     public String getDisplayBalance() {
         BigDecimal amount = this.balance.getValue();
-        String display = String.format("%,.2f", amount);
         if (this.type.equals(Account.Types.RETAINED_EARNINGS)) {
-            display = String.format("%,.2f", amount.abs());
+            amount = amount.abs();
         }
-        return display;
+        return String.format("%,.2f", amount);
     }
 }

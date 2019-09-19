@@ -357,4 +357,27 @@ public class AccountTest {
         object2 = Account.newInstance(dataMap1);
         Assert.assertFalse(object1.equals(object2));
     }
+
+    @Test
+    public void displayBalance() {
+        Map<String, Object> dataMap1 = new HashMap<>();
+        dataMap1.put(Account.Fields.ID.toString(), REAL_ID);
+        dataMap1.put(Account.Fields.CREATED.toString(), REAL_CREATION);
+        dataMap1.put(Account.Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap1.put(Account.Fields.BALANCE.toString(), REAL_AMOUNT);
+        dataMap1.put(Account.Fields.NAME.toString(), REAL_NAME);
+        dataMap1.put(Account.Fields.DESCRIPTION.toString(), REAL_DESC);
+        dataMap1.put(Account.Fields.PARENT_ID.toString(), REAL_PARENT_ID);
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(), Account.Types.ASSET.getId());
+        Account object1 = Account.newInstance(dataMap1);
+        Assert.assertNotNull(object1);
+        Assert.assertEquals(object1.getDisplayBalance(), "100,000.00");
+
+        dataMap1.put(Account.Fields.BALANCE.toString(), BigDecimal.valueOf(-123456));
+        dataMap1.put(Account.Fields.ACCOUNT_TYPE.toString(),
+            Account.Types.RETAINED_EARNINGS.getId());
+        Account object2 = Account.newInstance(dataMap1);
+        Assert.assertNotNull(object2);
+        Assert.assertEquals(object2.getDisplayBalance(), "123,456.00");
+    }
 }
