@@ -46,7 +46,7 @@ document.addEventListener('readystatechange', event => {
           <td colspan="3"></td>
           <td><div class="text-right font-bold"><@s.property value="fromColumnTotal"/></div></td>
           <td><div class="text-right font-bold"><@s.property value="toColumnTotal"/></div></td>
-          <td><div class="text-right font-bold">TOTAL: </div></td>
+          <td><#if total?starts_with("-")><div class="text-right font-bold text-red-700"><#else><div class="text-right font-bold"></#if>TOTAL: <@s.property value="total"/></div></td>
           <td colspan="2"></td>
         </tr>
       </tfoot>

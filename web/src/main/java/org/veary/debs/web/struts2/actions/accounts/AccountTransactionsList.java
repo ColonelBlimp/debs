@@ -319,9 +319,9 @@ public final class AccountTransactionsList extends BaseAction
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getToEntry().getAccountId()).getName());
                 bean.setAmountFrom(String.format(WebConstants.CURRENCY_DISPLAY_FORMAT,
-                    obj.getFromEntry().getAmount().getValue()));
+                    obj.getFromEntry().getAmount().getValue().abs()));
                 bean.setOtherAccountId(obj.getToEntry().getAccountId().toString());
-                fromTotal = fromTotal.add(obj.getFromEntry().getAmount().getValue());
+                fromTotal = fromTotal.add(obj.getFromEntry().getAmount().getValue().abs());
             } else {
                 bean.setOtherAccountName(
                     getAccountFromId(obj.getFromEntry().getAccountId()).getName());
@@ -400,5 +400,10 @@ public final class AccountTransactionsList extends BaseAction
     @Override
     public void setSession(Map<String, Object> sessionMap) {
         this.sessionMap = sessionMap;
+    }
+
+    public String getTotal() {
+        return String.format(WebConstants.CURRENCY_DISPLAY_FORMAT,
+            this.toColumnTotal.subtract(this.fromColumnTotal));
     }
 }

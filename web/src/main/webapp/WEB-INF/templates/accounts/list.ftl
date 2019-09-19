@@ -1,5 +1,5 @@
 <#--
- * AccountList.java
+ * org.veary.debs.web.struts2.actions.accounts.AccountList.java
 -->
 <#import "../lib/utils.ftl" as f>
 <#macro accTxDataHref>
