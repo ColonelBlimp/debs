@@ -21,7 +21,7 @@
         <th class="w-56"><span class="block truncate text-left">Description</span></th>
         <th class="w-48"><span class="block text-left">Type</span></th>
         <th class="w-48"><span class="block text-left">Group</span></th>
-        <th class="w-32"><span class="block text-left">Balance</span></th>
+        <th class="w-32"><span class="block text-right pr-4">Balance</span></th>
         <th class="w-6"><span class="block text-left">X</span></th>
       </tr>
     </thead>
@@ -38,7 +38,7 @@
         <td><span class="block truncate text-left"><@s.property value="description"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="typeName"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="parentName"/></span></td>
-        <td><span class="block truncate text-left"><@s.property value="balance"/></span></td>
+        <td><span class="block truncate text-right pr-4"><@s.property value="balance"/></span></td>
         <td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled="true"></span></td>
       </tr>
 </@s.iterator>

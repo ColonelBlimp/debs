@@ -50,7 +50,7 @@ public final class TransactionBean {
         this.narrative = object.getNarrative();
         this.fromAccountId = object.getFromEntry().getAccountId().toString();
         this.toAccountId = object.getToEntry().getAccountId().toString();
-        this.amount = object.getToEntry().getAmount().toString();
+        this.amount = String.format("%,.2f", object.getToEntry().getAmount().getValue());
         this.reference = object.getReference();
         this.deleted = object.isDeleted();
         this.fromCleared = object.getFromEntry().isCleared();

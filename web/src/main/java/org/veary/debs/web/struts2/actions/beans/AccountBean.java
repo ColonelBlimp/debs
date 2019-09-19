@@ -57,7 +57,7 @@ public final class AccountBean {
         this.typeName = object.getType().toString().replace('_', ' ');
         this.description = object.getDescription();
         this.parentId = object.getParentId().toString();
-        this.balance = object.getBalance().toString();
+        this.balance = String.format("%,.2f", object.getBalance().getValue());
         this.deleted = object.isDeleted();
     }
 

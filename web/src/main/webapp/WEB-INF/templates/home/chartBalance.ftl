@@ -3,7 +3,8 @@
     <thead>
       <tr>
         <th class="w-2/6"><span class="block text-left pl-1">Account</span></th>
-        <th><span class="block text-left">Balance</span></th>
+        <th class="w-32"><span class="block text-right">Balance</span></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -15,7 +16,8 @@
       <tr class="cursor-pointer" <@chartDataHref/>>
 </@s.else>
 <@chartRow/> <#-- See home.ftl -->
-        <td><#if data.displayBalance?starts_with("-")><span class="block font-bold text-red-700"><#else><span class="block font-bold"></#if><@s.property value="data.displayBalance"/></span></td>
+        <td><#if data.displayBalance?starts_with("-")><span class="block font-bold text-red-700 text-right"><#else><span class="block font-bold text-right"></#if><@s.property value="data.displayBalance"/></span></td>
+        <td></td>
       </tr>
 </@s.iterator>
     </tbody>
