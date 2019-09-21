@@ -45,7 +45,8 @@ public final class Validator {
     private static final Pattern money = Pattern
         .compile("^(?:0|[1-9]\\d{0,3})(\\,)?(\\d{3})?(\\,)?(\\d{3})?([.]\\d{2})?");
 
-    // ^(-{0,1}\d+)([.]\d{2})?
+    //    .compile("^(-{0,1}\d+)([.]\\d{2})?");
+    //        .compile("^(-{0,1}\\d+)([.]\\d{2})?");
 
     private static final List<Character> acceptedChars = Arrays.asList(
         Character.valueOf('('),
@@ -72,8 +73,8 @@ public final class Validator {
      * Validate the state of the given {@code Map}.
      *
      * <p>This method ensures that the given {@code Map} is not {@code null} or {@code empty},
-     * contains the right number of elements and all the required keys are present. It also
-     * checks that the map contains no {@code null} values.
+     * contains the right number of elements and all the required keys are present. It also checks
+     * that the map contains no {@code null} values.
      *
      * @param dataMap the {@code Map} object
      * @param fields an String array of map keys
