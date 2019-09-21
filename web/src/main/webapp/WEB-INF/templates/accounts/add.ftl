@@ -30,7 +30,7 @@
 <@s.label for="type" value="Type:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.typeId" id="type" list="typeMap" value="selectedType" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@s.select name="bean.typeId" id="type" list="typeMap" value="selectedType" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500" onchange="accountGroupMatcher(this);"/>
     </div>
     <div class="w-96 pl-6"></div>
   </div>

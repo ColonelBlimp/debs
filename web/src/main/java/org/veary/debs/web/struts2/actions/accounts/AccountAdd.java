@@ -75,6 +75,15 @@ public final class AccountAdd extends AccountBaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
+        Integer typeId;
+        try {
+            typeId = Integer.valueOf(this.bean.getTypeId());
+        } catch (NumberFormatException e) {
+            typeId = Integer.valueOf(this.config.get("account.add.type"));
+        }
+
+        getGroupsForType(Account.Types.getType(typeId));
+
         return Action.INPUT;
     }
 
@@ -111,7 +120,10 @@ public final class AccountAdd extends AccountBaseAction {
     }
 
     public String getSelectedType() {
-        return this.config.get("account.add.type");
+        if (this.bean.getTypeId() == null) {
+            return this.config.get("account.add.type");
+        }
+        return this.bean.getTypeId();
     }
 
     public String getSelectedParent() {

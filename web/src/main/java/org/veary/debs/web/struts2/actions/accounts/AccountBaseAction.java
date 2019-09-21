@@ -26,10 +26,12 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.core.utils.Validator;
+import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
@@ -49,8 +51,8 @@ public abstract class AccountBaseAction extends BaseAction {
     private static final Logger LOG = LogManager.getLogger(AccountBaseAction.class);
     private static final String LOG_CALLED = "called";
 
-    private final Map<Integer, String> typeMap;
-    private final Map<Long, String> parentMap;
+    protected final Map<Integer, String> typeMap;
+    protected final Map<Long, String> parentMap;
 
     protected final AccountFacade accountFacade;
     protected AccountBean bean;
@@ -72,10 +74,6 @@ public abstract class AccountBaseAction extends BaseAction {
         }
 
         this.parentMap = new HashMap<>();
-        for (Account parent : this.accountFacade.getGroupAccounts(false)) {
-            this.parentMap.put(parent.getId(), parent.getName());
-        }
-
         this.bean = new AccountBean();
     }
 
@@ -117,5 +115,59 @@ public abstract class AccountBaseAction extends BaseAction {
 
     public Map<Long, String> getParentMap() {
         return this.parentMap;
+    }
+
+    /**
+     * Handles all the logic for which account types are available for the referenced (parent)
+     * Account Group.
+     *
+     * @param parentId the account group id
+     * @return {@code Map}
+     */
+    protected void getGroupsForType(Account.Types type) {
+        LOG.trace(LOG_CALLED);
+
+        LOG.trace("Type: {}", () -> type);
+
+        this.parentMap.clear();
+
+        switch (type) {
+            case ASSET:
+                final Account assetAcc = getAccountByName("Assets");
+                this.parentMap.put(assetAcc.getId(), assetAcc.getName());
+                break;
+            case EXPENSE:
+                final Account expAcc = getAccountByName("Expenses");
+                this.parentMap.put(expAcc.getId(), expAcc.getName());
+                break;
+            case LIABILITY:
+                final Account liabAcc = getAccountByName("Liabilities");
+                this.parentMap.put(liabAcc.getId(), liabAcc.getName());
+                break;
+            case INCOME:
+                final Account incAcc = getAccountByName("Income");
+                this.parentMap.put(incAcc.getId(), incAcc.getName());
+                break;
+            case RETAINED_EARNINGS:
+                break;
+            case CONTROL:
+                break;
+            case GROUP:
+                for (Account parent : this.accountFacade.getGroupAccounts(false)) {
+                    this.parentMap.put(parent.getId(), parent.getName());
+                }
+                break;
+            default:
+
+        }
+    }
+
+    private Account getAccountByName(String name) {
+        Optional<Account> result = this.accountFacade
+            .getByName(name);
+        if (result.isEmpty()) {
+            throw new DebsException("????");
+        }
+        return result.get();
     }
 }

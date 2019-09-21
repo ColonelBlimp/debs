@@ -3,7 +3,7 @@
 -->
 <#import "../lib/utils.ftl" as f>
 <#macro accTxDataHref>
-<@s.if test="typeId!=${GROUP_TYPE}">cursor-pointer" data-href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" title="View Account's Transactions" onclick="dataHrefLink(this);"</@s.if><#rt>
+<@s.if test="typeId!=${GROUP_TYPE}"> cursor-pointer" data-href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" title="View Account's Transactions" onclick="dataHrefLink(this);"</@s.if><#rt>
 </#macro>
 <@f.page>
 <@f.contentHeader>
@@ -28,7 +28,7 @@
     <tbody>
 <@s.iterator value="accounts" status="stats">
 <@s.if test="#stats.odd == true">
-      <tr class="bg-purple-200 <@accTxDataHref/>>
+      <tr class="bg-purple-200<@accTxDataHref/>">
 </@s.if>
 <@s.else>
       <tr class="<@accTxDataHref/>">

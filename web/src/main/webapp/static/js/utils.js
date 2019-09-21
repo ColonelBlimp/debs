@@ -19,3 +19,7 @@ function dataHrefLink(elem) {
   window.location = href;
   return false;
 }
+function accountGroupMatcher(elem) {
+	elem.form.submit();
+	return false;
+}
