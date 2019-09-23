@@ -81,7 +81,7 @@ public class AccountDaoTest extends JndiTestBase {
         Assert.assertNotNull(updated);
         updated.setName(UPDATED_NAME);
         updated.setDescription(UPDATED_DESC);
-        updated.setType(Types.GROUP);
+        updated.setType(Types.EXPENSE_GROUP);
         updated.setParentId(UPDATED_PARENT_ID);
 
         // Fields which cannot be updated with the updateAccount method

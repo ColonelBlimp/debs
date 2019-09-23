@@ -185,10 +185,10 @@ public class AccountTest {
         type = Account.Types.getType(id);
         Assert.assertEquals(type, Account.Types.CONTROL);
 
-        id = Account.Types.GROUP.getId();
+        id = Account.Types.ASSETS_GROUP.getId();
         Assert.assertNotNull(id);
         type = Account.Types.getType(id);
-        Assert.assertEquals(type, Account.Types.GROUP);
+        Assert.assertEquals(type, Account.Types.ASSETS_GROUP);
     }
 
     @Test(

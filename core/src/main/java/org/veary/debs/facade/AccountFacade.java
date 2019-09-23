@@ -41,6 +41,28 @@ import org.veary.tree.TreeNode;
  */
 public interface AccountFacade {
 
+    enum BuiltInAccounts {
+        BALANCE_GROUP("Balance"), //$NON-NLS-1$
+        NET_WORTH_GROUP("Net Worth"), //$NON-NLS-1$
+        ASSETS_GROUP("Assets"), //$NON-NLS-1$
+        LOANS_GROUP("Loans"), //$NON-NLS-1$
+        INCOME_AND_EXPENSES_GROUP("Income & Expenses"), //$NON-NLS-1$
+        INCOME_GROUP("Income"), //$NON-NLS-1$
+        EXPENSES_GROUP("Expenses"), //$NON-NLS-1$
+        OPENING_BALANCE("Opening Balance"); //$NON-NLS-1$
+
+        private final String name;
+
+        private BuiltInAccounts(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
+    }
+
     /**
      * Creates an {@code Account} within the system from the referenced object. The
      * {@code Account} object must be created using

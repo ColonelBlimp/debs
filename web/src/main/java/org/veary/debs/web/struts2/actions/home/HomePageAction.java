@@ -108,7 +108,7 @@ public final class HomePageAction extends BaseAction {
                 LOG.error("Unknown account for ID: {}", () -> this.id);
                 return Action.ERROR;
             }
-            if (result.get().getType().equals(Account.Types.GROUP)) {
+            if (result.get().getType().toString().endsWith("_GROUP")) {
                 this.showChartBalance = true;
             } else {
                 this.showChartBalance = false;

@@ -165,7 +165,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertFalse(result.isEmpty());
         Account original = result.get();
 
-        facade.update(original, null, null, null, Types.GROUP, false);
+        facade.update(original, null, null, null, Types.EXPENSE_GROUP, false);
 
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());
@@ -173,7 +173,7 @@ public class AccountFacadeTest extends JndiTestBase {
         Assert.assertEquals(updated.getName(), NEW_NAME);
         Assert.assertEquals(updated.getDescription(), NEW_DESC);
         Assert.assertTrue(updated.getParentId().equals(NEW_PARENT_ID));
-        Assert.assertTrue(updated.getType().equals(Types.GROUP));
+        Assert.assertTrue(updated.getType().equals(Types.EXPENSE_GROUP));
     }
 
     private static final Money MONEY = new Money(BigDecimal.valueOf(100000));

@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package org.veary.debs.tests;
+package org.veary.debs.core.dao.tests;
 
-import com.google.inject.jndi.JndiIntegration;
+import org.testng.annotations.Test;
+import org.veary.debs.tests.JndiTestBase;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+/**
+ * <b>Purpose:</b> ?
+ *
+ * <p><b>Responsibility:</b>
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
+public final class DatabaseSetupDaoTest extends JndiTestBase {
 
-import org.veary.debs.core.GuiceDebsCoreModule;
+    @Test
+    public void initializeDatabase() {
 
-public class GuicePersistTestModule extends GuiceDebsCoreModule {
-
-    @Override
-    protected void configure() {
-        bind(Context.class).to(InitialContext.class);
-        bind(DataSource.class)
-            .toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs")); //$NON-NLS-1$
-        super.configure();
     }
 }

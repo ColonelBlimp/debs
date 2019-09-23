@@ -64,35 +64,6 @@ public final class RealAccountFacade implements AccountFacade {
     private final AccountDao dao;
 
     /**
-     * <b>Purpose:</b> Enum providing enumerating all the <i>build-in</i> Group Accounts.
-     *
-     * @author Marc L. Veary
-     * @since 1.0
-     */
-    private enum BuiltInAccounts {
-
-        BALANCE("Balance"), //$NON-NLS-1$
-        NET_WORTH("Net Worth"), //$NON-NLS-1$
-        ASSETS("Assets"), //$NON-NLS-1$
-        LIABILITIES("Liabilities"), //$NON-NLS-1$
-        INCOME_AND_LIABILITIES("Income & Liabilities"), //$NON-NLS-1$
-        INCOME("Income"), //$NON-NLS-1$
-        EXPENSES("Expenses"), //$NON-NLS-1$
-        OPENING_BALANCE("Opening Balance"); //$NON-NLS-1$
-
-        private final String name;
-
-        private BuiltInAccounts(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-    }
-
-    /**
      * Constructor.
      *
      * @param dao {@link AccountDao}
@@ -220,12 +191,12 @@ public final class RealAccountFacade implements AccountFacade {
     private TreeNode<Account> getRootNode() {
         LOG.trace(LOG_CALLED);
         try {
-            Account root = this.dao.getAccountByName(BuiltInAccounts.BALANCE.toString());
+            Account root = this.dao.getAccountByName(BuiltInAccounts.BALANCE_GROUP.toString());
             return new TreeNode<>(root);
         } catch (NoResultException e) {
             throw new AssertionError(
                 Messages.getString("RealAccountFacade.chart.assert.norootnode", //$NON-NLS-1$
-                    BuiltInAccounts.BALANCE.toString()));
+                    BuiltInAccounts.BALANCE_GROUP.toString()));
         }
     }
 
@@ -234,7 +205,7 @@ public final class RealAccountFacade implements AccountFacade {
         Objects.requireNonNull(balance, Messages.getParameterIsNull("balance")); //$NON-NLS-1$
 
         for (Account account : this.dao.getAllAccounts(false)) {
-            if (account.getName().equals(BuiltInAccounts.BALANCE.toString())) {
+            if (account.getName().equals(BuiltInAccounts.BALANCE_GROUP.toString())) {
                 continue;
             }
 

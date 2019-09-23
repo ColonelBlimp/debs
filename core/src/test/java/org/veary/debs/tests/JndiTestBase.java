@@ -12,6 +12,7 @@ import org.veary.debs.core.facade.RealSystemFacade;
 import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
+import org.veary.debs.facade.AdminFacade;
 import org.veary.debs.facade.SystemFacade;
 
 import hthurow.tomcatjndi.TomcatJNDI;
@@ -24,6 +25,7 @@ public abstract class JndiTestBase {
     protected AccountFacade accountFacade;
     protected TransactionDao transactionDao;
     protected SystemFacade systemFacade;
+    protected AdminFacade adminFacade;
 
     @BeforeClass
     public void setUp() {
@@ -36,6 +38,8 @@ public abstract class JndiTestBase {
         this.accountFacade = this.injector.getInstance(RealAccountFacade.class);
         this.transactionDao = this.injector.getInstance(TransactionDao.class);
         this.systemFacade = this.injector.getInstance(RealSystemFacade.class);
+        this.adminFacade = this.injector.getInstance(AdminFacade.class);
+        this.adminFacade.initializeDatabase();
     }
 
     @AfterClass

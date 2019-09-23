@@ -18,12 +18,13 @@ public final class AccountFacadeListTest extends JndiTestBase {
     public void getAllAccountsMethod() {
         this.groupA = this.accountFacade
             .create(Account.newInstance("Group A", "Group A Desc", Long.valueOf(1), //$NON-NLS-1$ //$NON-NLS-2$
-                Account.Types.GROUP));
+                Account.Types.ASSETS_GROUP));
         this.groupAA = this.accountFacade
             .create(Account.newInstance("Group A-A", "Group A-A Desc", this.groupA, //$NON-NLS-1$ //$NON-NLS-2$
-                Account.Types.GROUP));
+                Account.Types.ASSETS_GROUP));
         this.accountFacade.create(
-            Account.newInstance("Group A-B", "Group A-B Desc", this.groupA, Account.Types.GROUP)); //$NON-NLS-1$ //$NON-NLS-2$
+            Account.newInstance("Group A-B", "Group A-B Desc", this.groupA, //$NON-NLS-1$//$NON-NLS-2$
+                Account.Types.ASSETS_GROUP));
 
         List<Account> list = this.accountFacade.getAllAccounts(false);
         Assert.assertFalse(list.isEmpty());

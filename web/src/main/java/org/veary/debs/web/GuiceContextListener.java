@@ -48,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.veary.debs.core.GuiceDebsCoreModule;
 import org.veary.debs.exceptions.DebsException;
+import org.veary.debs.facade.AdminFacade;
 import org.veary.debs.web.internal.PdfDocumentGenerator;
 import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
@@ -73,7 +74,7 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         LOG.trace(LOG_CALLED);
 
         String voucherDir = servletContextEvent.getServletContext().getRealPath("vouchers");
-        LOG.trace("Voucher Directory: {}", () -> voucherDir);
+        //        LOG.trace("Voucher Directory: {}", () -> voucherDir);
 
         try {
             Path vDir = Files.createDirectories(Paths.get(voucherDir));
@@ -81,6 +82,18 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         } catch (IOException e) {
             throw new DebsException(e);
         }
+
+        String dbDir = servletContextEvent.getServletContext().getRealPath("WEB-INF/db");
+        try {
+            if (!Files.exists(Paths.get(dbDir))) {
+                Files.createDirectories(Paths.get(dbDir));
+            }
+        } catch (DebsException | IOException e) {
+            throw new DebsException(e);
+        }
+
+        AdminFacade facade = this.getInjector().getInstance(AdminFacade.class);
+        facade.checkDatabase();
     }
 
     @Override

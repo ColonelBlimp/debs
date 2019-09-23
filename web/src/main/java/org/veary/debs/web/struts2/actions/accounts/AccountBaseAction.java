@@ -152,11 +152,11 @@ public abstract class AccountBaseAction extends BaseAction {
                 break;
             case CONTROL:
                 break;
-            case GROUP:
-                for (Account parent : this.accountFacade.getGroupAccounts(false)) {
-                    this.parentMap.put(parent.getId(), parent.getName());
-                }
-                break;
+            //            case GROUP:
+            //                for (Account parent : this.accountFacade.getGroupAccounts(false)) {
+            //                    this.parentMap.put(parent.getId(), parent.getName());
+            //                }
+            //                break;
             default:
 
         }
