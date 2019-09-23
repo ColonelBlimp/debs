@@ -64,7 +64,6 @@ public final class RealAdminFacade implements AdminFacade {
         this.accountFacade = Objects.requireNonNull(accountFacade,
             Messages.getParameterIsNull("accountFacade"));
         this.adminDao = Objects.requireNonNull(adminDao, Messages.getParameterIsNull("adminDao"));
-
     }
 
     @Override
@@ -91,6 +90,7 @@ public final class RealAdminFacade implements AdminFacade {
         Long incAndExpGroupId = createIncomeAndExpensesGroup(result.get().getId());
         createIncomeGroup(incAndExpGroupId);
         createExpensesGroup(incAndExpGroupId);
+        createOpeningBalanceAccount(result.get().getId());
     }
 
     private Long createNetWorthGroup(Long parentId) {
@@ -144,6 +144,15 @@ public final class RealAdminFacade implements AdminFacade {
             "Expense Group (Build In)",
             parentId,
             Account.Types.EXPENSE_GROUP);
+        return this.accountFacade.create(object);
+    }
+
+    private Long createOpeningBalanceAccount(Long parentId) {
+        Account object = Account.newInstance(
+            AccountFacade.BuiltInAccounts.OPENING_BALANCE.toString(),
+            "Opening Balance (Build In)",
+            parentId,
+            Account.Types.RETAINED_EARNINGS);
         return this.accountFacade.create(object);
     }
 }

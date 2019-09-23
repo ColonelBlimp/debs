@@ -88,20 +88,20 @@ public interface Account extends PersistentObject {
      * @since 1.0
      */
     enum Types {
-        ASSET(1),
-        EXPENSE(2),
-        LIABILITY(3),
-        INCOME(4),
-        EQUITY(5),
-        RETAINED_EARNINGS(6),
-        CONTROL(7),
-        BALANCE_GROUP(8),
-        NETWORTH_GROUP(9),
-        REVENUE_GROUP(10),
-        ASSETS_GROUP(11),
-        EXPENSE_GROUP(12),
-        INCOME_GROUP(13),
-        LOANS_GROUP(14);
+        BALANCE_GROUP(1),
+        NETWORTH_GROUP(2),
+        REVENUE_GROUP(3),
+        ASSETS_GROUP(4),
+        EXPENSE_GROUP(5),
+        INCOME_GROUP(6),
+        LOANS_GROUP(7),
+        ASSET(8),
+        EXPENSE(9),
+        LIABILITY(10),
+        INCOME(11),
+        EQUITY(12),
+        RETAINED_EARNINGS(13),
+        CONTROL(14);
 
         private final Integer id;
 

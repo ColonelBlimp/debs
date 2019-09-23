@@ -5,7 +5,10 @@
 
   <listener>
     <listener-class>org.veary.debs.web.GuiceContextListener</listener-class>
-  </listener>  
+  </listener>
+  <listener>
+    <listener-class>org.veary.debs.web.DebsContextListener</listener-class>
+  </listener>
 
   <filter>
     <filter-name>guice</filter-name>

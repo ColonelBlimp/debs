@@ -48,7 +48,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.veary.debs.core.GuiceDebsCoreModule;
 import org.veary.debs.exceptions.DebsException;
-import org.veary.debs.facade.AdminFacade;
 import org.veary.debs.web.internal.PdfDocumentGenerator;
 import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
@@ -84,16 +83,15 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         }
 
         String dbDir = servletContextEvent.getServletContext().getRealPath("WEB-INF/db");
+        //        LOG.trace("Database Directory: {}", () -> dbDir);
         try {
             if (!Files.exists(Paths.get(dbDir))) {
                 Files.createDirectories(Paths.get(dbDir));
+                servletContextEvent.getServletContext().setAttribute("INIT_DB", Boolean.TRUE);
             }
         } catch (DebsException | IOException e) {
             throw new DebsException(e);
         }
-
-        AdminFacade facade = this.getInjector().getInstance(AdminFacade.class);
-        facade.checkDatabase();
     }
 
     @Override
@@ -122,12 +120,5 @@ public final class GuiceContextListener extends GuiceServletContextListener {
                     filter("/*").through(StrutsPrepareAndExecuteFilter.class);
                 }
             });
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        LOG.trace(LOG_CALLED);
-
-        super.contextDestroyed(servletContextEvent);
     }
 }
