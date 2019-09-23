@@ -35,7 +35,7 @@ import org.veary.debs.model.Transaction;
 
 public class SystemFacadeUpdateTxFromAccAndAmountTest extends AbstractSystemFacadeTestBase {
 
-    //    private static final Logger LOG = LogManager.getLogger(SystemFacadeUpdateTxFromAccTest.class);
+    //private static final Logger LOG = LogManager.getLogger(SystemFacadeUpdateTxFromAccTest.class);
 
     private static final Money UPDATED_AMOUNT = new Money(BigDecimal.valueOf(789123L));
 
