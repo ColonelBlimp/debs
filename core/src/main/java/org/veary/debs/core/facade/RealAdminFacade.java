@@ -39,9 +39,7 @@ import org.veary.debs.facade.AdminFacade;
 import org.veary.debs.model.Account;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Concrete implementation of the {@link AdminFacade} interface.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -56,7 +54,6 @@ public final class RealAdminFacade implements AdminFacade {
 
     /**
      * Constructor.
-     *
      */
     @Inject
     public RealAdminFacade(AdminDao adminDao, AccountFacade accountFacade) {
@@ -80,8 +77,8 @@ public final class RealAdminFacade implements AdminFacade {
         Optional<Account> result = this.accountFacade
             .getByName(AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString());
         if (result.isEmpty()) {
-            throw new DebsException("Unable to fetch the " +
-                AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString() + " account!");
+            throw new DebsException("Unable to fetch the "
+                + AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString() + " account!");
         }
 
         Long netWorthGroupId = createNetWorthGroup(result.get().getId());

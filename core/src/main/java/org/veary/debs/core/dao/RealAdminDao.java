@@ -40,7 +40,7 @@ import org.veary.persist.TransactionManager;
 import org.veary.persist.exceptions.PersistenceException;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Concrete implementation of the {@link AdminDao} interface.
  *
  * <p><b>Responsibility:</b>
  *
@@ -56,7 +56,6 @@ public final class RealAdminDao implements AdminDao {
 
     /**
      * Constructor.
-     *
      */
     @Inject
     public RealAdminDao(PersistenceManagerFactory factory) {
@@ -152,7 +151,7 @@ public final class RealAdminDao implements AdminDao {
             .append("INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES('")
             .append(AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString())
             .append("','Balance Group',")
-            .append(Long.valueOf(0).toString())
+            .append("0")
             .append(",")
             .append(Account.Types.BALANCE_GROUP.getId().toString())
             .append(")");

@@ -25,7 +25,7 @@
 package org.veary.debs.dao;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Defines the contract for the Administration DAO.
  *
  * <p><b>Responsibility:</b>
  *
