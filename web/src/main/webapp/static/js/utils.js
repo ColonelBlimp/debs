@@ -5,7 +5,7 @@ edit.className="pointer-events-auto";
 return true;
 }
 function checkForTab(event) {
-  var dElem = document.getElementById("date");
+  var dElem = document.getElementById('date');
   if(event.keyCode==9 && dElem.value.length == 0) {
     var fdElem = document.getElementById('sessionDate');
     dElem.value=fdElem.value;
