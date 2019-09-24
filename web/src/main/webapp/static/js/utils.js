@@ -11,9 +11,11 @@ function checkForTab(event) {
     dElem.value=fdElem.value;
   }
 }
-function dataHrefLink(elem) {
-  if(elem.getElementsByTagName('input')[0].checked) {
-	  return false;
+function dataHrefLink(elem,check) {
+  if(check) {
+      if(elem.getElementsByTagName('input')[0].checked) {
+    	  return false;
+      }
   }
   var href = elem.getAttribute('data-href');
   window.location = href;

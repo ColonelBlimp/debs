@@ -8,10 +8,10 @@
       <tbody>
 <@s.iterator value="chart" status="stats">
 <@s.if test="#stats.odd == true">
-        <tr class="bg-purple-200 cursor-pointer" <@chartDataHref/>>
+        <tr class="bg-purple-200 cursor-pointer" <@chartDataHref check="false"/>>
 </@s.if>
 <@s.else>
-        <tr class="cursor-pointer" <@chartDataHref/>>
+        <tr class="cursor-pointer" <@chartDataHref check="false"/>>
 </@s.else>
 <@chartRow/> <#-- See home.ftl -->
         </tr>
@@ -33,10 +33,10 @@
       <tbody>
 <@s.iterator value="transactions" status="stats">
 <@s.if test="#stats.odd == true">
-        <tr class="bg-purple-200 cursor-pointer" <@otherAccDataHref/>>
+        <tr class="bg-purple-200 cursor-pointer" <@otherAccDataHref check="false"/>>
 </@s.if>
 <@s.else>
-        <tr class="cursor-pointer" <@otherAccDataHref/>>
+        <tr class="cursor-pointer" <@otherAccDataHref check="false"/>>
 </@s.else>
           <td><span class="block truncate text-left pl-2"><@s.property value="date"/></span></td>
           <td><span class="block truncate text-left"><@s.property value="narrative"/></span></td>

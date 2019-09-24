@@ -9,11 +9,11 @@
 </span>
 </td>
 </#macro>
-<#macro chartDataHref>
-data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.id"/></@s.url>" title=<@s.if test="data.type.getId()<7">"View Chart Balances"</@s.if><@s.else>"View Account's Transactions"</@s.else> onclick="dataHrefLink(this);"<#rt>
+<#macro chartDataHref check>
+data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.id"/></@s.url>" title=<@s.if test="data.type.getId()<8">"View Chart Balances"</@s.if><@s.else>"View Account's Transactions"</@s.else> onclick="dataHrefLink(this,${check});"<#rt>
 </#macro>
-<#macro otherAccDataHref>
-data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherAccountId"/></@s.url>" title="View Other Account's Transactions" onclick="dataHrefLink(this);"<#rt>
+<#macro otherAccDataHref check>
+data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherAccountId"/></@s.url>" title="View Other Account's Transactions" onclick="dataHrefLink(this,${check});"<#rt>
 </#macro>
 <@f.page>
 <@f.contentHeader>
