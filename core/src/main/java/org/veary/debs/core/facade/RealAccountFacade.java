@@ -168,6 +168,37 @@ public final class RealAccountFacade implements AccountFacade {
         return buildChartOfAccounts(getRootNode());
     }
 
+    @Override
+    public TreeNode<Account> getGroupAccounts() {
+        LOG.trace(LOG_CALLED);
+        return buildGroupHierarchy();
+    }
+
+    private TreeNode<Account> buildGroupHierarchy() {
+        LOG.trace(LOG_CALLED);
+
+        TreeNode<Account> root = getRootNode();
+
+        for (Account account : this.dao.getGroupAccounts(false)) {
+            if (account.getName().equals(BuiltInAccounts.BALANCE_GROUP.toString())) {
+                continue;
+            }
+
+            Optional<TreeNode<Account>> result = root.findNode(
+                elementData -> elementData.getId().equals(account.getParentId()));
+
+            if (result.isPresent()) {
+                result.get().addChild(account);
+            } else {
+                throw new AssertionError(Messages.getString(
+                    "RealAccountFacade.chart.assert.unknownparent", //$NON-NLS-1$
+                    account.getName()));
+            }
+        }
+
+        return root;
+    }
+
     /**
      * The {@code AccountDao} allows the {@code parentId} parameter to be zero. However, the
      * facade does <b>not</b> allow this as a value of zero is the 'Balance' Group Account.
@@ -216,8 +247,8 @@ public final class RealAccountFacade implements AccountFacade {
                 result.get().addChild(account);
             } else {
                 throw new AssertionError(Messages.getString(
-                    "RealAccountFacade.chart.assert.unknownparent",
-                    account.getName())); //$NON-NLS-1$
+                    "RealAccountFacade.chart.assert.unknownparent", //$NON-NLS-1$
+                    account.getName()));
             }
         }
 

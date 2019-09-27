@@ -95,13 +95,13 @@ public interface Account extends PersistentObject {
         EXPENSE_GROUP(5),
         INCOME_GROUP(6),
         LOANS_GROUP(7),
-        ASSET(8),
-        EXPENSE(9),
-        LIABILITY(10),
-        INCOME(11),
-        EQUITY(12),
-        RETAINED_EARNINGS(13),
-        CONTROL(14);
+        ASSET(20),
+        EXPENSE(21),
+        LIABILITY(22),
+        INCOME(23),
+        EQUITY(24),
+        RETAINED_EARNINGS(25),
+        CONTROL(26);
 
         private final Integer id;
 

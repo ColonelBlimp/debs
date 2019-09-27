@@ -57,3 +57,14 @@
 <label for="includeDeleted">Include Deleted</label>
 </@s.form>
 </#macro>
+
+<#macro groupHierarchy>
+<table class="table-fixed w-full">
+<@s.iterator value="groups" status="stats">
+<tr><td>
+<input type="radio" name="selected" value="<@s.property value="data.id"/>" class="gl-<@s.property value="level"/>">
+<span class="pl-1"><@s.property value="data.name"/></span>
+</td></tr>
+</@s.iterator>
+<table>
+</#macro>

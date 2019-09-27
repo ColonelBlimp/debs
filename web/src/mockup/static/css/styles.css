@@ -3,3 +3,28 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.gl-0 {
+	@apply ml-2;
+}
+.gl-1 {
+	@apply ml-6;
+}
+.gl-2 {
+	@apply ml-10;
+}
+.gl-3 {
+	@apply ml-14;
+}
+.gl-4 {
+	@apply ml-18;
+}
+.gl-5 {
+	@apply ml-22;
+}
+.gl-6 {
+	@apply ml-26;
+}
+.gl-7 {
+	@apply ml-30;
+}

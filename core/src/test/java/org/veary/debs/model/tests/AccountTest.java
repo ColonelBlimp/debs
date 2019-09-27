@@ -193,9 +193,9 @@ public class AccountTest {
 
     @Test(
         expectedExceptions = IllegalArgumentException.class,
-        expectedExceptionsMessageRegExp = "Unknown Account Type: 20")
+        expectedExceptionsMessageRegExp = "Unknown Account Type: 30")
     public void TypesException() {
-        Account.Types.getType(Integer.valueOf(20));
+        Account.Types.getType(Integer.valueOf(30));
     }
 
     @Test(

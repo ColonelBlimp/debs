@@ -14,75 +14,82 @@
       <nav>
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="#" title="Transactions">Transactions</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="transactions/list.action" title="Transactions">Transactions</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="accounts/list.action" title="Accounts">Accounts</a></li>
         </ul>
       </nav>
     </div>
     <div class="container border border-white mt-12">
-<div class="w-full h-12 bg-purple-300 mt-4 p-3">
-<span class="font-bold">Add: New Account</span>
-</div>
-<form id="add" name="add" action="/accounts/add.action" method="post" autocomplete="off">
-  <div class="flex mt-6 mb-2 items-center">
-    <div class="w-32">
-      <label class="inline-block font-bold" for="name">Name:</label>
-    </div>
-    <div class="w-56">
-    <input type="text" name="bean.name" maxlength="20" placeholder="Required" id="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off" autofocus="autofocus"/>
-    </div>
-    <div class="w-72 pl-6 font-bold text-red-700 italic">Error</div>
-  </div>
-  <div class="flex mb-2 items-center">
-    <div class="w-32">
-      <label class="inline-block font-bold" for="note">Description:</label>
-    </div>
-    <div class="w-56">
-      <input type="text" name="bean.note" maxlength="100" value="" id="note" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off"/>
-    </div>
-    <div class="w-72 pl-6 font-bold text-red-700 italic">Error</div>
-  </div>
-  <div class="flex mb-2 items-center">
-    <div class="w-32">
-      <label class="inline-block font-bold" for="type">Type:</label>
-    </div>
-    <div class="w-56">
-	<select name="bean.typeId" id="type" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500">
-    	<option value="1">ASSET</option>
-    	<option value="2" selected="selected">EXPENSE</option>
-    	<option value="3">LIABILITY</option>
-    	<option value="4">INCOME</option>
-    	<option value="5">EQUITY</option>
-    	<option value="6">RETAINED_EARNINGS</option>
-    	<option value="7">CONTROL</option>
-    	<option value="8">GROUP</option>
-	</select>
-    </div>
-  </div>
-  <div class="flex mb-4 items-center">
-    <div class="w-32">
-      <label class="inline-block font-bold w-32" for="parent">Group:</label>
-    </div>
-    <div class="w-56">
-		<select name="bean.parentId" id="parent" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500">
-    		<option value="1">Balance</option>
-    		<option value="2">Net Worth</option>
-    		<option value="3">Assets</option>
-    		<option value="4">Liabilities</option>
-    		<option value="5">Income &amp; Expenses</option>
-    		<option value="6">Income</option>
-    		<option value="7" selected="selected">Expenses</option>
-		</select>
-    </div>
-  </div>
-  <div class="flex mb-2 items-center">
-    <div class="w-32"></div>
-    <div class="w-56">
-      <input type="submit" value="Create" id="create" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
-      <input type="submit" value="Cancel" id="cancel" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
-    </div>
-  </div>
-</form>
+      <div class="mt-4 pl-1 font-bold">New Account</div>
+      <div class="w-full h-12 bg-purple-300 mt-4">
+        <div class="p-3"><span class="font-bold"></span></div>
+      </div>
+      <form id="add" name="add" action="/accounts/add.action" method="post" autocomplete="off">
+        <div class="flex mt-6 mb-2 items-center">
+          <div class="w-32">
+            <label class="inline-block font-bold" for="name">Name:</label>
+          </div>
+          <div class="w-56">
+            <input type="text" name="bean.name" maxlength="32" value="" id="name" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off" autofocus="autofocus"/>
+          </div>
+          <div class="w-96 pl-6 font-bold text-red-700 italic"></div>
+        </div>
+        <div class="flex mb-2 items-center">
+          <div class="w-32">
+            <label class="inline-block font-bold" for="description">Description:</label>
+          </div>
+          <div class="w-56">
+            <input type="text" name="bean.description" maxlength="100" value="" id="description" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" autocomplete="off"/>
+          </div>
+          <div class="w-96 pl-6 font-bold text-red-700 italic"></div>
+        </div>
+        <div class="flex mb-2 items-center">
+          <div class="w-32">
+            <label class="inline-block font-bold" for="type">Type:</label>
+          </div>
+          <div class="w-56">
+            <select name="bean.typeId" id="type" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500" onchange="accountGroupMatcher(this);">
+              <option value="20">ASSET</option>
+              <option value="21" selected="selected">EXPENSE</option>
+              <option value="22">LIABILITY</option>
+              <option value="23">INCOME</option>
+              <option value="24">EQUITY</option>
+              <option value="25">RETAINED_EARNINGS</option>
+              <option value="26">CONTROL</option>
+            </select>
+          </div>
+          <div class="w-96 pl-6"></div>
+        </div>
+        <div class="flex mb-4 items-center">
+          <div class="flex-initial w-32 h-full">
+            <span class="font-bold">Group:</span>
+          </div>
+          <div class="w-56 text-left p-0 m-0">
+        		<table class="table-fixed w-full">
+          			<tbody>
+          			<tr>
+            			<td><input type="radio" name="selected" value="1" class="gl-0"><span class="pl-1">Balance</span></td>
+          			</tr>
+          			<tr>
+            			<td><input type="radio" name="selected" value="2" class="gl-1"><span class="pl-1">Net Worth</span></td>
+          			</tr>
+          			<tr>
+            			<td><input type="radio" name="selected" value="2" class="gl-2"><span class="pl-1">Assets</span></td>
+          			</tr>
+          			</tbody>
+        		</table>
+          </div>
+          <div class="w-96 pl-6"></div>
+        </div>
+        <div class="flex mt-4 items-center">
+          <div class="w-32"></div>
+          <div>
+            <input type="submit" value="Create" id="create" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-2"/>
+            <input type="submit" value="Cancel" id="cancel" name="submitType" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
+          </div>
+          <div class="w-96 pl-6"></div>
+        </div>
+      </form>
     </div>
   </body>
 </html>

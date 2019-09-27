@@ -52,7 +52,7 @@ public abstract class AccountBaseAction extends BaseAction {
     private static final String LOG_CALLED = "called";
 
     protected final Map<Integer, String> typeMap;
-    protected final Map<Long, String> parentMap;
+    //    protected final Map<Long, String> groupMap;
 
     protected final AccountFacade accountFacade;
     protected AccountBean bean;
@@ -70,10 +70,12 @@ public abstract class AccountBaseAction extends BaseAction {
 
         this.typeMap = new HashMap<>();
         for (Account.Types type : Account.Types.values()) {
-            this.typeMap.put(type.getId(), type.toString());
+            if (type.getId().intValue() >= 20) {
+                this.typeMap.put(type.getId(), type.toString());
+            }
         }
 
-        this.parentMap = new HashMap<>();
+        //        this.groupMap = new HashMap<>();
         this.bean = new AccountBean();
     }
 
@@ -113,9 +115,9 @@ public abstract class AccountBaseAction extends BaseAction {
         return this.typeMap;
     }
 
-    public Map<Long, String> getParentMap() {
-        return this.parentMap;
-    }
+    //    public Map<Long, String> getGroupMap() {
+    //        return this.groupMap;
+    //    }
 
     /**
      * Handles all the logic for which account types are available for the referenced (parent)
@@ -124,48 +126,51 @@ public abstract class AccountBaseAction extends BaseAction {
      * @param parentId the account group id
      * @return {@code Map}
      */
+    //TODO: Finish
     protected void getGroupsForType(Account.Types type) {
         LOG.trace(LOG_CALLED);
 
         LOG.trace("Type: {}", () -> type);
-
-        this.parentMap.clear();
-
+        /*
+        this.groupMap.clear();
+        
         switch (type) {
             case ASSET:
-                final Account assetAcc = getAccountByName("Assets");
-                this.parentMap.put(assetAcc.getId(), assetAcc.getName());
+                Account assetAcc = getAccountByName(
+                    AccountFacade.BuiltInAccounts.ASSETS_GROUP.toString());
+                this.groupMap.put(assetAcc.getId(), assetAcc.getName());
+                assetAcc = getAccountByName(
+                    AccountFacade.BuiltInAccounts.NET_WORTH_GROUP.toString());
+                this.groupMap.put(assetAcc.getId(), assetAcc.getName());
                 break;
             case EXPENSE:
-                final Account expAcc = getAccountByName("Expenses");
-                this.parentMap.put(expAcc.getId(), expAcc.getName());
+                final Account expAcc = getAccountByName(
+                    AccountFacade.BuiltInAccounts.EXPENSES_GROUP.toString());
+                this.groupMap.put(expAcc.getId(), expAcc.getName());
                 break;
             case LIABILITY:
-                final Account liabAcc = getAccountByName("Liabilities");
-                this.parentMap.put(liabAcc.getId(), liabAcc.getName());
+                final Account liabAcc = getAccountByName(
+                    AccountFacade.BuiltInAccounts.LOANS_GROUP.toString());
+                this.groupMap.put(liabAcc.getId(), liabAcc.getName());
                 break;
             case INCOME:
-                final Account incAcc = getAccountByName("Income");
-                this.parentMap.put(incAcc.getId(), incAcc.getName());
+                final Account incAcc = getAccountByName(
+                    AccountFacade.BuiltInAccounts.INCOME_GROUP.toString());
+                this.groupMap.put(incAcc.getId(), incAcc.getName());
                 break;
+            case EQUITY:
             case RETAINED_EARNINGS:
-                break;
             case CONTROL:
-                break;
-            //            case GROUP:
-            //                for (Account parent : this.accountFacade.getGroupAccounts(false)) {
-            //                    this.parentMap.put(parent.getId(), parent.getName());
-            //                }
-            //                break;
             default:
-
         }
+        */
     }
 
     private Account getAccountByName(String name) {
         Optional<Account> result = this.accountFacade
             .getByName(name);
         if (result.isEmpty()) {
+            //TODO: Add Messages
             throw new DebsException("????");
         }
         return result.get();

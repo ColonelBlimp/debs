@@ -144,4 +144,11 @@ public interface AccountFacade {
      * @return {@link TreeNode}
      */
     TreeNode<Account> getChartOfAccounts();
+
+    /**
+     * Returns all the 'group' accounts as a hierachical tree.
+     *
+     * @return {@link TreeNode}
+     */
+    TreeNode<Account> getGroupAccounts();
 }

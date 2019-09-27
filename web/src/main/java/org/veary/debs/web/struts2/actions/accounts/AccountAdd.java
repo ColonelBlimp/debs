@@ -40,6 +40,7 @@ import org.veary.debs.model.Account;
 import org.veary.debs.web.Config;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.persist.exceptions.PersistenceException;
+import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> Struts2 Action class for adding a new {@code Account} to the system.
@@ -55,6 +56,7 @@ public final class AccountAdd extends AccountBaseAction {
     private static final String LOG_CALLED = "called";
 
     private final Config config;
+    private final TreeNode<Account> groups;
 
     /**
      * Constructor.
@@ -67,6 +69,8 @@ public final class AccountAdd extends AccountBaseAction {
         LOG.trace(LOG_CALLED);
 
         this.config = Objects.requireNonNull(config, Messages.getParameterIsNull("config"));
+        this.groups = this.accountFacade.getGroupAccounts();
+
         this.pageBean.setPageTitle(getText("AccountAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountAdd.mainHeader"));
     }
@@ -126,7 +130,11 @@ public final class AccountAdd extends AccountBaseAction {
         return this.bean.getTypeId();
     }
 
-    public String getSelectedParent() {
-        return this.config.get("account.add.parent");
+    public String getSelectedGroup() {
+        return this.config.get("account.add.group");
+    }
+
+    public TreeNode<Account> getGroups() {
+        return this.groups;
     }
 }
