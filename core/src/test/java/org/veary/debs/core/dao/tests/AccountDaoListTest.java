@@ -49,7 +49,7 @@ public class AccountDaoListTest extends JndiTestBase {
         final List<Account> list = this.accountDao.getAllAccounts(false);
         Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
-        Assert.assertTrue(list.size() == 8);
+        Assert.assertTrue(list.size() == 9);
     }
 
     @Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -57,7 +57,7 @@ public class AccountDaoListTest extends JndiTestBase {
         final List<Account> list = this.accountDao.getAllAccounts(true);
         Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
-        Assert.assertTrue(list.size() == 8);
+        Assert.assertTrue(list.size() == 9);
     }
 
     @Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -65,8 +65,7 @@ public class AccountDaoListTest extends JndiTestBase {
         final List<Account> list = this.accountDao.getActualAccounts(false);
         Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
-        //        Assert.assertTrue(list.size() == 1);
-
+        Assert.assertTrue(list.size() == 2);
     }
 
     @Test(dependsOnMethods = { "getAllAccountsMethod" })
@@ -74,7 +73,7 @@ public class AccountDaoListTest extends JndiTestBase {
         final List<Account> list = this.accountDao.getActualAccounts(true);
         Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
-        Assert.assertTrue(list.size() == 1);
+        Assert.assertTrue(list.size() == 2);
     }
 
     @Test(dependsOnMethods = { "getAllAccountsMethod" })

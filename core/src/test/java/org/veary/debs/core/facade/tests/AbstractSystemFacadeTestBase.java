@@ -63,7 +63,7 @@ public class AbstractSystemFacadeTestBase extends JndiTestBase {
     protected Account otherFromAccount;
     protected Account otherToAccount;
 
-    protected static final String CASH_ACC_NAME = "Cash";
+    protected static final String CASH_ACC_NAME = "Cash Acc";
     protected static final String CASH_ACC_DESC = "Cash Description";
     protected static final String FUEL_ACC_NAME = "Fuel";
     protected static final String FUEL_ACC_DESC = "Fuel Description";
