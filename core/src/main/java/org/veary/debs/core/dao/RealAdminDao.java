@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.dao.AdminDao;
+import org.veary.debs.dao.Registry;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.persist.PersistenceManagerFactory;
@@ -53,13 +54,17 @@ public final class RealAdminDao implements AdminDao {
     private static final String LOG_CALLED = "called";
 
     private final PersistenceManagerFactory factory;
+    private final Registry registry;
 
     /**
      * Constructor.
      */
     @Inject
-    public RealAdminDao(PersistenceManagerFactory factory) {
+    public RealAdminDao(Registry registry, PersistenceManagerFactory factory) {
         LOG.trace(LOG_CALLED);
+
+        this.registry = Objects.requireNonNull(registry,
+            Messages.getParameterIsNull("registry")); //$NON-NLS-1$
         this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory"));
     }
 
@@ -92,71 +97,35 @@ public final class RealAdminDao implements AdminDao {
 
     private void createAccountTable(TransactionManager manager) throws PersistenceException {
         LOG.trace(LOG_CALLED);
-        StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS DEBS.ACCOUNT (")
-            .append("ID IDENTITY GENERATED ALWAYS AS IDENTITY,")
-            .append("CREATED SMALLDATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP()),")
-            .append("BALANCE DECIMAL NOT NULL DEFAULT(0.00),")
-            .append("DELETED BOOLEAN NOT NULL DEFAULT(FALSE),")
-            .append("NAME VARCHAR(50) UNIQUE NOT NULL,")
-            .append("DESCRIPTION VARCHAR(255) NOT NULL,")
-            .append("PARENT_ID BIGINT NOT NULL,")
-            .append("ACCOUNT_TYPE INT NOT NULL)");
-
-        final SqlStatement accountTable = SqlStatement.newInstance(sb.toString());
+        final SqlStatement accountTable = SqlStatement
+            .newInstance(this.registry.getSql("createAccountTable"));
         LOG.trace("Create ACCOUNT table result: {}", manager.persist(accountTable));
     }
 
     private void createEntryTable(TransactionManager manager) throws PersistenceException {
         LOG.trace(LOG_CALLED);
-        StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS DEBS.ENTRY (")
-            .append("ID IDENTITY GENERATED ALWAYS AS IDENTITY,")
-            .append("CREATED SMALLDATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP()),")
-            .append("DELETED BOOLEAN NOT NULL DEFAULT(FALSE),")
-            .append("AMOUNT DECIMAL NOT NULL DEFAULT(0.00),")
-            .append("ETYPE INT CHECK(ETYPE >= 1 AND ETYPE <= 2),")
-            .append("ACCOUNT_ID BIGINT NOT NULL CHECK(ACCOUNT_ID > 0),")
-            .append("CLEARED BOOLEAN NOT NULL DEFAULT(FALSE),")
-            .append("CLEARED_TS SMALLDATETIME NOT NULL,")
-            .append("FOREIGN KEY(ACCOUNT_ID) REFERENCES DEBS.ACCOUNT(ID))");
-
-        final SqlStatement entryTable = SqlStatement.newInstance(sb.toString());
+        final SqlStatement entryTable = SqlStatement
+            .newInstance(this.registry.getSql("createEntryTable"));
         LOG.trace("Create ENTRY table result: {}", manager.persist(entryTable));
     }
 
     private void createTransactionTable(TransactionManager manager) throws PersistenceException {
         LOG.trace(LOG_CALLED);
-        StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS DEBS.TRANSACTION (")
-            .append("ID IDENTITY GENERATED ALWAYS AS IDENTITY,")
-            .append("CREATED SMALLDATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP()),")
-            .append("DELETED BOOLEAN NOT NULL DEFAULT(FALSE),")
-            .append("TDATE DATE NOT NULL,")
-            .append("REFERENCE VARCHAR(255) NOT NULL,")
-            .append("NARRATIVE VARCHAR(255) NOT NULL,")
-            .append("EID_FROM BIGINT NOT NULL,")
-            .append("EID_TO BIGINT NOT NULL,")
-            .append("CHECK(EID_FROM > 0),")
-            .append("CHECK(EID_TO > 0),")
-            .append("CHECK(EID_FROM != EID_TO),")
-            .append("FOREIGN KEY(EID_FROM) REFERENCES DEBS.ENTRY(ID),")
-            .append("FOREIGN KEY(EID_TO) REFERENCES DEBS.ENTRY(ID))");
-
-        final SqlStatement txTable = SqlStatement.newInstance(sb.toString());
+        final SqlStatement txTable = SqlStatement
+            .newInstance(this.registry.getSql("createTransactionTable"));
         LOG.trace("Create TRANSACTION table result: {}", manager.persist(txTable));
     }
 
     // This is done here rather than via the AccountFacade because this is the ONLY Account object
     // without a parentId
     private void createBalanceGroup(TransactionManager manager) throws PersistenceException {
-        StringBuilder sb = new StringBuilder()
-            .append("INSERT INTO DEBS.ACCOUNT(NAME,DESCRIPTION,PARENT_ID,ACCOUNT_TYPE) VALUES('")
-            .append(AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString())
-            .append("','Balance Group',")
-            .append("0")
-            .append(",")
-            .append(Account.Types.BALANCE_GROUP.getId().toString())
-            .append(")");
-
-        final SqlStatement createBalanceGroup = SqlStatement.newInstance(sb.toString());
+        final SqlStatement createBalanceGroup = SqlStatement.newInstance(
+            this.registry.getSql("createAccount"));
+        createBalanceGroup.setParameter(1,
+            AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString());
+        createBalanceGroup.setParameter(2, "Balance Group (Build In)");
+        createBalanceGroup.setParameter(3, Long.valueOf(0));
+        createBalanceGroup.setParameter(4, Account.Types.BALANCE_GROUP.getId());
         LOG.trace("Insert BALANCE GROUP account result: {}", manager.persist(createBalanceGroup));
     }
 }

@@ -82,12 +82,13 @@ public final class RealAdminFacade implements AdminFacade {
         }
         Long netWorthGroupId = createNetWorthGroup(result.get().getId());
 
-        createAssetsGroup(netWorthGroupId);
+        Long assetsGroupId = createAssetsGroup(netWorthGroupId);
         createLoansGroup(netWorthGroupId);
         Long incAndExpGroupId = createIncomeAndExpensesGroup(result.get().getId());
         createIncomeGroup(incAndExpGroupId);
         createExpensesGroup(incAndExpGroupId);
         createOpeningBalanceAccount(result.get().getId());
+        createCashAccount(assetsGroupId);
     }
 
     private Long createNetWorthGroup(Long parentId) {
@@ -150,6 +151,14 @@ public final class RealAdminFacade implements AdminFacade {
             "Opening Balance (Build In)",
             parentId,
             Account.Types.RETAINED_EARNINGS);
+        return this.accountFacade.create(object);
+    }
+
+    private Long createCashAccount(Long parentId) {
+        Account object = Account.newInstance("Cash",
+            "Cash",
+            parentId,
+            Account.Types.ASSET);
         return this.accountFacade.create(object);
     }
 }

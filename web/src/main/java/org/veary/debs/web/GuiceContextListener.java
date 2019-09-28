@@ -73,8 +73,6 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         LOG.trace(LOG_CALLED);
 
         String voucherDir = servletContextEvent.getServletContext().getRealPath("vouchers");
-        //        LOG.trace("Voucher Directory: {}", () -> voucherDir);
-
         try {
             Path vDir = Files.createDirectories(Paths.get(voucherDir));
             servletContextEvent.getServletContext().setAttribute(VOUCHER_DIR_KEY, vDir);
@@ -83,7 +81,6 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         }
 
         String dbDir = servletContextEvent.getServletContext().getRealPath("WEB-INF/db");
-        //        LOG.trace("Database Directory: {}", () -> dbDir);
         try {
             if (!Files.exists(Paths.get(dbDir))) {
                 Files.createDirectories(Paths.get(dbDir));
