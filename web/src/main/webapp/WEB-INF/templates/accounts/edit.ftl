@@ -32,15 +32,17 @@
     </div>
     <div class="w-96 pl-6"></div>
   </div>
+  
   <div class="flex mb-4 items-center">
     <div class="w-32">
 <@s.label for="parent" value="Group:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.parentId" id="parent" list="parentMap" value="bean.parentId" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@f.groupHierarchy type="${bean.typeId}"/>
     </div>
     <div class="w-96 pl-6"></div>
   </div>
+  
   <div class="flex mb-4 items-center">
     <div class="w-32">
 <@s.label for="deleted" value="Deleted:" class="inline-block font-bold"/>

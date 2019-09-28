@@ -1,5 +1,6 @@
+<#-- See org.veary.debs.model.Account.Types -->
+
 <#macro page>
-<#global GROUP_TYPE=8>
 <!DOCTYPE html>
 <html lang="${pageBean.siteLocale}" class="bg-white antialiased w-full">
   <head>
@@ -58,13 +59,39 @@
 </@s.form>
 </#macro>
 
-<#macro groupHierarchy>
+<#macro groupHierarchy type>
 <table class="table-fixed w-full">
 <@s.iterator value="groups" status="stats">
 <tr><td>
-<input type="radio" name="selected" value="<@s.property value="data.id"/>" class="gl-<@s.property value="level"/>">
+<input type="radio" name="selectedGroup" value="<@s.property value="data.id"/>"
+<#if type == "20">
+  <#if data.type.id != 4>
+ disabled
+  <#else>
+ checked
+  </#if>
+<#elseif type == "21">
+  <#if data.type.id != 5>
+ disabled
+  <#else>
+ checked
+  </#if>
+<#elseif type == "22">
+  <#if data.type.id != 7>
+ disabled
+  <#else>
+ checked
+  </#if>
+<#elseif type == "23">
+  <#if data.type.id != 6>
+ disabled
+  <#else>
+ checked
+  </#if>
+</#if>
+ class="gl-<@s.property value="level"/>">
 <span class="pl-1"><@s.property value="data.name"/></span>
 </td></tr>
 </@s.iterator>
-<table>
+</table>
 </#macro>

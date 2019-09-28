@@ -39,17 +39,17 @@
 <@s.label for="parent" value="Group:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@f.groupHierarchy/>
+<@f.groupHierarchy type="${selectedType}"/>
     </div>
     <div class="w-96 pl-6"></div>
   </div>
-        <div class="flex mt-4 items-center">
-          <div class="w-32"></div>
-          <div>
-<@s.submit name="submitType" id="create" value="Create" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
-<@s.submit name="submitType" id="cancel" value="Cancel" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"/>
-          </div>
-          <div class="w-96 pl-6"></div>
-        </div>
+  <div class="flex mt-4 items-center">
+    <div class="w-32"></div>
+    <div>
+<@s.submit name="submitType" id="create" value="Create" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-2"/>
+<@s.submit name="submitType" id="cancel" value="Cancel" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-2"/>
+    </div>
+  <div class="w-96 pl-6"></div>
+</div>
 </@s.form>
 </@f.page>

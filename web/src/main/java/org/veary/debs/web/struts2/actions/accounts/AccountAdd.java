@@ -57,6 +57,7 @@ public final class AccountAdd extends AccountBaseAction {
 
     private final Config config;
     private final TreeNode<Account> groups;
+    private String selectedGroupId;
 
     /**
      * Constructor.
@@ -79,15 +80,6 @@ public final class AccountAdd extends AccountBaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
-        Integer typeId;
-        try {
-            typeId = Integer.valueOf(this.bean.getTypeId());
-        } catch (NumberFormatException e) {
-            typeId = Integer.valueOf(this.config.get("account.add.type"));
-        }
-
-        getGroupsForType(Account.Types.getType(typeId));
-
         return Action.INPUT;
     }
 
@@ -98,7 +90,7 @@ public final class AccountAdd extends AccountBaseAction {
         Account account = Account.newInstance(
             this.bean.getName(),
             this.bean.getDescription(),
-            Long.valueOf(this.bean.getParentId()),
+            Long.valueOf(this.selectedGroupId),
             Account.Types.getType(Integer.valueOf(this.bean.getTypeId())));
 
         try {
@@ -121,6 +113,8 @@ public final class AccountAdd extends AccountBaseAction {
         if (result.isPresent()) {
             addFieldError("name", getText("AccountAdd.account.name.notunique"));
         }
+
+        LOG.trace("SELECTED GROUP: {}", this.selectedGroupId);
     }
 
     public String getSelectedType() {
@@ -130,8 +124,8 @@ public final class AccountAdd extends AccountBaseAction {
         return this.bean.getTypeId();
     }
 
-    public String getSelectedGroup() {
-        return this.config.get("account.add.group");
+    public void setSelectedGroup(String groupId) {
+        this.selectedGroupId = groupId;
     }
 
     public TreeNode<Account> getGroups() {

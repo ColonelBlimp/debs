@@ -38,6 +38,7 @@ import org.veary.debs.model.Account;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.beans.AccountBean;
 import org.veary.persist.exceptions.PersistenceException;
+import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> Struts2 Action class for {@code /WEB-INF/templates/accounts/edit.ftl}
@@ -51,6 +52,8 @@ public final class AccountEdit extends AccountBaseAction {
 
     private Account original;
     private Long id;
+    private final TreeNode<Account> groups;
+    private String selectedGroupId;
 
     /**
      * Constructor.
@@ -62,6 +65,7 @@ public final class AccountEdit extends AccountBaseAction {
         super(pageBean, accountFacade);
         LOG.trace(LOG_CALLED);
 
+        this.groups = this.accountFacade.getGroupAccounts();
         this.pageBean.setPageTitle(getText("AccountEdit.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountEdit.mainHeader"));
     }
@@ -95,7 +99,7 @@ public final class AccountEdit extends AccountBaseAction {
             this.accountFacade.update(
                 this.original,
                 this.bean.getName(),
-                this.bean.getDescription(), Long.valueOf(this.bean.getParentId()),
+                this.bean.getDescription(), Long.valueOf(this.selectedGroupId),
                 Account.Types.getType(Integer.valueOf(this.bean.getTypeId())),
                 this.bean.isDeleted());
         } catch (PersistenceException e) {
@@ -134,5 +138,13 @@ public final class AccountEdit extends AccountBaseAction {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setSelectedGroup(String groupId) {
+        this.selectedGroupId = groupId;
+    }
+
+    public TreeNode<Account> getGroups() {
+        return this.groups;
     }
 }
