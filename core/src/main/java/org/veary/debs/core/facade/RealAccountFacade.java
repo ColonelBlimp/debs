@@ -163,15 +163,15 @@ public final class RealAccountFacade implements AccountFacade {
     }
 
     @Override
-    public TreeNode<Account> getChartOfAccounts() {
-        LOG.trace(LOG_CALLED);
-        return buildChartOfAccounts(getRootNode());
-    }
-
-    @Override
     public TreeNode<Account> getGroupAccounts() {
         LOG.trace(LOG_CALLED);
         return buildGroupHierarchy();
+    }
+
+    @Override
+    public TreeNode<Account> getChartOfAccounts() {
+        LOG.trace(LOG_CALLED);
+        return buildChartOfAccounts(getRootNode());
     }
 
     private TreeNode<Account> buildGroupHierarchy() {

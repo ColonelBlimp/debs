@@ -79,8 +79,8 @@ public interface AccountFacade {
      * @param original the {@code Account} to be updated
      * @param name a new unique name, or {@code null} if this field is not to be updated
      * @param description a new description, or {@code null} if this field is not to be updated
-     * @param parentId a new unique parent identifier, or {@code null} if this field is not to
-     *     be updated
+     * @param parentId a new unique parent identifier, or {@code null} if this field is not to be
+     *     updated
      * @param type a different type, or {@code null} if this field is not to be updated
      * @param isDeleted boolean
      */
@@ -114,8 +114,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all the accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getAllAccounts(boolean includeDeleted);
@@ -123,8 +122,7 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all Actual accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getActualAccounts(boolean includeDeleted);
@@ -132,18 +130,10 @@ public interface AccountFacade {
     /**
      * Returns a {@code List<Account>} of all Group accounts.
      *
-     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be
-     *     included
+     * @param includeDeleted {@code true} if accounts marked as <i>deleted</i> should be included
      * @return {@code List<Account>}
      */
     List<Account> getGroupAccounts(boolean includeDeleted);
-
-    /**
-     * Returns a {@code TreeNode<Account>} which is a hierachical tree of the chart of accounts.
-     *
-     * @return {@link TreeNode}
-     */
-    TreeNode<Account> getChartOfAccounts();
 
     /**
      * Returns all the 'group' accounts as a hierachical tree.
@@ -151,4 +141,11 @@ public interface AccountFacade {
      * @return {@link TreeNode}
      */
     TreeNode<Account> getGroupAccounts();
+
+    /**
+     * Returns a {@code TreeNode<Account>} which is a hierachical tree of the chart of accounts.
+     *
+     * @return {@link TreeNode}
+     */
+    TreeNode<Account> getChartOfAccounts();
 }

@@ -25,15 +25,16 @@
 package org.veary.debs.facade;
 
 /**
- * <b>Purpose:</b>
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Administration facade.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
 public interface AdminFacade {
 
+    /**
+     * Initialize the database with the default data ready for use.
+     */
     void initializeDatabase();
 
     void checkDatabase();
