@@ -97,7 +97,6 @@ public final class RealSystemFacade implements SystemFacade {
         // Update the parent hierarchy balances
         updateParentBalance(fromEntry.getAccountId(), fromEntry.getAmount());
         updateParentBalance(toEntry.getAccountId(), toEntry.getAmount());
-        updateBalanceAccount();
         return id;
     }
 
@@ -218,10 +217,5 @@ public final class RealSystemFacade implements SystemFacade {
             LOG.trace("Update Balance for Account: {}", () -> account.getName());
             this.accountFacade.updateBalance(account, amount);
         }
-    }
-
-    private void updateBalanceAccount() {
-        LOG.trace(LOG_CALLED);
-        //TODO: Implement
     }
 }

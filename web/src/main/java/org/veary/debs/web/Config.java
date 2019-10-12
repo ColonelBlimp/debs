@@ -31,9 +31,9 @@ import java.util.Properties;
 import org.veary.debs.exceptions.DebsException;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Global (web app) configuration utility.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> Generally, to provide default settings.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -44,7 +44,6 @@ public final class Config {
 
     /**
      * Constructor.
-     *
      */
     public Config() {
         this.props = new Properties();

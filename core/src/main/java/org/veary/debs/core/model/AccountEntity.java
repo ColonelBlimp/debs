@@ -221,6 +221,11 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
 
     @Override
     public String getDisplayBalance() {
+        // The Balance Group displays no balance
+        if (this.type.equals(Account.Types.BALANCE_GROUP)) {
+            return "";
+        }
+
         BigDecimal amount = this.balance.getValue();
         if (this.type.equals(Account.Types.RETAINED_EARNINGS)) {
             amount = amount.abs();

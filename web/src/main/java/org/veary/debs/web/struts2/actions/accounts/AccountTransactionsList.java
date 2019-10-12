@@ -86,7 +86,7 @@ public final class AccountTransactionsList extends BaseAction
     private static final Logger LOG = LogManager.getLogger(AccountTransactionsList.class);
     private static final String LOG_CALLED = "called";
 
-    private static final Comparator<AccountTransactionBean> decendingDateOrder = new TransactionDateSorter<AccountTransactionBean>(
+    private static final Comparator<AccountTransactionBean> decendingDateOrder = new TransactionDateSorter<>(
         TransactionDateSorter.SortDirection.DECENDING);
 
     private final SystemFacade systemFacade;

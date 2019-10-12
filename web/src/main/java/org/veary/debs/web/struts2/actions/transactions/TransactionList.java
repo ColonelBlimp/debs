@@ -67,7 +67,7 @@ public final class TransactionList extends TransactionBaseAction implements Sess
     private static final Logger LOG = LogManager.getLogger(TransactionList.class);
     private static final String LOG_CALLED = "called";
 
-    private static final Comparator<TransactionBean> decendingDateOrder = new TransactionDateSorter<TransactionBean>(
+    private static final Comparator<TransactionBean> decendingDateOrder = new TransactionDateSorter<>(
         TransactionDateSorter.SortDirection.DECENDING);
 
     private final Map<String, String> viewMap;
