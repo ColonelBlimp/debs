@@ -28,6 +28,7 @@ import java.util.Objects;
 
 import org.veary.debs.Messages;
 import org.veary.debs.model.Transaction;
+import org.veary.debs.web.struts2.DateSorter;
 
 /**
  * <b>Purpose:</b> To view transactions for a particular account.
@@ -35,7 +36,7 @@ import org.veary.debs.model.Transaction;
  * @author Marc L. Veary
  * @since 1.0
  */
-public final class AccountTransactionBean {
+public final class AccountTransactionBean implements DateSorter {
 
     private String id;
     private String date;
@@ -75,6 +76,7 @@ public final class AccountTransactionBean {
         this.id = id;
     }
 
+    @Override
     public String getDate() {
         return this.date;
     }

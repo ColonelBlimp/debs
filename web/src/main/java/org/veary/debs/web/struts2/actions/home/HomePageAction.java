@@ -28,6 +28,7 @@ import com.opensymphony.xwork2.Action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,7 @@ import org.veary.debs.model.Account;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.TransactionDateSorter;
 import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 import org.veary.tree.TreeNode;
 
@@ -56,6 +58,9 @@ public final class HomePageAction extends BaseAction {
 
     private static final Logger LOG = LogManager.getLogger(HomePageAction.class);
     private static final String LOG_CALLED = "called";
+
+    private static final Comparator<AccountTransactionBean> decendingDateOrder = new TransactionDateSorter<AccountTransactionBean>(
+        TransactionDateSorter.SortDirection.DECENDING);
 
     private final SystemFacade systemFacade;
     private final AccountFacade accountFacade;
@@ -166,6 +171,8 @@ public final class HomePageAction extends BaseAction {
 
             list.add(bean);
         }
+
+        Collections.sort(list, decendingDateOrder);
 
         return Collections.unmodifiableList(list);
     }

@@ -30,6 +30,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,11 @@ import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.struts2.PageBean;
+import org.veary.debs.web.struts2.actions.TransactionDateSorter;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 
 /**
- * <b>Purpose:</b> .
+ * <b>Purpose:</b> Struts2 action class handling the list view of transactions.
  *
  * @author Marc L. Veary
  * @since 1.0
@@ -65,6 +67,9 @@ public final class TransactionList extends TransactionBaseAction implements Sess
     private static final Logger LOG = LogManager.getLogger(TransactionList.class);
     private static final String LOG_CALLED = "called";
 
+    private static final Comparator<TransactionBean> decendingDateOrder = new TransactionDateSorter<TransactionBean>(
+        TransactionDateSorter.SortDirection.DECENDING);
+
     private final Map<String, String> viewMap;
     private String id;
 
@@ -78,6 +83,7 @@ public final class TransactionList extends TransactionBaseAction implements Sess
      *
      * @param pageBean {@link PageBean}
      * @param systemFacade {@link SystemFacade}
+     * @param accountFacade {@link AccountFacade}
      */
     @Inject
     public TransactionList(PageBean pageBean, SystemFacade systemFacade,
@@ -112,7 +118,6 @@ public final class TransactionList extends TransactionBaseAction implements Sess
             this.transactions = transactionListToBeanList(
                 this.systemFacade.getAllTransactionsOverPeriod(period,
                     this.includeDeleted.booleanValue()));
-
         }
 
         return Action.SUCCESS;
@@ -160,6 +165,8 @@ public final class TransactionList extends TransactionBaseAction implements Sess
                 getAccountFromId(obj.getFromEntry().getAccountId()).getName());
             bean.setToAccountName(getAccountFromId(obj.getToEntry().getAccountId()).getName());
         }
+
+        Collections.sort(list, decendingDateOrder);
 
         return Collections.unmodifiableList(list);
     }

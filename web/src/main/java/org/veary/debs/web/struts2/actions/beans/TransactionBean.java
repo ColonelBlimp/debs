@@ -26,8 +26,9 @@ package org.veary.debs.web.struts2.actions.beans;
 
 import org.veary.debs.model.Transaction;
 import org.veary.debs.web.internal.WebConstants;
+import org.veary.debs.web.struts2.DateSorter;
 
-public final class TransactionBean {
+public final class TransactionBean implements DateSorter {
 
     private String id;
     private String date;
@@ -83,6 +84,7 @@ public final class TransactionBean {
         this.fromAccountId = fromAccountId;
     }
 
+    @Override
     public String getDate() {
         return this.date;
     }

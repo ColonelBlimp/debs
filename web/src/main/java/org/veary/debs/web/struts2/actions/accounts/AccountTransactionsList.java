@@ -36,6 +36,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ import org.veary.debs.web.internal.WebConstants;
 import org.veary.debs.web.struts2.DocumentGenerator;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.TransactionDateSorter;
 import org.veary.debs.web.struts2.actions.beans.AccountTransactionBean;
 
 /**
@@ -73,8 +75,7 @@ public final class AccountTransactionsList extends BaseAction
     implements ServletContextAware, SessionAware {
 
     /**
-     * Used to retain the current listView setting when generating a voucher and across
-     * requests.
+     * Used to retain the current listView setting when generating a voucher and across requests.
      */
     public static final String LIST_VIEW_SESSION_KEY = "org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList";
 
@@ -84,6 +85,9 @@ public final class AccountTransactionsList extends BaseAction
 
     private static final Logger LOG = LogManager.getLogger(AccountTransactionsList.class);
     private static final String LOG_CALLED = "called";
+
+    private static final Comparator<AccountTransactionBean> decendingDateOrder = new TransactionDateSorter<AccountTransactionBean>(
+        TransactionDateSorter.SortDirection.DECENDING);
 
     private final SystemFacade systemFacade;
     private final AccountFacade accountFacade;
@@ -335,6 +339,8 @@ public final class AccountTransactionsList extends BaseAction
 
         this.fromColumnTotal = fromTotal;
         this.toColumnTotal = toTotal;
+
+        Collections.sort(list, decendingDateOrder);
 
         return Collections.unmodifiableList(list);
     }

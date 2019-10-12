@@ -39,9 +39,8 @@ import org.veary.debs.web.struts2.actions.BaseAction;
 import org.veary.debs.web.struts2.actions.beans.TransactionBean;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
+ * <b>Purpose:</b> Abstract base transaction Struts action class. Provides common functionality
+ * for transactions.
  *
  * @author Marc L. Veary
  * @since 1.0
