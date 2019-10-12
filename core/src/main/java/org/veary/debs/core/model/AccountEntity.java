@@ -79,7 +79,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
      */
     public AccountEntity(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,
-            Validator.getEnumValuesAsStringArray(Account.Fields.class));
+            Validator.getEnumValuesAsStringArray(Fields.class));
 
         setId((Long) dataMap.get(Fields.ID.toString()));
         setDeleted(((Boolean) dataMap.get(Fields.DELETED.toString())).booleanValue());

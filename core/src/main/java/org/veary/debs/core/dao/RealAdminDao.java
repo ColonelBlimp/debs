@@ -75,10 +75,16 @@ public final class RealAdminDao implements AdminDao {
             final TransactionManager manager = this.factory.createTransactionManager();
             manager.begin();
 
+            // Main accounting system
             createSchema(manager);
             createAccountTable(manager);
             createEntryTable(manager);
             createTransactionTable(manager);
+
+            // Wages system
+            createEmployeeTable(manager);
+
+            // Default data
             createBalanceGroup(manager);
 
             manager.commit();
@@ -127,5 +133,12 @@ public final class RealAdminDao implements AdminDao {
         createBalanceGroup.setParameter(3, Long.valueOf(0));
         createBalanceGroup.setParameter(4, Account.Types.BALANCE_GROUP.getId());
         LOG.trace("Insert BALANCE GROUP account result: {}", manager.persist(createBalanceGroup));
+    }
+
+    private void createEmployeeTable(TransactionManager manager) throws PersistenceException {
+        LOG.trace(LOG_CALLED);
+        final SqlStatement employeeTable = SqlStatement
+            .newInstance(this.registry.getSql("createEmployeeTable"));
+        LOG.trace("Create EMPLOYEE table result: {}", manager.persist(employeeTable));
     }
 }
