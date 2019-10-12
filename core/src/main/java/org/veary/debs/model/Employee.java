@@ -24,9 +24,11 @@
 
 package org.veary.debs.model;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.veary.debs.Messages;
+import org.veary.debs.core.model.EmployeeEntity;
 
 /**
  * <b>Purpose:</b> Defines the contract for all employee objects.
@@ -41,6 +43,7 @@ public interface Employee extends PersistentObject {
         CREATED("CREATED"),
         DELETED("DELETED"),
         FULLNAME("FULLNAME"),
+        NID("NID"),
         CONTACT_NUMBER("CONTACT_NUMBER");
 
         private final String name;
@@ -62,8 +65,8 @@ public interface Employee extends PersistentObject {
     }
 
     /**
-     * The fullname, includes firstname, middle names and family name. This is used for all formal
-     * documents produced by the system.
+     * The fullname, includes firstname, middle names and family name. This is used for all
+     * formal documents produced by the system.
      *
      * @return {@code String}
      */
@@ -75,4 +78,19 @@ public interface Employee extends PersistentObject {
      * @return {@code String}. A non-{@code null}, but can return an empty string.
      */
     String getContactNumber();
+
+    /**
+     * The national id number.
+     *
+     * @return {@code String}. A non-{@code null}, but can return an empty string.
+     */
+    String getNationalIdNumber();
+
+    static Employee newInstance(String fullname, String nationalIdNumber, String contactNumber) {
+        return new EmployeeEntity(fullname, nationalIdNumber, contactNumber);
+    }
+
+    static Employee newInstance(Map<String, Object> dataMap) {
+        return new EmployeeEntity(dataMap);
+    }
 }

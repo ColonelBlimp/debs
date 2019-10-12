@@ -178,7 +178,7 @@ TE.ID AS "TO_ID",TE.DELETED AS "TO_DELETED",TE.AMOUNT AS "TO_AMOUNT",TE.ETYPE AS
 	]]></method>
 <!-- Employee/Wages SQL -->
 	<method name="createEmployee"><![CDATA[
-INSERT INTO DEBS.EMPLOYEE(FULLNAME,CONTACT_NUMBER) VALUES(?,?)
+INSERT INTO DEBS.EMPLOYEE(FULLNAME,CONTACT_NUMBER,NID) VALUES(?,?,?)
 	]]></method>
 <!-- Admin SQL -->
 	<method name="createAccountTable"><![CDATA[

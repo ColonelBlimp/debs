@@ -24,7 +24,9 @@
 
 package org.veary.debs.facade;
 
+import org.veary.debs.model.Employee;
+
 public interface EmployeeFacade {
 
-    Long createEmployee();
+    Long createEmployee(Employee object);
 }

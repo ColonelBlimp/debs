@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
@@ -45,6 +47,7 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
 
     private final Registry registry;
 
+    @Inject
     public RealEmployeeDao(Registry registry, PersistenceManagerFactory factory) {
         super(factory);
         LOG.trace(LOG_CALLED);

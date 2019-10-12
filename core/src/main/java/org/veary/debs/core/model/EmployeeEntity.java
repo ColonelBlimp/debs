@@ -26,11 +26,25 @@ package org.veary.debs.core.model;
 
 import java.sql.Timestamp;
 import java.util.Map;
+import java.util.Objects;
 
+import org.veary.debs.Messages;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Employee;
 
 public class EmployeeEntity extends PersistentObjectImpl implements Employee {
+
+    private final String fullname;
+    private final String contactNumber;
+    private final String nationalIdNumber;
+
+    public EmployeeEntity(String fullname, String contactNumber, String nationalIdNumber) {
+        this.fullname = Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname"));
+        this.contactNumber = Objects.requireNonNull(contactNumber,
+            Messages.getParameterIsNull("contactNumber"));
+        this.nationalIdNumber = Objects.requireNonNull(nationalIdNumber,
+            Messages.getParameterIsNull("nationalIdNumber"));
+    }
 
     public EmployeeEntity(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,
@@ -40,15 +54,24 @@ public class EmployeeEntity extends PersistentObjectImpl implements Employee {
         setDeleted(((Boolean) dataMap.get(Employee.Fields.DELETED.toString())).booleanValue());
         setCreationTimestamp(
             ((Timestamp) dataMap.get(Employee.Fields.CREATED.toString())).toLocalDateTime());
+
+        this.fullname = (String) dataMap.get(Employee.Fields.NID.toString());
+        this.contactNumber = (String) dataMap.get(Employee.Fields.CONTACT_NUMBER.toString());
+        this.nationalIdNumber = (String) dataMap.get(Employee.Fields.NID.toString());
     }
 
     @Override
     public String getFullname() {
-        return null;
+        return this.fullname;
     }
 
     @Override
     public String getContactNumber() {
-        return null;
+        return this.contactNumber;
+    }
+
+    @Override
+    public String getNationalIdNumber() {
+        return this.nationalIdNumber;
     }
 }

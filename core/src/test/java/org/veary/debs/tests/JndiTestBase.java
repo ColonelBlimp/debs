@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.veary.debs.core.facade.RealAccountFacade;
 import org.veary.debs.core.facade.RealSystemFacade;
 import org.veary.debs.dao.AccountDao;
+import org.veary.debs.dao.EmployeeDao;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.AdminFacade;
@@ -26,6 +27,7 @@ public abstract class JndiTestBase {
     protected TransactionDao transactionDao;
     protected SystemFacade systemFacade;
     protected AdminFacade adminFacade;
+    protected EmployeeDao employeeDao;
 
     @BeforeClass
     public void setUp() {
@@ -38,6 +40,7 @@ public abstract class JndiTestBase {
         this.accountFacade = this.injector.getInstance(RealAccountFacade.class);
         this.transactionDao = this.injector.getInstance(TransactionDao.class);
         this.systemFacade = this.injector.getInstance(RealSystemFacade.class);
+        this.employeeDao = this.injector.getInstance(EmployeeDao.class);
         this.adminFacade = this.injector.getInstance(AdminFacade.class);
         this.adminFacade.initializeDatabase();
     }

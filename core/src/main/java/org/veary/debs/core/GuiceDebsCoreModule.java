@@ -28,17 +28,21 @@ import com.google.inject.AbstractModule;
 
 import org.veary.debs.core.dao.RealAccountDao;
 import org.veary.debs.core.dao.RealAdminDao;
+import org.veary.debs.core.dao.RealEmployeeDao;
 import org.veary.debs.core.dao.RealRegistry;
 import org.veary.debs.core.dao.RealTransactionDao;
 import org.veary.debs.core.facade.RealAccountFacade;
 import org.veary.debs.core.facade.RealAdminFacade;
+import org.veary.debs.core.facade.RealEmployeeFacade;
 import org.veary.debs.core.facade.RealSystemFacade;
 import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.AdminDao;
+import org.veary.debs.dao.EmployeeDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.dao.TransactionDao;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.AdminFacade;
+import org.veary.debs.facade.EmployeeFacade;
 import org.veary.debs.facade.SystemFacade;
 import org.veary.persist.PersistenceManagerFactory;
 
@@ -59,8 +63,10 @@ public class GuiceDebsCoreModule extends AbstractModule {
         bind(AccountDao.class).to(RealAccountDao.class);
         bind(TransactionDao.class).to(RealTransactionDao.class);
         bind(AdminDao.class).to(RealAdminDao.class);
+        bind(EmployeeDao.class).to(RealEmployeeDao.class);
         bind(AccountFacade.class).to(RealAccountFacade.class);
         bind(SystemFacade.class).to(RealSystemFacade.class);
         bind(AdminFacade.class).to(RealAdminFacade.class);
+        bind(EmployeeFacade.class).to(RealEmployeeFacade.class);
     }
 }

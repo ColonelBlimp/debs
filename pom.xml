@@ -67,9 +67,9 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version>
           <configuration>
-            <forkCount>3</forkCount>
+            <forkCount>2</forkCount>
             <reuseForks>true</reuseForks>
-            <argLine>-Xmx2048m -XX:MaxPermSize=512m --add-opens java.base/java.lang=com.google.guice ${argLine}</argLine>
+            <argLine>-Xmx4096m -XX:MaxPermSize=1024m --add-opens java.base/java.lang=com.google.guice ${argLine}</argLine>
           </configuration>
         </plugin>
         <plugin>
