@@ -78,6 +78,14 @@ public class EmployeeFacadeTest extends JndiTestBase {
         Assert.assertEquals(object.getContactNumber(), CONTACT_NUMBER);
     }
 
+    @Test
+    public void getByIdFail() {
+        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
+        Assert.assertNotNull(facade);
+        Optional<Employee> result = facade.getById(Long.valueOf(12345));
+        Assert.assertFalse(result.isPresent());
+    }
+
     @Test(dependsOnMethods = { "createEmployee" })
     public void getByName() {
         EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
@@ -89,5 +97,13 @@ public class EmployeeFacadeTest extends JndiTestBase {
         Assert.assertEquals(object.getFullname(), FULLNAME);
         Assert.assertEquals(object.getNationalIdNumber(), NID);
         Assert.assertEquals(object.getContactNumber(), CONTACT_NUMBER);
+    }
+
+    @Test
+    public void getByNameFail() {
+        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
+        Assert.assertNotNull(facade);
+        Optional<Employee> result = facade.getByName("Unknown");
+        Assert.assertFalse(result.isPresent());
     }
 }

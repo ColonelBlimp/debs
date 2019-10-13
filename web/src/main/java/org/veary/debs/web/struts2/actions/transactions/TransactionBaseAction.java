@@ -59,7 +59,9 @@ public abstract class TransactionBaseAction extends BaseAction {
     /**
      * Constructor.
      *
-     * @param pageBean
+     * @param pageBean {@link PageBean}
+     * @param accountFacade {@link AccountFacade}
+     * @param systemFacade {@link SystemFacade}
      */
     public TransactionBaseAction(PageBean pageBean,
         SystemFacade systemFacade, AccountFacade accountFacade) {

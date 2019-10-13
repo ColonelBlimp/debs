@@ -72,7 +72,10 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
     /**
      * Constructor.
      *
-     * @param pageBean
+     * @param pageBean {@link PageBean}
+     * @param config {@link Config}
+     * @param accountFacade {@link AccountFacade}
+     * @param systemFacade {@link SystemFacade}
      */
     @Inject
     public TransactionAdd(PageBean pageBean, Config config, AccountFacade accountFacade,
@@ -181,5 +184,9 @@ public final class TransactionAdd extends TransactionBaseAction implements Sessi
 
     public String getSelectedFromAccount() {
         return this.config.get("transaction.from.account");
+    }
+
+    public String getSelectedToAccount() {
+        return this.config.get("transaction.to.account");
     }
 }

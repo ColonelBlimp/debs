@@ -46,6 +46,13 @@ public class EmployeeEntity extends PersistentObjectImpl implements Employee {
             Messages.getParameterIsNull("nationalIdNumber"));
     }
 
+    /**
+     * Constructor.
+     *
+     * <p><b>Note:</b> This constructor is required by the {@code org.veary.persist} library.
+     *
+     * @param dataMap {@code Map<String, Object>}
+     */
     public EmployeeEntity(Map<String, Object> dataMap) {
         Validator.validateDataMap(dataMap,
             Validator.getEnumValuesAsStringArray(Employee.Fields.class));

@@ -24,15 +24,51 @@
 
 package org.veary.debs.facade;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.veary.debs.model.Employee;
 
+/**
+ * <b>Purpose:</b> Encapsulates the employee subsystem into one simple interface.
+ *
+ * <p><b>Responsibility:</b> Hides the complexity of the subsystem making it easier to use.
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
 public interface EmployeeFacade {
 
+    /**
+     * Add a new employee to the system.
+     *
+     * @param object {@link Employee} object
+     * @return {@code Long} the unique identifier
+     */
     Long create(Employee object);
 
+    /**
+     * Fetch an {@code Employee} from persistent storage.
+     *
+     * @param id the unique identifier of the employee to be retrieved
+     * @return {@code Optional<Employee>}
+     */
     Optional<Employee> getById(Long id);
 
+    /**
+     * Fetch an {@code Employee} from persistent storage.
+     *
+     * @param fullname the unique fullname of the employee to be retrieved
+     * @return {@code Optional<Employee>}
+     */
     Optional<Employee> getByName(String fullname);
+
+    /**
+     * Returns a list of all the employees.
+     *
+     * @param includeDeleted flag indicating if <i>deleted</i> employee records should be
+     *     included
+     * @return {@code List}. Non-{@code null}.
+     */
+    List<Employee> getAllEmployees(boolean includeDeleted);
 }

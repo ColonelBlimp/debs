@@ -49,7 +49,7 @@
 <@s.label for="to" value="To Account:" class="inline-block font-bold"/>
     </div>
     <div class="w-56">
-<@s.select name="bean.toAccountId" id="to" list="accountsMap" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
+<@s.select name="bean.toAccountId" id="to" list="accountsMap" value="selectedToAccount" class="bg-gray-200 p-2 w-full border-2 border-gray-200 rounded text-gray-800 focus:border-purple-500"/>
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'to'}"/></@s.fielderror></div>
   </div>

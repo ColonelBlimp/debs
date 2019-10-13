@@ -40,8 +40,8 @@ public interface Employee extends PersistentObject {
 
     enum Fields {
         ID("ID"),
-        CREATED("CREATED"),
         DELETED("DELETED"),
+        CREATED("CREATED"),
         FULLNAME("FULLNAME"),
         NID("NID"),
         CONTACT_NUMBER("CONTACT_NUMBER");
@@ -86,10 +86,29 @@ public interface Employee extends PersistentObject {
      */
     String getNationalIdNumber();
 
+    /**
+     * Static method for creating a new Employee object. Fields other than those referenced are
+     * set to their default values.
+     *
+     * @param fullname a unique name for this employee
+     * @param nationalIdNumber the employee's national id number (if they have one), otherwise
+     *     must be an empy string
+     * @param contactNumber the employee's primary contact number
+     * @return a new unpersisted {@code Employee} object
+     */
     static Employee newInstance(String fullname, String nationalIdNumber, String contactNumber) {
         return new EmployeeEntity(fullname, nationalIdNumber, contactNumber);
     }
 
+    /**
+     * Static method for creating a new Employee object from persisted data.
+     *
+     * <p><b>Note:</b> this method is required by the {@code org.veary.persist} library.
+     *
+     * @param dataMap a {@code Map<String, Object>} holding the data with which to populate the
+     *     new {@code Employee} instance.
+     * @return {@code Employee} new instance. Non-{@code null}.
+     */
     static Employee newInstance(Map<String, Object> dataMap) {
         return new EmployeeEntity(dataMap);
     }

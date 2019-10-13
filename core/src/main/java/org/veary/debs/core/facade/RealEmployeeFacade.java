@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.facade;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -89,6 +90,12 @@ public final class RealEmployeeFacade implements EmployeeFacade {
         } catch (NoResultException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Employee> getAllEmployees(boolean includeDeleted) {
+        LOG.trace(LOG_CALLED);
+        return this.dao.getAllEmployees(includeDeleted);
     }
 
     private Employee validateInput(Employee object) {
