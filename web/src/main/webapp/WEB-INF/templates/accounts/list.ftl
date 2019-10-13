@@ -5,7 +5,7 @@
 <#macro accTxDataHref>
 <@s.if test="typeId>7"> cursor-pointer" data-href="<@s.url action="transactions" namespace="accounts" ><@s.param name="id" value="id"/></@s.url>" title="View Account's Transactions" onclick="dataHrefLink(this,true);"</@s.if><#rt>
 </#macro>
-<@f.page>
+<@f.accountsPage>
 <@f.contentHeader>
 <div class="float-left w-1/2 p-3">
 <div class="float-left pr-2 font-bold">Viewing:</div><div class="float-left"><@f.listSelect/></div>
@@ -45,4 +45,4 @@
     </tbody>
   </table>
 </div>
-</@f.page>
+</@f.accountsPage>

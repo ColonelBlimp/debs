@@ -64,4 +64,9 @@
     </action>
   </package>
 
+  <package name="paye" namespace="/paye" extends="debs-base">
+    <action name="landing" class="org.veary.debs.web.struts2.actions.paye.PayeLanding">
+      <result type="freemarker" name="success">/WEB-INF/templates/paye/landing.ftl</result>
+    </action>
+  </package>
 </struts>

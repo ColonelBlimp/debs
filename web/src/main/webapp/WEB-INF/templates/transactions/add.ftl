@@ -2,7 +2,7 @@
  * org.veary.debs.web.struts2.actions.transactions.TransactionAdd
 -->
 <#import "../lib/utils.ftl" as f>
-<@f.page>
+<@f.accountsPage>
 <@f.contentHeader>
 <div class="p-3"><span class="font-bold">${pageBean.mainHeadingText}</span></div>
 </@f.contentHeader>
@@ -71,4 +71,4 @@
     <div class="w-96 pl-6"></div>
   </div>
 </@s.form>
-</@f.page>
+</@f.accountsPage>

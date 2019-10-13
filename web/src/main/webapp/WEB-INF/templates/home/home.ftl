@@ -15,7 +15,7 @@ data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="data.i
 <#macro otherAccDataHref check>
 data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherAccountId"/></@s.url>" title="View Other Account's Transactions" onclick="dataHrefLink(this,${check});"<#rt>
 </#macro>
-<@f.page>
+<@f.accountsPage>
 <@f.contentHeader>
 </@f.contentHeader>
 <div>
@@ -25,4 +25,4 @@ data-href="<@s.url action="home" namespace="/"><@s.param name="id" value="otherA
 <#include "accountTxList.ftl">
 </#if>
 </div>
-</@f.page>
+</@f.accountsPage>

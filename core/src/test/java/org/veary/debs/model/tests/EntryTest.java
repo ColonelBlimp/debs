@@ -212,7 +212,7 @@ public class EntryTest {
         dataMap1.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap1.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
 
-        Entry object1 = Entry.newInstance(dataMap1);
+        final Entry object1 = Entry.newInstance(dataMap1);
 
         Map<String, Object> dataMap2 = new HashMap<>();
         dataMap2.put(Fields.ID.toString(), Long.valueOf(3));
@@ -223,19 +223,8 @@ public class EntryTest {
         dataMap2.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
         dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
-        Entry object2 = Entry.newInstance(dataMap2);
+        final Entry object2 = Entry.newInstance(dataMap2);
 
-        Assert.assertFalse(object1.equals(object2));
-
-        dataMap2.put(Fields.ID.toString(), REAL_ID);
-        dataMap2.put(Fields.DELETED.toString(), Boolean.FALSE);
-        dataMap2.put(Fields.AMOUNT.toString(), AMOUNT.getValue());
-        dataMap2.put(Fields.ETYPE.toString(), Entry.Types.TO.getId());
-        dataMap2.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
-        dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
-        dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
-        dataMap2.put(Fields.CREATED.toString(), Timestamp.valueOf(LocalDateTime.now()));
-        object2 = Entry.newInstance(dataMap2);
         Assert.assertFalse(object1.equals(object2));
 
         dataMap2.put(Fields.ID.toString(), REAL_ID);
@@ -246,8 +235,8 @@ public class EntryTest {
         dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
         dataMap2.put(Fields.DELETED.toString(), Boolean.TRUE);
-        object2 = Entry.newInstance(dataMap2);
-        Assert.assertFalse(object1.equals(object2));
+        final Entry object4 = Entry.newInstance(dataMap2);
+        Assert.assertFalse(object1.equals(object4));
 
         dataMap2.put(Fields.ID.toString(), REAL_ID);
         dataMap2.put(Fields.CREATED.toString(), REAL_CREATION);
@@ -257,8 +246,20 @@ public class EntryTest {
         dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
         dataMap2.put(Fields.AMOUNT.toString(), new Money(BigDecimal.ZERO).getValue());
-        object2 = Entry.newInstance(dataMap2);
-        Assert.assertFalse(object1.equals(object2));
+        final Entry object5 = Entry.newInstance(dataMap2);
+        Assert.assertFalse(object1.equals(object5));
+
+        dataMap2.put(Fields.ID.toString(), REAL_ID);
+        dataMap2.put(Fields.DELETED.toString(), Boolean.FALSE);
+        dataMap2.put(Fields.AMOUNT.toString(), AMOUNT.getValue());
+        dataMap2.put(Fields.ETYPE.toString(), Entry.Types.TO.getId());
+        dataMap2.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
+        dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
+        dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
+        dataMap2.put(Fields.CREATED.toString(),
+            Timestamp.valueOf(LocalDateTime.of(2018, 1, 1, 0, 0)));
+        final Entry object3 = Entry.newInstance(dataMap2);
+        Assert.assertFalse(object1.equals(object3));
 
         dataMap2 = new HashMap<>();
         dataMap2.put(Fields.ID.toString(), REAL_ID);
@@ -269,8 +270,8 @@ public class EntryTest {
         dataMap2.put(Fields.ACCOUNT_ID.toString(), this.toAccount.getId());
         dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
-        object2 = Entry.newInstance(dataMap2);
-        Assert.assertFalse(object1.equals(object2));
+        final Entry object6 = Entry.newInstance(dataMap2);
+        Assert.assertFalse(object1.equals(object6));
 
         dataMap2 = new HashMap<>();
         dataMap2.put(Fields.ID.toString(), REAL_ID);
@@ -281,7 +282,7 @@ public class EntryTest {
         dataMap2.put(Fields.ACCOUNT_ID.toString(), Long.valueOf(123));
         dataMap2.put(Fields.CLEARED.toString(), Boolean.TRUE);
         dataMap2.put(Fields.CLEARED_TS.toString(), REAL_CLEARED_TS);
-        object2 = Entry.newInstance(dataMap2);
-        Assert.assertFalse(object1.equals(object2));
+        final Entry object7 = Entry.newInstance(dataMap2);
+        Assert.assertFalse(object1.equals(object7));
     }
 }

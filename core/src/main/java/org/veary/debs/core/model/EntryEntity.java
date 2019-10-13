@@ -304,9 +304,12 @@ public final class EntryEntity extends PersistentObjectImpl implements Entry {
     @Override
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = Objects.hash(getId(), Boolean.valueOf(isDeleted()),
-                getCreationTimestamp(), this.type,
-                this.accountId, this.amount,
+            this.hashCode = Objects.hash(getId(),
+                Boolean.valueOf(isDeleted()),
+                getCreationTimestamp(),
+                this.type,
+                this.accountId,
+                this.amount,
                 this.clearedTimestamp,
                 Boolean.valueOf(this.cleared));
         }

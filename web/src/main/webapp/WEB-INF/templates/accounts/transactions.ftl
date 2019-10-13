@@ -2,7 +2,7 @@
  * org.veary.debs.web.struts2.actions.accounts.AccountTransactionsList.java
 -->
 <#import "../lib/utils.ftl" as f>
-<@f.page>
+<@f.accountsPage>
 <#if (session.getAttribute('VOUCHER_NAME'))??>
 <span class="hidden" id="voucherName">${session.getAttribute('VOUCHER_NAME')}</span>
 <script>
@@ -71,4 +71,4 @@ document.addEventListener('readystatechange', event => {
       </tbody>
     </table>
   </div>
-</@f.page>
+</@f.accountsPage>

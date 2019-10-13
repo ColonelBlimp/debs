@@ -1,6 +1,4 @@
-<#-- See org.veary.debs.model.Account.Types -->
-
-<#macro page>
+<#macro accountsPage>
 <!DOCTYPE html>
 <html lang="${pageBean.siteLocale}" class="bg-white antialiased w-full">
   <head>
@@ -20,6 +18,40 @@
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Home">Home</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="list" namespace="transactions"/>" title="Transactions">Transactions</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="list" namespace="accounts"/>" title="Accounts">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="landing" namespace="paye"/>" title="PAYE System">PAYE System</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container border border-white mt-12">
+      <div class="mt-4 pl-1 font-bold">${pageBean.mainHeadingText}</div>
+<#nested>
+    </div>
+  </body>
+</html>
+</#macro>
+
+<#macro payePage>
+<!DOCTYPE html>
+<html lang="${pageBean.siteLocale}" class="bg-white antialiased w-full">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>${pageBean.pageTitle}</title>
+    <base href="${pageBean.siteUrl}"/>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico"/>
+    <link rel="stylesheet" href="static/css/main.css"/>
+    <link rel="stylesheet" href="static/css/custom.css"/>
+    <script src="static/js/utils.js"></script>
+  </head>
+  <body>
+    <div class="flex fixed top-0 inset-x-0 z-100 h-12 items-center pl-4 bg-purple-600 text-white">
+      <nav>
+        <ul>
+          <li class="inline-block pr-4 font-semibold"><a href="/" title="Accounts System">Accounts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="#" title="Employees">Employees</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="#" title="Contracts">Contracts</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="#" title="Payroll">Payroll</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="#" title="Tax">Tax</a></li>
         </ul>
       </nav>
     </div>

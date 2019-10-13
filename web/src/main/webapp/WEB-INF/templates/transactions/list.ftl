@@ -2,7 +2,7 @@
  *
   -->
 <#import "../lib/utils.ftl" as f>
-<@f.page>
+<@f.accountsPage>
 <@f.contentHeader>
 <div class="float-left w-1/2 p-3">
 <div class="float-left pr-2 font-bold">Viewing:</div><div class="float-left"><@f.listSelect/></div>
@@ -44,4 +44,4 @@
     </tbody>
   </table>      
 </div>
-</@f.page>
+</@f.accountsPage>
