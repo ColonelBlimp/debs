@@ -25,6 +25,7 @@
 package org.veary.debs.core.facade;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -34,6 +35,7 @@ import org.veary.debs.Messages;
 import org.veary.debs.dao.EmployeeDao;
 import org.veary.debs.facade.EmployeeFacade;
 import org.veary.debs.model.Employee;
+import org.veary.persist.exceptions.NoResultException;
 
 /**
  * <b>Purpose:</b> ?
@@ -60,16 +62,29 @@ public final class RealEmployeeFacade implements EmployeeFacade {
     }
 
     @Override
-    public Long createEmployee(Employee object) {
+    public Long create(Employee object) {
         LOG.trace(LOG_CALLED);
         return this.dao.createEmployee(validateInput(object));
+    }
+
+    @Override
+    public Optional<Employee> getById(Long id) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+
+        try {
+            return Optional.of(this.dao.getEmployeeById(id));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     private Employee validateInput(Employee object) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$
-        Objects.requireNonNull(object.getFullname(), "");
+        Objects.requireNonNull(object.getFullname(), "Fullname property cannot be null");
+        Objects.requireNonNull(object.getContactNumber(),
+            "ContactNumber property cannot be null");
         return object;
     }
-
 }

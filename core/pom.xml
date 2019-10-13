@@ -60,6 +60,10 @@
       <artifactId>jaxen</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.github.h-thurow</groupId>
       <artifactId>tomcat8jndi</artifactId>
     </dependency>

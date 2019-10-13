@@ -24,9 +24,13 @@
 
 package org.veary.debs.facade;
 
+import java.util.Optional;
+
 import org.veary.debs.model.Employee;
 
 public interface EmployeeFacade {
 
-    Long createEmployee(Employee object);
+    Long create(Employee object);
+
+    Optional<Employee> getById(Long id);
 }

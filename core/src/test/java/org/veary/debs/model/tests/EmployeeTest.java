@@ -22,16 +22,11 @@
  * SOFTWARE.
  */
 
-package org.veary.debs.core.facade.tests;
-
-import java.util.Optional;
+package org.veary.debs.model.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.veary.debs.core.facade.RealEmployeeFacade;
-import org.veary.debs.facade.EmployeeFacade;
 import org.veary.debs.model.Employee;
-import org.veary.debs.tests.JndiTestBase;
 
 /**
  * <b>Purpose:</b> ?
@@ -41,38 +36,33 @@ import org.veary.debs.tests.JndiTestBase;
  * @author Marc L. Veary
  * @since 1.0
  */
-public class EmployeeFacadeTest extends JndiTestBase {
+public class EmployeeTest {
 
-    private Long id;
+    private static final String FULLNAME = "Test Fullname";
+    private static final String NID = "Test1234567890";
+    private static final String CONTACT_NUMBER = "0000000000";
 
-    @Test
+    @Test(expectedExceptions = NullPointerException.class,
+        expectedExceptionsMessageRegExp = "Parameter 'fullname' cannot be null")
+    public void fullnameNullPointerException() {
+        Employee.newInstance(null, NID, CONTACT_NUMBER);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        expectedExceptionsMessageRegExp = "Parameter 'nationalIdNumber' cannot be null")
+    public void nidEmptyException() {
+        Employee.newInstance(FULLNAME, null, CONTACT_NUMBER);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        expectedExceptionsMessageRegExp = "Parameter 'contactNumber' cannot be null")
+    public void contactNumberNullPointerException() {
+        Employee.newInstance(FULLNAME, NID, null);
+    }
+
     public void instantiation() {
-        Assert.assertNotNull(new RealEmployeeFacade(this.employeeDao));
-    }
-
-    private static final String FULLNAME = "Test Name";
-    private static final String NID = "ABC123";
-    private static final String CONTACT_NUMBER = "0880000000";
-
-    @Test
-    public void createEmployee() {
-        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
-        Assert.assertNotNull(facade);
-
         Employee object = Employee.newInstance(FULLNAME, NID, CONTACT_NUMBER);
-        this.id = facade.create(object);
-        Assert.assertNotNull(this.id);
-        Assert.assertFalse(this.id.equals(Long.valueOf(0)));
-    }
-
-    @Test(dependsOnMethods = { "createEmployee" })
-    public void getById() {
-        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
-        Assert.assertNotNull(facade);
-
-        Optional<Employee> result = facade.getById(this.id);
-        Assert.assertTrue(result.isPresent());
-        Employee object = result.get();
+        Assert.assertNotNull(object);
         Assert.assertEquals(object.getFullname(), FULLNAME);
         Assert.assertEquals(object.getNationalIdNumber(), NID);
         Assert.assertEquals(object.getContactNumber(), CONTACT_NUMBER);

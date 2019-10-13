@@ -38,7 +38,7 @@ public class EmployeeEntity extends PersistentObjectImpl implements Employee {
     private final String contactNumber;
     private final String nationalIdNumber;
 
-    public EmployeeEntity(String fullname, String contactNumber, String nationalIdNumber) {
+    public EmployeeEntity(String fullname, String nationalIdNumber, String contactNumber) {
         this.fullname = Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname"));
         this.contactNumber = Objects.requireNonNull(contactNumber,
             Messages.getParameterIsNull("contactNumber"));
@@ -55,7 +55,7 @@ public class EmployeeEntity extends PersistentObjectImpl implements Employee {
         setCreationTimestamp(
             ((Timestamp) dataMap.get(Employee.Fields.CREATED.toString())).toLocalDateTime());
 
-        this.fullname = (String) dataMap.get(Employee.Fields.NID.toString());
+        this.fullname = (String) dataMap.get(Employee.Fields.FULLNAME.toString());
         this.contactNumber = (String) dataMap.get(Employee.Fields.CONTACT_NUMBER.toString());
         this.nationalIdNumber = (String) dataMap.get(Employee.Fields.NID.toString());
     }

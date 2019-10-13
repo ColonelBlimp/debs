@@ -63,7 +63,8 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
         final SqlStatement insert = SqlStatement
             .newInstance(this.registry.getSql("createEmployee")); //$NON-NLS-1$
         insert.setParameter(1, object.getFullname());
-        insert.setParameter(2, object.getContactNumber());
+        insert.setParameter(2, object.getNationalIdNumber());
+        insert.setParameter(3, object.getContactNumber());
 
         final TransactionManager manager = this.factory.createTransactionManager();
         manager.begin();
@@ -81,7 +82,14 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
     @Override
     public Employee getEmployeeById(Long id) {
         LOG.trace(LOG_CALLED);
-        return null;
+
+        Objects.requireNonNull(id, Messages.getParameterIsNull("id")); //$NON-NLS-1$
+
+        final SqlStatement select = SqlStatement
+            .newInstance(this.registry.getSql("getEmployeeById")); //$NON-NLS-1$
+        select.setParameter(1, id);
+
+        return executeAndReturnSingleResult(select, Employee.class);
     }
 
     @Override
