@@ -183,6 +183,9 @@ INSERT INTO DEBS.EMPLOYEE(FULLNAME,NID,CONTACT_NUMBER) VALUES(?,?,?)
 	<method name="getEmployeeById"><![CDATA[
 SELECT * FROM DEBS.EMPLOYEE WHERE ID=?
 	]]></method>
+	<method name="getEmployeeByName"><![CDATA[
+SELECT * FROM DEBS.EMPLOYEE WHERE FULLNAME=?
+	]]></method>
 <!-- Admin SQL -->
 	<method name="createAccountTable"><![CDATA[
 CREATE TABLE IF NOT EXISTS DEBS.ACCOUNT (

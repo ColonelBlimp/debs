@@ -80,11 +80,10 @@ public final class RealAdminFacade implements AdminFacade {
             throw new DebsException("Unable to fetch the "
                 + AccountFacade.BuiltInAccounts.BALANCE_GROUP.toString() + " account!");
         }
-        Long netWorthGroupId = createNetWorthGroup(result.get().getId());
-
-        Long assetsGroupId = createAssetsGroup(netWorthGroupId);
+        final Long netWorthGroupId = createNetWorthGroup(result.get().getId());
+        final Long assetsGroupId = createAssetsGroup(netWorthGroupId);
         createLoansGroup(netWorthGroupId);
-        Long incAndExpGroupId = createIncomeAndExpensesGroup(result.get().getId());
+        final Long incAndExpGroupId = createIncomeAndExpensesGroup(result.get().getId());
         createIncomeGroup(incAndExpGroupId);
         createExpensesGroup(incAndExpGroupId);
         createOpeningBalanceAccount(result.get().getId());

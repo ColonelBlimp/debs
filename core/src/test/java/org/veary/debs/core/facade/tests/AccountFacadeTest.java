@@ -35,6 +35,7 @@ import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.model.Account;
 import org.veary.debs.model.Account.Types;
 import org.veary.debs.tests.JndiTestBase;
+import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> ?
@@ -192,5 +193,13 @@ public class AccountFacadeTest extends JndiTestBase {
         result = facade.getByName(NEW_NAME);
         Assert.assertFalse(result.isEmpty());
         Assert.assertTrue(result.get().getBalance().eq(MONEY));
+    }
+
+    @Test
+    public void groupAccountsList() {
+        AccountFacade facade = new RealAccountFacade(this.accountDao);
+        Assert.assertNotNull(facade);
+        TreeNode<Account> tree = facade.getGroupAccounts();
+        Assert.assertNotNull(tree);
     }
 }

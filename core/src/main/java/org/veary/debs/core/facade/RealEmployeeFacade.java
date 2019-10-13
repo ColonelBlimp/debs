@@ -79,6 +79,18 @@ public final class RealEmployeeFacade implements EmployeeFacade {
         }
     }
 
+    @Override
+    public Optional<Employee> getByName(String fullname) {
+        LOG.trace(LOG_CALLED);
+        Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname")); //$NON-NLS-1$
+
+        try {
+            return Optional.of(this.dao.getEmployeeByName(fullname));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
     private Employee validateInput(Employee object) {
         LOG.trace(LOG_CALLED);
         Objects.requireNonNull(object, Messages.getParameterIsNull("object")); //$NON-NLS-1$

@@ -77,4 +77,17 @@ public class EmployeeFacadeTest extends JndiTestBase {
         Assert.assertEquals(object.getNationalIdNumber(), NID);
         Assert.assertEquals(object.getContactNumber(), CONTACT_NUMBER);
     }
+
+    @Test(dependsOnMethods = { "createEmployee" })
+    public void getByName() {
+        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
+        Assert.assertNotNull(facade);
+
+        Optional<Employee> result = facade.getByName(FULLNAME);
+        Assert.assertTrue(result.isPresent());
+        Employee object = result.get();
+        Assert.assertEquals(object.getFullname(), FULLNAME);
+        Assert.assertEquals(object.getNationalIdNumber(), NID);
+        Assert.assertEquals(object.getContactNumber(), CONTACT_NUMBER);
+    }
 }

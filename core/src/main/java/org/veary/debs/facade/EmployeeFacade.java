@@ -33,4 +33,6 @@ public interface EmployeeFacade {
     Long create(Employee object);
 
     Optional<Employee> getById(Long id);
+
+    Optional<Employee> getByName(String fullname);
 }

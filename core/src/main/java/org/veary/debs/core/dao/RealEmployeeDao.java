@@ -95,7 +95,14 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
     @Override
     public Employee getEmployeeByName(String fullname) {
         LOG.trace(LOG_CALLED);
-        return null;
+
+        Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname")); //$NON-NLS-1$
+
+        final SqlStatement select = SqlStatement
+            .newInstance(this.registry.getSql("getEmployeeByName")); //$NON-NLS-1$
+        select.setParameter(1, fullname);
+
+        return executeAndReturnSingleResult(select, Employee.class);
     }
 
     @Override
