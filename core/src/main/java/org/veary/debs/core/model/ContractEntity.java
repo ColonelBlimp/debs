@@ -45,6 +45,8 @@ import org.veary.debs.model.Contract;
  */
 public final class ContractEntity extends PersistentObjectImpl implements Contract {
 
+    private volatile int hashCode = 0;
+
     private final Long employeeId;
     private final LocalDate startDate;
     private final LocalDate endDate;
@@ -110,5 +112,41 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
     @Override
     public Money getMonthlySalary() {
         return this.monthlySalary;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.hashCode == 0) {
+            this.hashCode = Objects.hash(
+                getId(),
+                Boolean.valueOf(isDeleted()),
+                getCreationTimestamp(),
+                this.employeeId,
+                this.startDate,
+                this.endDate,
+                this.monthlySalary);
+        }
+        return this.hashCode;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (!(that instanceof ContractEntity)) {
+            return false;
+        }
+
+        if (this == that) {
+            return true;
+        }
+
+        final ContractEntity other = (ContractEntity) that;
+
+        return getId().equals(other.getId())
+            && isDeleted() == other.isDeleted()
+            && getCreationTimestamp().equals(other.getCreationTimestamp())
+            && this.employeeId.equals(other.employeeId)
+            && this.startDate.equals(other.startDate)
+            && this.endDate.equals(other.endDate)
+            && this.monthlySalary.eq(other.monthlySalary);
     }
 }

@@ -58,10 +58,11 @@ public interface EmployeeFacade {
     /**
      * Fetch an {@code Employee} from persistent storage.
      *
-     * @param fullname the unique fullname of the employee to be retrieved
+     * @param identityNumber the unique <i>national identity number</i> of the employee to be
+     *     retrieved
      * @return {@code Optional<Employee>}
      */
-    Optional<Employee> getByName(String fullname);
+    Optional<Employee> getByIdentityNumber(String identityNumber);
 
     /**
      * Returns a list of all the employees.

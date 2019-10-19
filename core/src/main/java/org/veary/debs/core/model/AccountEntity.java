@@ -196,7 +196,7 @@ public final class AccountEntity extends PersistentObjectImpl implements Account
             return true;
         }
 
-        AccountEntity other = (AccountEntity) that;
+        final AccountEntity other = (AccountEntity) that;
 
         return getId().equals(other.getId())
             && isDeleted() == other.isDeleted()

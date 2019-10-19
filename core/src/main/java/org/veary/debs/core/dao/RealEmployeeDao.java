@@ -39,6 +39,7 @@ import org.veary.debs.model.Employee;
 import org.veary.persist.PersistenceManagerFactory;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
+import org.veary.persist.exceptions.NoResultException;
 
 public final class RealEmployeeDao extends AbstractDao<Employee> implements EmployeeDao {
 
@@ -93,14 +94,14 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
     }
 
     @Override
-    public Employee getEmployeeByName(String fullname) {
+    public Employee getEmployeeByIdentityNumber(String number) {
         LOG.trace(LOG_CALLED);
 
-        Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname")); //$NON-NLS-1$
+        Objects.requireNonNull(number, Messages.getParameterIsNull("number")); //$NON-NLS-1$
 
         final SqlStatement select = SqlStatement
-            .newInstance(this.registry.getSql("getEmployeeByName")); //$NON-NLS-1$
-        select.setParameter(1, fullname);
+            .newInstance(this.registry.getSql("getEmployeeByIdentityNumber")); //$NON-NLS-1$
+        select.setParameter(1, number);
 
         return executeAndReturnSingleResult(select, Employee.class);
     }
@@ -108,6 +109,21 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
     @Override
     public List<Employee> getAllEmployees(boolean includeDeleted) {
         LOG.trace(LOG_CALLED);
-        return Collections.emptyList();
+
+        String key = "getAllEmployees"; //$NON-NLS-1$
+        if (includeDeleted) {
+            key = "getAllEmployeesIncludeDeleted"; //$NON-NLS-1$
+        }
+
+        return getEmployeeList(key);
+    }
+
+    private List<Employee> getEmployeeList(String key) {
+        try {
+            return executeAndReturnListResult(
+                SqlStatement.newInstance(this.registry.getSql(key)), Employee.class);
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
     }
 }

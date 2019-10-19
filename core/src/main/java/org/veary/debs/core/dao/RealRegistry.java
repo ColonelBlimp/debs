@@ -24,8 +24,10 @@
 
 package org.veary.debs.core.dao;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,24 +78,7 @@ public final class RealRegistry implements Registry {
     public RealRegistry() {
         LOG.trace(LOG_CALLED);
         this.systemRegistry = new HashMap<>();
-        init("system.xml"); //$NON-NLS-1$
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param filename the name of the file containing the SQL statements which is located on
-     *     the classpath
-     */
-    public RealRegistry(String... filename) {
-        LOG.trace(LOG_CALLED);
-        this.systemRegistry = new HashMap<>();
-
-        String xmlFile = "system.xml"; //$NON-NLS-1$
-        if (filename.length > 0) {
-            xmlFile = filename[0];
-        }
-        init(xmlFile);
+        init("sql"); //$NON-NLS-1$
     }
 
     @Override
@@ -106,13 +91,18 @@ public final class RealRegistry implements Registry {
         return Objects.requireNonNull(this.systemRegistry.get(key));
     }
 
-    private void init(String fileName) {
+    private void init(String srcDir) {
         LOG.trace(LOG_CALLED);
-        readXmlFile(fileName, "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$
-            for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
-                parseMethodNode(this.systemRegistry, method);
-            }
-        });
+
+        for (File file : getResourceFolderFiles(srcDir)) {
+            String fileName = srcDir + "/" + file.getName();
+            LOG.debug("Parsing: {}", () -> fileName);
+            readXmlFile(fileName, "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$
+                for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
+                    parseMethodNode(this.systemRegistry, method);
+                }
+            });
+        }
     }
 
     private void readXmlFile(String fileName, String element, String nodeSelector,
@@ -144,5 +134,13 @@ public final class RealRegistry implements Registry {
         final String cdata = node.getText()
             .replaceAll("\\r|\\n", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         map.put(methodName, cdata);
+    }
+
+    private File[] getResourceFolderFiles(String srcDir) {
+        LOG.trace(LOG_CALLED);
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        final URL url = loader.getResource(srcDir);
+        final String path = url.getPath();
+        return new File(path).listFiles();
     }
 }

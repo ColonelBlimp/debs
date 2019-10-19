@@ -81,12 +81,12 @@ public final class RealEmployeeFacade implements EmployeeFacade {
     }
 
     @Override
-    public Optional<Employee> getByName(String fullname) {
+    public Optional<Employee> getByIdentityNumber(String identityNumber) {
         LOG.trace(LOG_CALLED);
-        Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname")); //$NON-NLS-1$
+        Objects.requireNonNull(identityNumber, Messages.getParameterIsNull("identityNumber")); //$NON-NLS-1$
 
         try {
-            return Optional.of(this.dao.getEmployeeByName(fullname));
+            return Optional.of(this.dao.getEmployeeByIdentityNumber(identityNumber));
         } catch (NoResultException e) {
             return Optional.empty();
         }

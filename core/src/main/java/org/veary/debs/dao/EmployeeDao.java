@@ -45,7 +45,7 @@ public interface EmployeeDao {
 
     Employee getEmployeeById(Long id);
 
-    Employee getEmployeeByName(String fullname);
+    Employee getEmployeeByIdentityNumber(String number);
 
     List<Employee> getAllEmployees(boolean includeDeleted);
 }

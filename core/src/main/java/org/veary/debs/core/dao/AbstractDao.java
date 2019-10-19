@@ -32,7 +32,6 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
-import org.veary.debs.model.Account;
 import org.veary.persist.PersistenceManagerFactory;
 import org.veary.persist.QueryManager;
 import org.veary.persist.SqlStatement;
@@ -71,10 +70,10 @@ abstract class AbstractDao<T> {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<T> executeAndReturnListResult(SqlStatement statement) {
+    protected List<T> executeAndReturnListResult(SqlStatement statement, Class<T> entityCLass) {
         LOG.trace(LOG_CALLED);
         final QueryManager manager = this.factory.createQueryManager();
-        final List<Object> results = manager.createQuery(statement, Account.class).execute()
+        final List<Object> results = manager.createQuery(statement, entityCLass).execute()
             .getResultList();
 
         final List<T> list = new ArrayList<>(results.size());

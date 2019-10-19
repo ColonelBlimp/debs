@@ -36,6 +36,4 @@ public interface AdminFacade {
      * Initialize the database with the default data ready for use.
      */
     void initializeDatabase();
-
-    void checkDatabase();
 }

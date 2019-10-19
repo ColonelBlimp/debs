@@ -200,7 +200,7 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
     private List<Account> getAccountsList(String key) {
         try {
             return executeAndReturnListResult(
-                SqlStatement.newInstance(this.registry.getSql(key)));
+                SqlStatement.newInstance(this.registry.getSql(key)), Account.class);
         } catch (NoResultException e) {
             return Collections.emptyList();
         }

@@ -27,22 +27,10 @@ package org.veary.debs.core.dao.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.dao.RealRegistry;
-import org.veary.debs.exceptions.DebsException;
 
 public class RegistryTest {
 
     private RealRegistry registry;
-
-    @Test(expectedExceptions = DebsException.class)
-    public void instantationUnknownException() {
-        new RealRegistry("unknown.xml"); //$NON-NLS-1$
-    }
-
-    @Test
-    public void instantationBlankException() {
-        String[] vars = {};
-        new RealRegistry(vars);
-    }
 
     @Test
     public void instantiationWithoutFilename() {

@@ -24,6 +24,7 @@
 
 package org.veary.debs.core.facade.tests;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.testng.Assert;
@@ -87,11 +88,11 @@ public class EmployeeFacadeTest extends JndiTestBase {
     }
 
     @Test(dependsOnMethods = { "createEmployee" })
-    public void getByName() {
+    public void getByIdenityNumber() {
         EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
         Assert.assertNotNull(facade);
 
-        Optional<Employee> result = facade.getByName(FULLNAME);
+        Optional<Employee> result = facade.getByIdentityNumber(NID);
         Assert.assertTrue(result.isPresent());
         Employee object = result.get();
         Assert.assertEquals(object.getFullname(), FULLNAME);
@@ -103,7 +104,24 @@ public class EmployeeFacadeTest extends JndiTestBase {
     public void getByNameFail() {
         EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
         Assert.assertNotNull(facade);
-        Optional<Employee> result = facade.getByName("Unknown");
+        Optional<Employee> result = facade.getByIdentityNumber("Unknown");
         Assert.assertFalse(result.isPresent());
+    }
+
+    private static final String NID_NEW = "DEF456";
+
+    @Test(dependsOnMethods = { "createEmployee" })
+    public void getAllEmployeesNonDeleted() {
+        EmployeeFacade facade = this.injector.getInstance(EmployeeFacade.class);
+        Assert.assertNotNull(facade);
+
+        Employee object = Employee.newInstance(FULLNAME, NID_NEW, CONTACT_NUMBER);
+        Long id = facade.create(object);
+        Assert.assertNotNull(id);
+        Assert.assertFalse(id.equals(Long.valueOf(0)));
+
+        List<Employee> list = facade.getAllEmployees(false);
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
     }
 }

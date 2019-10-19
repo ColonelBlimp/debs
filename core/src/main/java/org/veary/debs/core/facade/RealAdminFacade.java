@@ -64,12 +64,6 @@ public final class RealAdminFacade implements AdminFacade {
     }
 
     @Override
-    public void checkDatabase() {
-        LOG.trace(LOG_CALLED);
-
-    }
-
-    @Override
     public void initializeDatabase() {
         LOG.trace(LOG_CALLED);
         this.adminDao.initializeDatabase();
