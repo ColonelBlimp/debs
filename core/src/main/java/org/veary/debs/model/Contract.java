@@ -46,7 +46,7 @@ public interface Contract extends PersistentObject {
         CREATED("CREATED"),
         EMPLOYEE_ID("EMPLOYEE_ID"),
         START_DATE("START_DATE"),
-        END_DATE("END_DATE"),
+        END_DATE("EXPIRY_DATE"),
         MONTHLY_SALARY("MONTHLY_SALARY");
 
         private final String name;
@@ -87,7 +87,7 @@ public interface Contract extends PersistentObject {
      *
      * @return {@link LocalDate}
      */
-    LocalDate getEndDate();
+    LocalDate getExpiryDate();
 
     /**
      * Returns the monthly salary for this contact.
@@ -96,9 +96,18 @@ public interface Contract extends PersistentObject {
      */
     Money getMonthlySalary();
 
-    static Contract newInstance(Long employeeId, LocalDate startDate, LocalDate endDate,
+    /**
+     * Static method for creating a new Contract object.
+     * 
+     * @param employeeId
+     * @param startDate
+     * @param expiryDate
+     * @param monthlySalary
+     * @return
+     */
+    static Contract newInstance(Long employeeId, LocalDate startDate, LocalDate expiryDate,
         Money monthlySalary) {
-        return new ContractEntity(employeeId, startDate, endDate, monthlySalary);
+        return new ContractEntity(employeeId, startDate, expiryDate, monthlySalary);
     }
 
     /**

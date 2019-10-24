@@ -37,7 +37,7 @@ import org.veary.debs.model.Contract;
 
 /**
  * <b>Purpose:</b> Concrete implementation of the {@link Contract} interface.
- * 
+ *
  * @author Marc L. Veary
  * @since 1.0
  */
@@ -47,7 +47,7 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
 
     private final Long employeeId;
     private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final LocalDate expiryDate;
     private final Money monthlySalary;
 
     /**
@@ -55,16 +55,17 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
      *
      * @param employeeId unique identifier of the associated Employee
      * @param startDate {@link LocalDate}
-     * @param endDate {@link LocalDate}
+     * @param expiryDate {@link LocalDate}
      * @param monthlySalary the monthly salary of this contract
      */
-    public ContractEntity(Long employeeId, LocalDate startDate, LocalDate endDate,
+    public ContractEntity(Long employeeId, LocalDate startDate, LocalDate expiryDate,
         Money monthlySalary) {
         this.employeeId = Objects.requireNonNull(employeeId,
             Messages.getParameterIsNull("employeeId"));
         this.startDate = Objects.requireNonNull(startDate,
             Messages.getParameterIsNull("startDate"));
-        this.endDate = Objects.requireNonNull(endDate, Messages.getParameterIsNull("endDate"));
+        this.expiryDate = Objects.requireNonNull(expiryDate,
+            Messages.getParameterIsNull("expiryDate"));
         this.monthlySalary = Objects.requireNonNull(monthlySalary,
             Messages.getParameterIsNull("monthlySalary"));
     }
@@ -87,7 +88,7 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
 
         this.employeeId = (Long) dataMap.get(Fields.EMPLOYEE_ID.toString());
         this.startDate = (LocalDate) dataMap.get(Fields.START_DATE.toString());
-        this.endDate = (LocalDate) dataMap.get(Fields.END_DATE.toString());
+        this.expiryDate = (LocalDate) dataMap.get(Fields.END_DATE.toString());
         this.monthlySalary = new Money(
             (BigDecimal) dataMap.get(Fields.MONTHLY_SALARY.toString()));
     }
@@ -103,8 +104,8 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
     }
 
     @Override
-    public LocalDate getEndDate() {
-        return this.endDate;
+    public LocalDate getExpiryDate() {
+        return this.expiryDate;
     }
 
     @Override
@@ -121,7 +122,7 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
                 getCreationTimestamp(),
                 this.employeeId,
                 this.startDate,
-                this.endDate,
+                this.expiryDate,
                 this.monthlySalary);
         }
         return this.hashCode;
@@ -144,7 +145,7 @@ public final class ContractEntity extends PersistentObjectImpl implements Contra
             && getCreationTimestamp().equals(other.getCreationTimestamp())
             && this.employeeId.equals(other.employeeId)
             && this.startDate.equals(other.startDate)
-            && this.endDate.equals(other.endDate)
+            && this.expiryDate.equals(other.expiryDate)
             && this.monthlySalary.eq(other.monthlySalary);
     }
 }
