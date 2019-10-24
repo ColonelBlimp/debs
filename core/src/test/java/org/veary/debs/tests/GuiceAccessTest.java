@@ -24,28 +24,22 @@
 
 package org.veary.debs.tests;
 
-import com.google.inject.jndi.JndiIntegration;
-import com.google.inject.name.Names;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.veary.debs.dao.Registry;
 
-import java.io.File;
+/**
+ * <b>Purpose:</b> ?
+ *
+ * <p><b>Responsibility:</b>
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
+public class GuiceAccessTest extends JndiTestBase {
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
-import org.veary.debs.core.GuiceDebsCoreModule;
-
-public class GuicePersistTestModule extends GuiceDebsCoreModule {
-
-    @Override
-    protected void configure() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("sql").getFile());
-
-        bindConstant().annotatedWith(Names.named("SQL_DIR")).to(file.getAbsolutePath());
-        bind(Context.class).to(InitialContext.class);
-        bind(DataSource.class)
-            .toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs")); //$NON-NLS-1$
-        super.configure();
+    @Test
+    public void injector() {
+        Assert.assertNotNull(this.injector.getInstance(Registry.class));
     }
 }

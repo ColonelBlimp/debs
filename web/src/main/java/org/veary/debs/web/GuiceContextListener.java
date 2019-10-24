@@ -28,6 +28,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.jndi.JndiIntegration;
+import com.google.inject.name.Names;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import javax.inject.Singleton;
 import javax.naming.Context;
@@ -63,13 +65,15 @@ import org.veary.debs.web.struts2.actions.beans.RealPageBean;
 public final class GuiceContextListener extends GuiceServletContextListener {
 
     public static final String VOUCHER_DIR_KEY = "VOUCHER_DIR";
+    public static final String BACKUP_DIR_KEY = "BACKUP_DIR";
 
     private static final Logger LOG = LogManager.getLogger(GuiceContextListener.class);
     private static final String LOG_CALLED = "called";
 
+    private String sqlDir;
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        super.contextInitialized(servletContextEvent);
         LOG.trace(LOG_CALLED);
 
         String voucherDir = servletContextEvent.getServletContext().getRealPath("vouchers");
@@ -89,14 +93,28 @@ public final class GuiceContextListener extends GuiceServletContextListener {
         } catch (DebsException | IOException e) {
             throw new DebsException(e);
         }
+
+        String backupDir = servletContextEvent.getServletContext().getRealPath("backups");
+        try {
+            if (!Files.exists(Paths.get(backupDir))) {
+                Path bDir = Files.createDirectories(Paths.get(backupDir));
+                servletContextEvent.getServletContext().setAttribute(BACKUP_DIR_KEY, bDir);
+            }
+        } catch (DebsException | IOException e) {
+            throw new DebsException(e);
+        }
+
+        this.sqlDir = Objects
+            .requireNonNull(servletContextEvent.getServletContext().getRealPath("WEB-INF/sql"));
+
+        super.contextInitialized(servletContextEvent);
     }
 
     @Override
     protected Injector getInjector() {
+        LOG.trace(LOG_CALLED);
         return Guice.createInjector(
-            new GuiceDebsCoreModule(),
             new AbstractModule() {
-
                 @Override
                 protected void configure() {
                     bind(Context.class).to(InitialContext.class);
@@ -106,8 +124,11 @@ public final class GuiceContextListener extends GuiceServletContextListener {
                     bind(PageBean.class).to(RealPageBean.class);
                     bind(Config.class);
                     bind(DocumentGenerator.class).to(PdfDocumentGenerator.class);
+                    bindConstant().annotatedWith(Names.named("SQL_DIR"))
+                        .to(GuiceContextListener.this.sqlDir);
                 }
             },
+            new GuiceDebsCoreModule(),
             new Struts2GuicePluginModule(),
             new ServletModule() {
 

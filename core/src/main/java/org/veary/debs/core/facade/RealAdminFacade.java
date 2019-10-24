@@ -24,6 +24,11 @@
 
 package org.veary.debs.core.facade;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,6 +42,9 @@ import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.AccountFacade;
 import org.veary.debs.facade.AdminFacade;
 import org.veary.debs.model.Account;
+import org.veary.persist.PersistenceManagerFactory;
+import org.veary.persist.SqlStatement;
+import org.veary.persist.TransactionManager;
 
 /**
  * <b>Purpose:</b> Concrete implementation of the {@link AdminFacade} interface.
@@ -51,16 +59,19 @@ public final class RealAdminFacade implements AdminFacade {
 
     private final AdminDao adminDao;
     private final AccountFacade accountFacade;
+    private final PersistenceManagerFactory factory;
 
     /**
      * Constructor.
      */
     @Inject
-    public RealAdminFacade(AdminDao adminDao, AccountFacade accountFacade) {
+    public RealAdminFacade(AdminDao adminDao, AccountFacade accountFacade,
+        PersistenceManagerFactory factory) {
         LOG.trace(LOG_CALLED);
         this.accountFacade = Objects.requireNonNull(accountFacade,
             Messages.getParameterIsNull("accountFacade"));
         this.adminDao = Objects.requireNonNull(adminDao, Messages.getParameterIsNull("adminDao"));
+        this.factory = Objects.requireNonNull(factory, Messages.getParameterIsNull("factory"));
     }
 
     @Override
@@ -82,6 +93,25 @@ public final class RealAdminFacade implements AdminFacade {
         createExpensesGroup(incAndExpGroupId);
         createOpeningBalanceAccount(result.get().getId());
         createCashAccount(assetsGroupId);
+    }
+
+    @Override
+    public void backupDatabase(String backupDirectory) {
+        LOG.trace(LOG_CALLED);
+
+        Objects.requireNonNull(backupDirectory, Messages.getParameterIsNull("backupDirectory"));
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("uuuuMMddmmss"))
+            + ".zip";
+        Path backupPath = Paths.get(backupDirectory + File.separator + fileName);
+
+        LOG.trace("Database Backup: {}", backupPath);
+        final SqlStatement backup = SqlStatement.newInstance("BACKUP TO ?");
+        backup.setParameter(1, backupPath.toString());
+
+        final TransactionManager manager = this.factory.createTransactionManager();
+        manager.begin();
+        manager.persist(backup);
+        manager.commit();
     }
 
     private Long createNetWorthGroup(Long parentId) {

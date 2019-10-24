@@ -50,11 +50,21 @@ public class DebsContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         LOG.trace(LOG_CALLED);
         if (sce.getServletContext().getAttribute("INIT_DB") != null) {
-            Injector injector = (Injector) sce.getServletContext()
+            final Injector injector = (Injector) sce.getServletContext()
                 .getAttribute(Injector.class.getName());
             LOG.info("Initializing the database");
-            AdminFacade facade = injector.getInstance(AdminFacade.class);
+            final AdminFacade facade = injector.getInstance(AdminFacade.class);
             facade.initializeDatabase();
         }
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        LOG.trace(LOG_CALLED);
+        final Injector injector = (Injector) sce.getServletContext()
+            .getAttribute(Injector.class.getName());
+        final AdminFacade facade = injector.getInstance(AdminFacade.class);
+        facade.backupDatabase(
+            (String) sce.getServletContext().getAttribute(GuiceContextListener.BACKUP_DIR_KEY));
     }
 }

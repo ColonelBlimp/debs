@@ -24,6 +24,8 @@
 
 package org.veary.debs.core.dao.tests;
 
+import java.io.File;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.veary.debs.core.dao.RealRegistry;
@@ -34,7 +36,9 @@ public class RegistryTest {
 
     @Test
     public void instantiationWithoutFilename() {
-        this.registry = new RealRegistry();
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("sql").getFile());
+        this.registry = new RealRegistry(file.getAbsolutePath());
     }
 
     @Test(dependsOnMethods = { "instantiationWithoutFilename" })

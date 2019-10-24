@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE system [
+<!ELEMENT system (method+)>
+<!ELEMENT method (#PCDATA)>
+<!ATTLIST method name CDATA "">
+]>
+<system>
+	<method name="createEmployee"><![CDATA[
+INSERT INTO DEBS.EMPLOYEE(FULLNAME,NID,CONTACT_NUMBER) VALUES(?,?,?)
+	]]></method>
+	<method name="getEmployeeById"><![CDATA[
+SELECT * FROM DEBS.EMPLOYEE WHERE ID=?
+	]]></method>
+	<method name="getEmployeeByIdentityNumber"><![CDATA[
+SELECT * FROM DEBS.EMPLOYEE WHERE NID=?
+	]]></method>
+	<method name="getAllEmployees"><![CDATA[
+SELECT * FROM DEBS.EMPLOYEE WHERE DELETED=FALSE
+	]]></method>
+	<method name="getAllEmployeesIncludeDeleted"><![CDATA[
+SELECT * FROM DEBS.EMPLOYEE
+	]]></method>
+</system>

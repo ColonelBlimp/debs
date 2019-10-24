@@ -36,4 +36,11 @@ public interface AdminFacade {
      * Initialize the database with the default data ready for use.
      */
     void initializeDatabase();
+
+    /**
+     * Backup the database.
+     *
+     * @param backupDirectory String path to the backup directory
+     */
+    void backupDatabase(String backupDirectory);
 }

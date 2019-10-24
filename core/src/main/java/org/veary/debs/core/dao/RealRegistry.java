@@ -24,15 +24,20 @@
 
 package org.veary.debs.core.dao;
 
+import com.google.inject.name.Named;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,11 +79,14 @@ public final class RealRegistry implements Registry {
     /**
      * Constructor. Assumes that the file containing the system's SQL statements is named
      * {@code system.xml} and is located on the classpath.
+     *
+     * @param srcDir source directory for the XML files containing the system's SQL statements
      */
-    public RealRegistry() {
+    @Inject
+    public RealRegistry(@Named("SQL_DIR") String srcDir) {
         LOG.trace(LOG_CALLED);
         this.systemRegistry = new HashMap<>();
-        init("sql"); //$NON-NLS-1$
+        init(srcDir); //$NON-NLS-1$
     }
 
     @Override
@@ -94,8 +102,7 @@ public final class RealRegistry implements Registry {
     private void init(String srcDir) {
         LOG.trace(LOG_CALLED);
 
-        for (File file : getResourceFolderFiles(srcDir)) {
-            String fileName = srcDir + "/" + file.getName();
+        for (String fileName : getSqlFiles(srcDir)) {
             LOG.debug("Parsing: {}", () -> fileName);
             readXmlFile(fileName, "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$
                 for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
@@ -120,8 +127,7 @@ public final class RealRegistry implements Registry {
     private Document readFileAndGetDocument(String fileName) {
         LOG.trace(LOG_CALLED);
         try {
-            try (
-                InputStream in = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
+            try (InputStream in = new FileInputStream(fileName)) {
                 return new SAXReader().read(in);
             }
         } catch (IOException | DocumentException e) {
@@ -133,14 +139,23 @@ public final class RealRegistry implements Registry {
         final String methodName = node.valueOf(XPATH_ATTRIB_NAME);
         final String cdata = node.getText()
             .replaceAll("\\r|\\n", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        LOG.trace("Adding method: {}", methodName);
         map.put(methodName, cdata);
     }
 
-    private File[] getResourceFolderFiles(String srcDir) {
+    private List<String> getSqlFiles(String srcDir) {
         LOG.trace(LOG_CALLED);
-        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        final URL url = loader.getResource(srcDir);
-        final String path = url.getPath();
-        return new File(path).listFiles();
+        List<String> filenames = new ArrayList<>();
+
+        final File dir = new File(srcDir);
+        if (!dir.exists()) {
+            throw new DebsException("SQL directory does not exist");
+        }
+
+        for (File file : dir.listFiles()) {
+            filenames.add(file.toString());
+        }
+
+        return filenames;
     }
 }
