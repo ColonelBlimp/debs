@@ -36,10 +36,8 @@ import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Contract;
 
 /**
- * <b>Purpose:</b> ?
- *
- * <p><b>Responsibility:</b>
- *
+ * <b>Purpose:</b> Concrete implementation of the {@link Contract} interface.
+ * 
  * @author Marc L. Veary
  * @since 1.0
  */

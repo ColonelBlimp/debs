@@ -34,9 +34,10 @@ import org.apache.logging.log4j.Logger;
 import org.veary.debs.facade.AdminFacade;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Application specific {@link ServletContextListener}.
  *
- * <p><b>Responsibility:</b>
+ * <p><b>Responsibility:</b> Checks if the {@code WEB-INF/db} directory exists, if it does not,
+ * then it is created and the database initialized.
  *
  * @author Marc L. Veary
  * @since 1.0

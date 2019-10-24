@@ -41,6 +41,16 @@ import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
 import org.veary.persist.exceptions.NoResultException;
 
+/**
+ * <b>Purpose:</b> Concrete implementation of the {@link EmployeeDao} interface.
+ *
+ * <p><b>Responsibility:</b> Handles all CRUD operations for the employee system.
+ * 
+ * <p><b>Note:</b> Annotated for JSR330.
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
 public final class RealEmployeeDao extends AbstractDao<Employee> implements EmployeeDao {
 
     private static final Logger LOG = LogManager.getLogger(RealEmployeeDao.class);
@@ -48,6 +58,12 @@ public final class RealEmployeeDao extends AbstractDao<Employee> implements Empl
 
     private final Registry registry;
 
+    /**
+     * Constructor.
+     *
+     * @param registry {@link Registry}
+     * @param factory {@link PersistenceManagerFactory}
+     */
     @Inject
     public RealEmployeeDao(Registry registry, PersistenceManagerFactory factory) {
         super(factory);

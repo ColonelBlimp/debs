@@ -32,12 +32,25 @@ import org.veary.debs.Messages;
 import org.veary.debs.core.utils.Validator;
 import org.veary.debs.model.Employee;
 
+/**
+ * <b>Purpose:</b> Concrete implementation of the {@link Employee} interface.
+ *
+ * @author Marc L. Veary
+ * @since 1.0
+ */
 public class EmployeeEntity extends PersistentObjectImpl implements Employee {
 
     private final String fullname;
     private final String contactNumber;
     private final String nationalIdNumber;
 
+    /**
+     * Constructor.
+     *
+     * @param fullname the fullname
+     * @param nationalIdNumber the <i>national identity number</i>
+     * @param contactNumber the associated <i>contract number</i>
+     */
     public EmployeeEntity(String fullname, String nationalIdNumber, String contactNumber) {
         this.fullname = Objects.requireNonNull(fullname, Messages.getParameterIsNull("fullname"));
         this.contactNumber = Objects.requireNonNull(contactNumber,

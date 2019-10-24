@@ -27,6 +27,7 @@ package org.veary.debs.core.dao;
 import java.util.Objects;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,9 +46,12 @@ import org.veary.persist.exceptions.PersistenceException;
  *
  * <p><b>Responsibility:</b>
  *
+ * <p><b>Note:</b> Annotated for JSR330.
+ *
  * @author Marc L. Veary
  * @since 1.0
  */
+@Singleton
 public final class RealAdminDao implements AdminDao {
 
     private static final Logger LOG = LogManager.getLogger(RealAdminDao.class);

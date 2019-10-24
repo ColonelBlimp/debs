@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,13 +40,16 @@ import org.veary.debs.model.Employee;
 import org.veary.persist.exceptions.NoResultException;
 
 /**
- * <b>Purpose:</b> ?
+ * <b>Purpose:</b> Concrete implementation of the {@code EmployeeFacade} interface.
  *
  * <p><b>Responsibility:</b>
+ *
+ * <p><b>Note:</b> Annotated for JSR330.
  *
  * @author Marc L. Veary
  * @since 1.0
  */
+@Singleton
 public final class RealEmployeeFacade implements EmployeeFacade {
 
     private static final Logger LOG = LogManager.getLogger(RealEmployeeFacade.class);
@@ -83,7 +87,8 @@ public final class RealEmployeeFacade implements EmployeeFacade {
     @Override
     public Optional<Employee> getByIdentityNumber(String identityNumber) {
         LOG.trace(LOG_CALLED);
-        Objects.requireNonNull(identityNumber, Messages.getParameterIsNull("identityNumber")); //$NON-NLS-1$
+        Objects.requireNonNull(identityNumber,
+            Messages.getParameterIsNull("identityNumber")); //$NON-NLS-1$
 
         try {
             return Optional.of(this.dao.getEmployeeByIdentityNumber(identityNumber));
