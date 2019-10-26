@@ -20,11 +20,11 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.veary</groupId>
+      <groupId>com.github.ColonelBlimp</groupId>
       <artifactId>persist</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.veary</groupId>
+      <groupId>com.github.ColonelBlimp</groupId>
       <artifactId>tree</artifactId>
     </dependency>
     <dependency>

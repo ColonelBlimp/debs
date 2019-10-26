@@ -282,9 +282,9 @@
         <version>1.4.200</version>
       </dependency>
       <dependency>
-        <groupId>org.veary</groupId>
+        <groupId>com.github.ColonelBlimp</groupId>
         <artifactId>persist</artifactId>
-        <version>0.9.3-snapshot</version>
+        <version>master-SNAPSHOT</version>
       </dependency>
       <!-- Web Application -->
       <dependency>
@@ -302,9 +302,9 @@
       </dependency>
       <!-- Various -->
       <dependency>
-        <groupId>org.veary</groupId>
+        <groupId>com.github.ColonelBlimp</groupId>
         <artifactId>tree</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>master-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
@@ -357,6 +357,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 
   <!-- distributionManagement>
     <site>

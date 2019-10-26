@@ -25,6 +25,7 @@
 package org.veary.debs.core.dao.tests;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -35,10 +36,10 @@ public class RegistryTest {
     private RealRegistry registry;
 
     @Test
-    public void instantiationWithoutFilename() {
+    public void instantiationWithoutFilename() throws URISyntaxException {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("sql").getFile());
-        this.registry = new RealRegistry(file.getAbsolutePath());
+        File file = new File(classLoader.getResource("sql").toURI());
+        this.registry = new RealRegistry(file.toString());
     }
 
     @Test(dependsOnMethods = { "instantiationWithoutFilename" })

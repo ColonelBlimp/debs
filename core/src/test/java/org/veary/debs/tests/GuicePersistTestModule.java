@@ -28,21 +28,29 @@ import com.google.inject.jndi.JndiIntegration;
 import com.google.inject.name.Names;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.veary.debs.core.GuiceDebsCoreModule;
+import org.veary.debs.exceptions.DebsException;
 
 public class GuicePersistTestModule extends GuiceDebsCoreModule {
 
     @Override
     protected void configure() {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("sql").getFile());
 
-        bindConstant().annotatedWith(Names.named("SQL_DIR")).to(file.getAbsolutePath());
+        File file;
+        try {
+            file = new File(classLoader.getResource("sql").toURI());
+        } catch (URISyntaxException e) {
+            throw new DebsException(e);
+        }
+
+        bindConstant().annotatedWith(Names.named("SQL_DIR")).to(file.toString());
         bind(Context.class).to(InitialContext.class);
         bind(DataSource.class)
             .toProvider(JndiIntegration.fromJndi(DataSource.class, "java:/comp/env/jdbc/debs")); //$NON-NLS-1$

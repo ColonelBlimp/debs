@@ -26,10 +26,14 @@ package org.veary.debs.core.dao;
 
 import com.google.inject.name.Named;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,7 +61,7 @@ import org.veary.debs.exceptions.DebsException;
  * <p><b>Responsibility:</b> Handles loading externally stored SQL.
  *
  * <p><b>Note:</b> Annotated for JSR330.
- * 
+ *
  * @author Marc L. Veary
  * @since 1.0
  */
@@ -106,7 +110,7 @@ public final class RealRegistry implements Registry {
     private void init(String srcDir) {
         LOG.trace(LOG_CALLED);
 
-        for (String fileName : getSqlFiles(srcDir)) {
+        for (String fileName : getSqlFiles(Path.of(srcDir))) {
             LOG.debug("Parsing: {}", () -> fileName);
             readXmlFile(fileName, "system", "/system", node -> { //$NON-NLS-1$ //$NON-NLS-2$
                 for (final Node method : node.selectNodes("method")) { //$NON-NLS-1$
@@ -147,17 +151,26 @@ public final class RealRegistry implements Registry {
         map.put(methodName, cdata);
     }
 
-    private List<String> getSqlFiles(String srcDir) {
+    private List<String> getSqlFiles(Path srcDir) {
         LOG.trace(LOG_CALLED);
         List<String> filenames = new ArrayList<>();
 
-        final File dir = new File(srcDir);
-        if (!dir.exists()) {
-            throw new DebsException("SQL directory does not exist");
-        }
+        LOG.debug("Loading SQL files from: {}", () -> srcDir);
 
-        for (File file : dir.listFiles()) {
-            filenames.add(file.toString());
+        try {
+            Files.walkFileTree(srcDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException {
+                    if (Files.isRegularFile(file)) {
+                        filenames.add(file.toString());
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DebsException(e);
         }
 
         return filenames;
