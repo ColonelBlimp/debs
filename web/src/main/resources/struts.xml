@@ -69,4 +69,11 @@
       <result type="freemarker" name="success">/WEB-INF/templates/paye/landing.ftl</result>
     </action>
   </package>
+  
+  <package name="employees" namespace="/employees" extends="debs-base">
+    <action name="list" class="org.veary.debs.web.struts2.actions.paye.employee.EmployeeList">
+      <result type="freemarker" name="success">/WEB-INF/templates/employees/list.ftl</result>
+    </action>
+  </package>
+
 </struts>

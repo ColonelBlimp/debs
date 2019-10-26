@@ -48,7 +48,7 @@
       <nav>
         <ul>
           <li class="inline-block pr-4 font-semibold"><a href="/" title="Accounts System">Accounts</a></li>
-          <li class="inline-block pr-4 font-semibold"><a href="#" title="Employees">Employees</a></li>
+          <li class="inline-block pr-4 font-semibold"><a href="<@s.url action="list" namespace="employees"/>" title="Employees">Employees</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Contracts">Contracts</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Payroll">Payroll</a></li>
           <li class="inline-block pr-4 font-semibold"><a href="#" title="Tax">Tax</a></li>
