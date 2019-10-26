@@ -26,7 +26,6 @@ package org.veary.debs.web.struts2.actions.employees;
 
 import com.opensymphony.xwork2.Action;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -35,41 +34,41 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.veary.debs.Messages;
 import org.veary.debs.facade.EmployeeFacade;
-import org.veary.debs.model.Employee;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.beans.EmployeeBean;
 
-public final class EmployeeList extends BaseAction {
+public final class EmployeeAdd extends BaseAction {
 
-    private static final Logger LOG = LogManager.getLogger(EmployeeList.class);
+    private static final Logger LOG = LogManager.getLogger(EmployeeAdd.class);
     private static final String LOG_CALLED = "called";
 
     private final EmployeeFacade employeeFacade;
-
-    private List<Employee> employees;
+    private EmployeeBean bean;
 
     @Inject
-    public EmployeeList(PageBean pageBean, EmployeeFacade employeeFacade) {
+    public EmployeeAdd(PageBean pageBean, EmployeeFacade employeeFacade) {
         super(pageBean);
         LOG.trace(LOG_CALLED);
 
         this.employeeFacade = Objects.requireNonNull(employeeFacade,
             Messages.getParameterIsNull("employeeFacade"));
 
-        this.pageBean.setPageTitle(getText("EmployeeList.pageTitle"));
-        this.pageBean.setMainHeadingText(getText("EmployeeList.mainHeader"));
+        this.pageBean.setPageTitle(getText("EmployeeAdd.pageTitle"));
+        this.pageBean.setMainHeadingText(getText("EmployeeAdd.mainHeader"));
     }
 
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
-
-        this.employees = this.employeeFacade.getAllEmployees(false);
-
-        return Action.SUCCESS;
+        return Action.INPUT;
     }
 
-    public List<Employee> getEmployees() {
-        return this.employees;
+    public EmployeeBean getBean() {
+        return this.bean;
+    }
+
+    public void setBean(EmployeeBean bean) {
+        this.bean = bean;
     }
 }

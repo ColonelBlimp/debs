@@ -74,6 +74,10 @@
     <action name="list" class="org.veary.debs.web.struts2.actions.paye.employee.EmployeeList">
       <result type="freemarker" name="success">/WEB-INF/templates/employees/list.ftl</result>
     </action>
+    <action name="add" class="org.veary.debs.web.struts2.actions.employees.EmployeeAdd">
+      <result type="freemarker" name="input">/WEB-INF/templates/employees/add.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
   </package>
 
 </struts>

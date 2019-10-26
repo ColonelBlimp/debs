@@ -98,12 +98,12 @@ public interface Contract extends PersistentObject {
 
     /**
      * Static method for creating a new Contract object.
-     * 
-     * @param employeeId
-     * @param startDate
-     * @param expiryDate
-     * @param monthlySalary
-     * @return
+     *
+     * @param employeeId national identity number
+     * @param startDate contract start date
+     * @param expiryDate contact expiry date
+     * @param monthlySalary monthly salary
+     * @return {@code Contract} object. Non-{@code null}.
      */
     static Contract newInstance(Long employeeId, LocalDate startDate, LocalDate expiryDate,
         Money monthlySalary) {
