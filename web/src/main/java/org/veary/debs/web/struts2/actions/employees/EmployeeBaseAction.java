@@ -24,56 +24,60 @@
 
 package org.veary.debs.web.struts2.actions.employees;
 
-import com.opensymphony.xwork2.Action;
-
-import java.util.Optional;
-
-import javax.inject.Inject;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.Messages;
+import org.veary.debs.core.utils.Validator;
 import org.veary.debs.facade.EmployeeFacade;
-import org.veary.debs.model.Employee;
 import org.veary.debs.web.struts2.PageBean;
+import org.veary.debs.web.struts2.actions.BaseAction;
+import org.veary.debs.web.struts2.actions.beans.EmployeeBean;
 
-public final class EmployeeAdd extends EmployeeBaseAction {
+abstract class EmployeeBaseAction extends BaseAction {
 
-    private static final Logger LOG = LogManager.getLogger(EmployeeAdd.class);
+    private static final Logger LOG = LogManager.getLogger(EmployeeBaseAction.class);
     private static final String LOG_CALLED = "called";
 
-    @Inject
-    public EmployeeAdd(PageBean pageBean, EmployeeFacade employeeFacade) {
-        super(pageBean, employeeFacade);
+    protected final EmployeeFacade employeeFacade;
+    protected EmployeeBean bean;
+
+    public EmployeeBaseAction(PageBean pageBean, EmployeeFacade employeeFacade) {
+        super(pageBean);
         LOG.trace(LOG_CALLED);
 
-        this.pageBean.setPageTitle(getText("EmployeeAdd.pageTitle"));
-        this.pageBean.setMainHeadingText(getText("EmployeeAdd.mainHeader"));
+        this.employeeFacade = Objects.requireNonNull(employeeFacade,
+            Messages.getParameterIsNull("employeeFacade"));
     }
 
-    @Override
-    protected String executeSubmitNull() {
+    protected boolean validateBeanStringFields(EmployeeBean bean) {
         LOG.trace(LOG_CALLED);
-        return Action.INPUT;
-    }
-
-    @Override
-    protected String executeSubmitCreate() {
-        LOG.trace(LOG_CALLED);
-        return Action.SUCCESS;
-    }
-
-    @Override
-    protected void validateSubmitCreate() {
-        LOG.trace(LOG_CALLED);
-
-        if (!validateBeanStringFields(this.bean)) {
-            return;
+        if ("".equals(bean.getFullname())) {
+            addFieldError("fullname", "Invalid fullname");
+            return false;
         }
 
-        Optional<Employee> result = this.employeeFacade
-            .getByIdentityNumber(this.bean.getNationalIdNumber());
-        if (result.isPresent()) {
-            addFieldError("name", getText("AccountAdd.account.nid.notunique"));
+        try {
+            Validator.validateTextField(bean.getFullname());
+        } catch (IllegalArgumentException e) {
+            addFieldError("fullname", e.getMessage());
+            return false;
         }
+
+        if ("".equals(bean.getNationalIdNumber())) {
+            addFieldError("nid", "Invalid ID");
+            return false;
+        }
+
+        return true;
+    }
+
+    public EmployeeBean getBean() {
+        return this.bean;
+    }
+
+    public void setBean(EmployeeBean bean) {
+        this.bean = bean;
     }
 }

@@ -44,7 +44,7 @@ import org.veary.debs.web.struts2.actions.beans.AccountBean;
  * @author Marc L. Veary
  * @since 1.0
  */
-public abstract class AccountBaseAction extends BaseAction {
+abstract class AccountBaseAction extends BaseAction {
 
     private static final Logger LOG = LogManager.getLogger(AccountBaseAction.class);
     private static final String LOG_CALLED = "called";

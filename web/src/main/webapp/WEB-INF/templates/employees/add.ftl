@@ -16,6 +16,15 @@
     </div>
     <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'fullname'}"/></@s.fielderror></div>
   </div>
+    <div class="flex mt-6 mb-2 items-center">
+    <div class="w-32">
+<@s.label for="nid" value="National ID:" class="inline-block font-bold"/>
+    </div>
+    <div class="w-56">
+<@s.textfield name="bean.nationalIdNumber" id="nid" maxlength="32" cssErrorClass="text-red-700 font-bold inline-block" autocomplete="off" autofocus="autofocus" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-800 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"/>
+    </div>
+    <div class="w-96 pl-6 font-bold text-red-700 italic"><@s.fielderror><@s.param value="%{'nid'}"/></@s.fielderror></div>
+  </div>
   <div class="flex mt-4 items-center">
     <div class="w-32"></div>
     <div>
