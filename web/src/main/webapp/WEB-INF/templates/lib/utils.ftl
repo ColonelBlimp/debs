@@ -121,7 +121,7 @@
  checked
   </#if>
 </#if>
- class="gl-<@s.property value="level"/>">
+ class="gl-<@s.property value="level"/>" id="parent">
 <span class="pl-1"><@s.property value="data.name"/></span>
 </td></tr>
 </@s.iterator>

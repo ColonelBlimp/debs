@@ -49,7 +49,7 @@
 <@s.submit name="submitType" id="create" value="Create" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-2"/>
 <@s.submit name="submitType" id="cancel" value="Cancel" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-2"/>
     </div>
-  <div class="w-96 pl-6"></div>
-</div>
+    <div class="w-96 pl-6"></div>
+  </div>
 </@s.form>
 </@f.accountsPage>
