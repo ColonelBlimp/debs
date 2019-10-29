@@ -70,6 +70,11 @@ abstract class EmployeeBaseAction extends BaseAction {
             return false;
         }
 
+        if ("".equals(bean.getContactNumber())) {
+            addFieldError("phone", "Invalid Contact number");
+            return false;
+        }
+
         return true;
     }
 
