@@ -53,6 +53,7 @@ abstract class EmployeeBaseAction extends BaseAction {
 
     protected boolean validateBeanStringFields(EmployeeBean bean) {
         LOG.trace(LOG_CALLED);
+
         if ("".equals(bean.getFullname())) {
             addFieldError("fullname", "Invalid fullname");
             return false;
@@ -66,12 +67,14 @@ abstract class EmployeeBaseAction extends BaseAction {
         }
 
         if ("".equals(bean.getNationalIdNumber())) {
-            addFieldError("nid", "Invalid ID");
+            addFieldError("nid", "Invalid ID number");
             return false;
         }
 
-        if ("".equals(bean.getContactNumber())) {
-            addFieldError("phone", "Invalid Contact number");
+        try {
+            Validator.validateCitizenID(bean.getNationalIdNumber());
+        } catch (IllegalArgumentException e) {
+            addFieldError("nid", e.getMessage());
             return false;
         }
 

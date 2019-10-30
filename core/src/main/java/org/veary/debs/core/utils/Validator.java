@@ -158,6 +158,26 @@ public final class Validator {
     }
 
     /**
+     * Validates a Malawi Citizen Identification number.
+     *
+     * @param id {@code String}
+     * @return the validates {@code String}
+     */
+    public static String validateCitizenID(String id) {
+        final StringCharacterIterator iterator = new StringCharacterIterator(
+            requireNonEmpty(id, "A text field cannot be be null or empty"));
+        char ch = iterator.current();
+        while (ch != CharacterIterator.DONE) {
+            if (!Character.isUpperCase(ch) && !Character.isDigit(ch)) {
+                throw new IllegalArgumentException(
+                    "The ID field can contain only digits or UPPERCASE letters");
+            }
+            ch = iterator.next();
+        }
+        return id;
+    }
+
+    /**
      * Private constructor.
      */
     private Validator() {

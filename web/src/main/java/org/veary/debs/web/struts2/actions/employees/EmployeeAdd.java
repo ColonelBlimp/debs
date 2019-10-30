@@ -32,9 +32,11 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.veary.debs.exceptions.DebsException;
 import org.veary.debs.facade.EmployeeFacade;
 import org.veary.debs.model.Employee;
 import org.veary.debs.web.struts2.PageBean;
+import org.veary.persist.exceptions.PersistenceException;
 
 public final class EmployeeAdd extends EmployeeBaseAction {
 
@@ -59,6 +61,18 @@ public final class EmployeeAdd extends EmployeeBaseAction {
     @Override
     protected String executeSubmitCreate() {
         LOG.trace(LOG_CALLED);
+
+        Employee employee = Employee.newInstance(
+            this.bean.getFullname(),
+            this.bean.getNationalIdNumber(),
+            this.bean.getContactNumber());
+
+        try {
+            this.employeeFacade.create(employee);
+        } catch (PersistenceException e) {
+            throw new DebsException(e);
+        }
+
         return Action.SUCCESS;
     }
 
@@ -73,7 +87,7 @@ public final class EmployeeAdd extends EmployeeBaseAction {
         Optional<Employee> result = this.employeeFacade
             .getByIdentityNumber(this.bean.getNationalIdNumber());
         if (result.isPresent()) {
-            addFieldError("name", getText("AccountAdd.account.nid.notunique"));
+            addFieldError("fullname", getText("EmployeeAdd.account.nid.notunique"));
         }
     }
 }

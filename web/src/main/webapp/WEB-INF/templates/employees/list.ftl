@@ -13,12 +13,28 @@
   <table class="table-fixed w-full">
     <thead>
       <tr>
-        <td>Number</td>
-        <td>Name</td>
-        <td>National ID</td>
+        <th class="w-6"><span class="block text-left">&nbsp;</span></th>
+        <th class="w-56"><span class="block text-left pl-1">Fullname</span></th>
+        <th class="w-56"><span class="block truncate text-left">Number</span></th>
+        <th class="w-32"><span class="block text-right pr-4">National ID</span></th>
+        <th class="w-6"><span class="block text-left">X</span></th>
       </tr>
     </thead>
     <tbody>
+<@s.iterator value="employees" status="stats">
+<@s.if test="#stats.odd == true">
+      <tr class="bg-purple-200">
+</@s.if>
+<@s.else>
+      <tr>
+</@s.else>
+        <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/employee',<@s.property value="id"/>)"/></span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+</@s.iterator>
     </tbody>
   </table>
 </div>
