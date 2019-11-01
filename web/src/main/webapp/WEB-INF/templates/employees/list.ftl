@@ -1,5 +1,5 @@
 <#-- 
- * org.veary.debs.web.struts2.actions.paye.employee.EmployeeList.java
+ * org.veary.debs.web.struts2.actions.paye.employees.EmployeeList.java
 -->
 <#import "../lib/utils.ftl" as f>
 <@f.payePage>
@@ -29,10 +29,10 @@
       <tr>
 </@s.else>
         <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/employee',<@s.property value="id"/>)"/></span></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><span class="block truncate text-left"><@s.property value="fullname"/></span></td>
+        <td><span class="block truncate text-left"><@s.property value="nationalIdNumber"/></span></td>
+        <td><span class="block truncate text-left"><@s.property value="contactNumber"/></span></td>
+        <td><span class="block truncate text-left"><input type="checkbox" <@s.if test="deleted">checked</@s.if> disabled="true"></span></td>
       </tr>
 </@s.iterator>
     </tbody>

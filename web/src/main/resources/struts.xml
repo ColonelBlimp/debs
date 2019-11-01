@@ -78,6 +78,10 @@
       <result type="freemarker" name="input">/WEB-INF/templates/employees/add.ftl</result>
       <result type="redirect" name="success">list</result>
     </action>
+    <action name="edit" class="org.veary.debs.web.struts2.actions.employees.EmployeeEdit">
+      <result type="freemarker" name="input">/WEB-INF/templates/employees/edit.ftl</result>
+      <result type="redirect" name="success">list</result>
+    </action>
   </package>
 
 </struts>
