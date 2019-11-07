@@ -28,7 +28,7 @@
 <@s.else>
       <tr>
 </@s.else>
-        <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/employee',<@s.property value="id"/>)"/></span></td>
+        <td><span class="block text-left pl-1"><input type="radio" name="selected" value="<@s.property value="id"/>" onchange="updateSelected('/employees',<@s.property value="id"/>)"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="fullname"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="nationalIdNumber"/></span></td>
         <td><span class="block truncate text-left"><@s.property value="contactNumber"/></span></td>

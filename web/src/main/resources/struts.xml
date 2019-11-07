@@ -10,18 +10,21 @@
   <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
   <constant name="struts.custom.i18n.resources" value="debs"/>
   <constant name="struts.serve.static" value="false" />
-  
-  <package name="debs-base" extends="struts-default">
+
+  <package name="debs-base" extends="struts-default, json-default">
     <default-interceptor-ref name="defaultStack"/>
     <default-action-ref name="home"/>
-    <global-results>
+    <!-- global-results>
       <result name="error" type="redirect">/static/error.html</result>
-    </global-results>
+    </global-results -->
   </package>
 
   <package name="default" namespace="/" extends="debs-base">
     <action name="home" class="org.veary.debs.web.struts2.actions.home.HomePageAction">
        <result type="freemarker" name="success">/WEB-INF/templates/home/home.ftl</result>
+    </action>
+    <action name="groupsForAccount" class="org.veary.debs.web.struts2.actions.ajax.GroupsForAccountAction">
+      <result type="json" name="success"></result>
     </action>
   </package>
 
@@ -69,7 +72,7 @@
       <result type="freemarker" name="success">/WEB-INF/templates/paye/landing.ftl</result>
     </action>
   </package>
-  
+
   <package name="employees" namespace="/employees" extends="debs-base">
     <action name="list" class="org.veary.debs.web.struts2.actions.employees.EmployeeList">
       <result type="freemarker" name="success">/WEB-INF/templates/employees/list.ftl</result>

@@ -74,10 +74,17 @@ public final class AccountEdit extends AccountBaseAction {
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
 
-        if (this.id == null) {
+        if (this.id == null && this.bean.getId().isEmpty()) {
             LOG.error("The account ID has not been set");
             return Action.ERROR;
         }
+
+        // When submitting on the 'type' selector element, this.id is not set
+        if (this.id == null) {
+            this.id = Long.valueOf(this.bean.getId());
+        }
+
+        LOG.trace("ID: {}", this.id);
 
         Optional<Account> result = this.accountFacade.getById(this.id);
         if (result.isEmpty()) {
@@ -85,8 +92,14 @@ public final class AccountEdit extends AccountBaseAction {
             return Action.ERROR;
         }
 
+        final String selectedTypeId = this.bean.getTypeId();
+
         this.original = result.get();
         this.bean = new AccountBean(this.original);
+
+        if (this.bean.getTypeId() == null) {
+            this.bean.setTypeId(selectedTypeId);
+        }
 
         return Action.INPUT;
     }
