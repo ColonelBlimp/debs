@@ -24,6 +24,8 @@
 
 package org.veary.debs.core.facade;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -172,6 +174,28 @@ public final class RealAccountFacade implements AccountFacade {
     public TreeNode<Account> getChartOfAccounts() {
         LOG.trace(LOG_CALLED);
         return buildChartOfAccounts(getRootNode());
+    }
+
+    @Override
+    public List<Account> getAllowedGroupsForType(Types type) {
+        LOG.trace(LOG_CALLED);
+
+        final List<Account> groups = new ArrayList<>();
+
+        switch (type) {
+            case ASSET:
+                groups.addAll(this.dao.getAccountsByType(Types.BALANCE_GROUP));
+                groups.addAll(this.dao.getAccountsByType(Types.NETWORTH_GROUP));
+                groups.addAll(this.dao.getAccountsByType(Types.ASSETS_GROUP));
+                break;
+            case EXPENSE:
+                groups.addAll(this.dao.getAccountsByType(Types.EXPENSE_GROUP));
+                break;
+            default:
+                break;
+        }
+
+        return Collections.unmodifiableList(groups);
     }
 
     private TreeNode<Account> buildGroupHierarchy() {

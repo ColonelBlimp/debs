@@ -70,8 +70,8 @@ public final class Validator {
      * Validate the state of the given {@code Map}.
      *
      * <p>This method ensures that the given {@code Map} is not {@code null} or {@code empty},
-     * contains the right number of elements and all the required keys are present. It also
-     * checks that the map contains no {@code null} values.
+     * contains the right number of elements and all the required keys are present. It also checks
+     * that the map contains no {@code null} values.
      *
      * @param dataMap the {@code Map} object
      * @param fields an String array of map keys
@@ -163,7 +163,7 @@ public final class Validator {
      * @param id {@code String}
      * @return the validates {@code String}
      */
-    public static String validateCitizenID(String id) {
+    public static String validateCitizenId(String id) {
         final StringCharacterIterator iterator = new StringCharacterIterator(
             requireNonEmpty(id, "A text field cannot be be null or empty"));
         char ch = iterator.current();

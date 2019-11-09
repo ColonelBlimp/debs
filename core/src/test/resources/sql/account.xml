@@ -38,4 +38,7 @@ SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE>=8
 	<method name="getActualAccounts"><![CDATA[
 SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE>=8 AND DELETED=FALSE
 	]]></method>
+	<method name="getAccountsByType">
+SELECT * FROM DEBS.ACCOUNT WHERE ACCOUNT_TYPE=? AND DELETED=FALSE
+	</method>
 </system>

@@ -38,6 +38,7 @@ import org.veary.debs.core.Money;
 import org.veary.debs.dao.AccountDao;
 import org.veary.debs.dao.Registry;
 import org.veary.debs.model.Account;
+import org.veary.debs.model.Account.Types;
 import org.veary.persist.PersistenceManagerFactory;
 import org.veary.persist.SqlStatement;
 import org.veary.persist.TransactionManager;
@@ -195,6 +196,20 @@ public final class RealAccountDao extends AbstractDao<Account> implements Accoun
         }
 
         return getAccountsList(key);
+    }
+
+    @Override
+    public List<Account> getAccountsByType(Types type) {
+        LOG.trace(LOG_CALLED);
+
+        SqlStatement select = SqlStatement.newInstance(this.registry.getSql("getAccountsByType"));
+        select.setParameter(1, type.getId());
+
+        try {
+            return executeAndReturnListResult(select, Account.class);
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
     }
 
     private List<Account> getAccountsList(String key) {

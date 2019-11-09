@@ -95,34 +95,7 @@
 <table class="table-fixed w-full">
 <@s.iterator value="groups" status="stats">
 <tr><td>
-<input type="radio" name="selectedGroup" value="<@s.property value="data.id"/>"
-<#if type == "20">
-  <#if data.type.id != 4>
- disabled
-  <#else>
- checked
-  </#if>
-<#elseif type == "21">
-  <#if data.type.id != 5>
- disabled
-  <#else>
- checked
-  </#if>
-<#elseif type == "22">
-  <#if data.type.id != 7>
- disabled
-  <#else>
- checked
-  </#if>
-<#elseif type == "23">
-  <#if data.type.id != 6>
- disabled
-  <#else>
- checked
-  </#if>
-</#if>
- class="gl-<@s.property value="level"/>" id="parent">
-<span class="pl-1"><@s.property value="data.name"/></span>
+<span class="pl-1"><@s.property value="name"/></span>
 </td></tr>
 </@s.iterator>
 </table>

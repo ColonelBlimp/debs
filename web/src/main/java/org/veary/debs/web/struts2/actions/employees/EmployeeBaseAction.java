@@ -72,7 +72,7 @@ abstract class EmployeeBaseAction extends BaseAction {
         }
 
         try {
-            Validator.validateCitizenID(bean.getNationalIdNumber());
+            Validator.validateCitizenId(bean.getNationalIdNumber());
         } catch (IllegalArgumentException e) {
             addFieldError("nid", e.getMessage());
             return false;

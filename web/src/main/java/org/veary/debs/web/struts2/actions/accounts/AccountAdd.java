@@ -26,6 +26,7 @@ package org.veary.debs.web.struts2.actions.accounts;
 
 import com.opensymphony.xwork2.Action;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,7 +41,6 @@ import org.veary.debs.model.Account;
 import org.veary.debs.web.Config;
 import org.veary.debs.web.struts2.PageBean;
 import org.veary.persist.exceptions.PersistenceException;
-import org.veary.tree.TreeNode;
 
 /**
  * <b>Purpose:</b> Struts2 Action class for adding a new {@code Account} to the system.
@@ -56,7 +56,7 @@ public final class AccountAdd extends AccountBaseAction {
     private static final String LOG_CALLED = "called";
 
     private final Config config;
-    private final TreeNode<Account> groups;
+    private List<Account> groups;
     private String selectedGroupId;
 
     /**
@@ -70,7 +70,8 @@ public final class AccountAdd extends AccountBaseAction {
         LOG.trace(LOG_CALLED);
 
         this.config = Objects.requireNonNull(config, Messages.getParameterIsNull("config"));
-        this.groups = this.accountFacade.getGroupAccounts();
+        this.groups = this.accountFacade
+            .getAllowedGroupsForType(Account.Types.getType(Integer.valueOf(getSelectedType())));
 
         this.pageBean.setPageTitle(getText("AccountAdd.pageTitle"));
         this.pageBean.setMainHeadingText(getText("AccountAdd.mainHeader"));
@@ -79,7 +80,6 @@ public final class AccountAdd extends AccountBaseAction {
     @Override
     protected String executeSubmitNull() {
         LOG.trace(LOG_CALLED);
-
         return Action.INPUT;
     }
 
@@ -128,7 +128,7 @@ public final class AccountAdd extends AccountBaseAction {
         this.selectedGroupId = groupId;
     }
 
-    public TreeNode<Account> getGroups() {
+    public List<Account> getGroups() {
         return this.groups;
     }
 }

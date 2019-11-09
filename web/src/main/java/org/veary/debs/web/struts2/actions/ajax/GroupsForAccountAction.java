@@ -31,8 +31,6 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 /**
  * <b>Purpose:</b> ?
@@ -66,7 +64,9 @@ public final class GroupsForAccountAction extends ActionSupport {
         LOG.trace("ID: {}", this.id);
 
         if (this.id != null) {
-            JSONObject json = (JSONObject) new JSONParser().parse(this.jsonRequestData);
+
+            //JSONObject json = (JSONObject) new JSONParser().parse(this.jsonRequestData);
+
         }
 
         return Action.SUCCESS;

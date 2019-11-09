@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import org.veary.debs.core.Money;
 import org.veary.debs.model.Account;
+import org.veary.debs.model.Account.Types;
 import org.veary.tree.TreeNode;
 
 /**
@@ -148,4 +149,13 @@ public interface AccountFacade {
      * @return {@link TreeNode}
      */
     TreeNode<Account> getChartOfAccounts();
+
+    /**
+     * Returns a {@code List} of Accounts (Groups) which the referenced type is <b>allowed</b> to
+     * be a member of.
+     *
+     * @param type the referenced {@code Types}
+     * @return {@code List}. Not-{@code null}.
+     */
+    List<Account> getAllowedGroupsForType(Types type);
 }

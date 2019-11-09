@@ -135,18 +135,18 @@ public class ValidatorTest {
 
     @Test
     public void validateNationalIdField() {
-        Assert.assertEquals(Validator.validateCitizenID("QAS1EDFR"), "QAS1EDFR");
+        Assert.assertEquals(Validator.validateCitizenId("QAS1EDFR"), "QAS1EDFR");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "The ID field can contain only digits or UPPERCASE letters")
     public void validateNationalIdFieldExceptionA() {
-        Validator.validateCitizenID("QAS-EDFR");
+        Validator.validateCitizenId("QAS-EDFR");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "The ID field can contain only digits or UPPERCASE letters")
     public void validateNationalIdFieldExceptionB() {
-        Validator.validateCitizenID("QASzEDFR");
+        Validator.validateCitizenId("QASzEDFR");
     }
 }

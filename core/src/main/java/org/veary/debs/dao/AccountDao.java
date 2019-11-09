@@ -73,8 +73,7 @@ public interface AccountDao {
     /**
      * Retrieve an {@code Account} matching the referenced unique identifier.
      *
-     * <p><b>Note:</b> This will also return an {@code Account} which is marked as
-     * <b>deleted</b>.
+     * <p><b>Note:</b> This will also return an {@code Account} which is marked as <b>deleted</b>.
      *
      * @param id the unique identifier
      * @return {@code Account}. Non-{@code null}.
@@ -124,4 +123,12 @@ public interface AccountDao {
      * @return {@code List<Account>}. Can be empty, but not {@code null}.
      */
     List<Account> getActualAccounts(boolean includeDeleted);
+
+    /**
+     * Returns a list of which have the referenced {@code Account.Types}.
+     *
+     * @param type {@code Account.Types}
+     * @return {@code List}
+     */
+    List<Account> getAccountsByType(Account.Types type);
 }

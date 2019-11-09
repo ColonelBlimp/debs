@@ -42,7 +42,7 @@ import org.veary.debs.tests.JndiTestBase;
  */
 public class AccountDaoListTest extends JndiTestBase {
 
-    private static final Long DEFAULT_ID = Long.valueOf(0);
+    //    private static final Long DEFAULT_ID = Long.valueOf(0);
 
     @Test
     public void getAllAccountsMethod() {
@@ -92,6 +92,7 @@ public class AccountDaoListTest extends JndiTestBase {
         Assert.assertTrue(list.size() == 7);
     }
 
+    /*
     private static final String DESC = "In-build"; //$NON-NLS-1$
 
     @Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
@@ -104,7 +105,18 @@ public class AccountDaoListTest extends JndiTestBase {
 
         Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 9);
         object = this.accountDao.getAccountById(netWorthId);
-        //        this.accountDao.deleteAccount(object);
-        //        Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 8);
+        Assert.assertTrue(this.accountDao.getGroupAccounts(false).size() == 8);
+    }
+    */
+
+    @Test(dependsOnMethods = { "getAllAccountsMethod", "getAllAccountsIncludeDeleteMethod" })
+    public void accountsByTypeAsset() {
+        List<Account> assetAccounts = this.accountDao.getAccountsByType(Types.ASSETS_GROUP);
+        Assert.assertNotNull(assetAccounts);
+        Assert.assertFalse(assetAccounts.isEmpty());
+        System.out.println(">>> " + assetAccounts.size());
+        Assert.assertTrue(assetAccounts.size() == 1);
+        final Account account = assetAccounts.get(0);
+        Assert.assertTrue(account.getType().equals(Types.ASSETS_GROUP));
     }
 }
