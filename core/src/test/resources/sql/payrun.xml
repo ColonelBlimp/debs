@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE system [
+<!ELEMENT system (method+)>
+<!ELEMENT method (#PCDATA)>
+<!ATTLIST method name CDATA "">
+]>
+<system>
+	<method name="createPayrunEntry"><![CDATA[
+INSERT INTO DEBS.PAYRUN(EMPLOYEE_ID,TDATE,REFERENCE,GROSS,TAX,NET) VALUES(?,?,?,?,?,?)
+	]]></method>
+</system>
